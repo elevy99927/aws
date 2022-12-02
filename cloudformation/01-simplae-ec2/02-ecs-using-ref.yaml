@@ -7,7 +7,6 @@ Resources:
       InstanceType: t2.micro
       SecurityGroups:
         - !Ref SSHSecurityGroup
-        - !Ref ServerSecurityGroup
       Tags:
       - Key: Name
         Value: "eyal-ecs-02"
@@ -29,18 +28,3 @@ Resources:
         IpProtocol: tcp
         ToPort: 22
 
-  # our second EC2 security group
-  # 
-  ServerSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: allow connections from specified CIDR ranges
-      SecurityGroupIngress:
-      - IpProtocol: tcp
-        FromPort: 80
-        ToPort: 80
-        CidrIp: 0.0.0.0/0
-      - IpProtocol: tcp
-        FromPort: 22
-        ToPort: 22
-        CidrIp: 172.31.0.0/16
