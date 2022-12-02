@@ -1,8 +1,11 @@
 # LAB 4: Using Parameters
 Create a CF template with the following parameters:
+
 ### Instance name: String
+
 ### Ssh-key: Dropbox
 Select from existing keyPairs (you will need to create a key befor)
+
 ### Instance type: Dropbox
 Select from the following options: t1.micro, t2.nana, t2.micro
 
