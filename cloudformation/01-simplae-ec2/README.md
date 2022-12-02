@@ -16,9 +16,16 @@ Upload your YAML file
 Launch a new ec2 instance
 
 # Solution:
+```
+https://github.com/elevy99927/aws/blob/main/cloudformation/01-simplae-ec2/01-simaple-ec2-stack.yaml
+```
 
 
 # LAB 2: 
 Create ec2 instance with SecurityGroups Using Ref
 (REF will be explained in details later)
 Create a new stack using the following template:
+
+```
+https://github.com/elevy99927/aws/blob/main/cloudformation/01-simplae-ec2/02-ecs-using-ref.yaml
+```
