@@ -6,6 +6,11 @@ Select from existing keyPairs (you will need to create a key befor)
 ### Instance type: Dropbox
 Select from the following options: t1.micro, t2.nana, t2.micro
 
+```
+At this point, you will not be able to connect to your instance using ssh.
+Inorder to connect to your server, You will need to create a SecurityGroup manualy
+```
+
 # Reference:
 `https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html`
 
