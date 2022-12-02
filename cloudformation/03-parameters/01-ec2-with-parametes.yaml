@@ -7,7 +7,7 @@ Parameters:
       - t1.micro
       - t2.nano
       - t2.micro
-    ConstraintDescription: must be a valid EC2 instance type.
+    ConstraintDescription: Choose, t1.micro, t2.nana, t2.micro from the list. Default is t2.micro
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances. Linked to AWS Parameter
     Type: AWS::EC2::KeyPair::KeyName
