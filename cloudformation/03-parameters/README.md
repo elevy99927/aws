@@ -12,8 +12,8 @@ Inorder to connect to your server, You will need to create a SecurityGroup manua
 ```
 
 # Reference:
-`https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html`
+<A href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html">https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/parameters-section-structure.html</a>
 
 # Solution:
-`https://github.com/elevy99927/aws/blob/main/cloudformation/03-parameters/01-ec2-with-parametes.yaml`
+<a href="https://github.com/elevy99927/aws/blob/main/cloudformation/03-parameters/01-ec2-with-parametes.yaml">https://github.com/elevy99927/aws/blob/main/cloudformation/03-parameters/01-ec2-with-parametes.yaml</a>
 
