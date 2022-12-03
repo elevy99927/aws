@@ -1,0 +1,10 @@
+# Referance:
+# https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html
+
+
+Resources:
+  MyS3Bucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: "eyal-s3-sample-01"
+      DeletionPolicy: Retain
