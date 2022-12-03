@@ -6,5 +6,6 @@ Resources:
       ImageId: ami-096800910c1b781ba
       InstanceType: t2.micro
       SecurityGroups:
-        # we reference the output here, using the Fn::ImportValue function
+        # New function: ImportValue
+        #We reference the output here, using the Fn::ImportValue function
         - !ImportValue SSHSecurityGroup
