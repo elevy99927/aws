@@ -1,0 +1,40 @@
+###
+## Broken for for use
+##
+
+Parameters:
+  EnvironmentName:
+    Description: Environment Name
+    Type: String
+    Default: development
+    AllowedValues: 
+      - development
+      - production
+    ConstraintDescription: must be development or production
+#Dropbox example, using predefiend values
+  DevInstanceType:
+    Description: WebServer EC2 instance type (has default, AllowedValues)
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t1.micro
+      - t2.nano
+      - t2.micro
+    #Constraint Description will be displayed, incase of error
+    ConstraintDescription: Choose, t1.micro, t2.nana, t2.micro from the list. Default is t2.micro
+
+Mappings:
+  EnvironmentToInstanceType:
+    development:
+      instanceType: !Ref DevInstanceType
+    # we want a bigger instance type in production
+    production:
+      instanceType: t2.small
+
+Resources:
+  EC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: !FindInMap [EnvironmentToInstanceType, !Ref 'EnvironmentName', instanceType]
+      # Note we use the pseudo parameter AWS::Region
+      ImageId: ami-096800910c1b781ba
