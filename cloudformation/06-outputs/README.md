@@ -1,5 +1,6 @@
 # Lab 6: CloudFormation outputs
-1. Create a new SecurityGroup named: 'YOURNAME-ssh-sg-01'
+1. Create a new SecurityGroup named: `YOURNAME-ssh-sg-01`
+
 use the following YAML example for your SG:
 ```
 Resources:
@@ -20,7 +21,7 @@ Outputs:
      Name: SSHSecurityGroup
 ```
 
-2. Create a new EC2 instance name: YOURNAME-ec2-ssh-01
+2. Create a new EC2 instance name: `YOURNAME-ec2-ssh-01`
 
 ## Reference:
 <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html">http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html</a>
