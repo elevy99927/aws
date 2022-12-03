@@ -8,3 +8,4 @@ Resources:
     Properties:
       BucketName: "eyal-s3-sample-01"
       DeletionPolicy: Retain
+      UpdateReplacePolicy: Retain
