@@ -12,7 +12,7 @@ Parameters:
     #Constraint Description will be displayed, incase of error
     ConstraintDescription: Choose, t1.micro, t2.nana, t2.micro from the list. Default is t2.micro
 
-  #Dropbox example, using auto generated values
+  #Dropbox example, retrieve KeyPair from your AWS account
   KeyName:
     Description: Name of an existing EC2 KeyPair to enable SSH access to the instances. Linked to AWS Parameter
     Type: AWS::EC2::KeyPair::KeyName
@@ -25,7 +25,7 @@ Parameters:
     
   #Hidden string
   SomePassword:
-    NoEcho: true
+    NoEcho: true #Noecho: the string will not be visable
     Description: Hidden Password Example
     Type: String
 
