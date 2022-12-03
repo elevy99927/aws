@@ -24,6 +24,7 @@ Outputs:
 
 ## Reference:
 <a href="http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html">http://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-properties-ec2-security-group.html</a>
+<a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html">https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/outputs-section-structure.html</a>
 
 ## Solution:
 <a href="https://github.com/elevy99927/aws/tree/main/cloudformation/06-outputs">https://github.com/elevy99927/aws/tree/main/cloudformation/06-outputs</a>
