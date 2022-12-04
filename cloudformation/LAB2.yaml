@@ -1,7 +1,6 @@
 ###
 ### Not A full solution !!
 #############
-
 Resources:
   MyDB:
     Type: 'AWS::RDS::DBInstance'
@@ -12,13 +11,14 @@ Resources:
       MasterUserPassword: "123456789!"
       DBInstanceClass: db.t2.micro
       EngineVersion: "8.0.28"
+      AllocatedStorage: 20
 
 
   MyInstance:
     Type: AWS::EC2::Instance
     Properties:
-      AvailabilityZone: eu-west-1a
-      ImageId: ami-096800910c1b781ba
+      AvailabilityZone: us-west-1a
+      ImageId: ami-0a1a70369f0fce06a
       InstanceType: t2.micro
       SecurityGroups:
         - !Ref SSHSecurityGroup
