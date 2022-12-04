@@ -1,0 +1,45 @@
+###
+### Not A full solution !!
+#############
+
+Resources:
+  MyDB:
+    Type: 'AWS::RDS::DBInstance'
+    Properties:
+      DBName: MYSQLDB
+      Engine: MySQL
+      MasterUsername: "admin"
+      MasterUserPassword: "123456789!"
+      DBInstanceClass: db.t2.micro
+      EngineVersion: "8.0.28"
+
+
+  MyInstance:
+    Type: AWS::EC2::Instance
+    Properties:
+      AvailabilityZone: eu-west-1a
+      ImageId: ami-096800910c1b781ba
+      InstanceType: t2.micro
+      SecurityGroups:
+        - !Ref SSHSecurityGroup
+      Tags:
+      - Key: Name
+        Value: "ey-websrv"
+
+  # an elastic IP for our instance
+  MyEIP:
+    Type: AWS::EC2::EIP
+    Properties:
+      InstanceId: !Ref MyInstance
+
+  # our EC2 security group
+  SSHSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Enable SSH access via port 22
+      SecurityGroupIngress:
+      - CidrIp: 0.0.0.0/0
+        FromPort: 22
+        IpProtocol: tcp
+        ToPort: 22
+
