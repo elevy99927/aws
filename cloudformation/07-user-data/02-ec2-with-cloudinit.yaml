@@ -19,22 +19,19 @@ Resources:
               php: []
           groups:
             devops: {}
-          users:
-            "devops":
-              groups:
-                - "devops"
+          users: {}
           sources:
             "/home/ec2-user/aws-cli": "https://github.com/aws/aws-cli/tarball/master"
           files:
-            "/home/ubuntu/test-file.txt":
+            "/home/ec2-user/test-file.txt":
               content: |
                 "Do you come from a land down under?
                 Where women glow and men plunder?
                 Can't you hear, can't you hear the thunder?
                 You better run, you better take cover."
               mode: '000400'
-              owner: ubuntu
-              group: ubuntu
+              owner: ec2-user
+              group: ec2-user
             "/etc/cfn/cfn-hup.conf":
               content: !Sub |
                 [main]
@@ -55,7 +52,7 @@ Resources:
             
           commands:
             test:
-              command: "echo \"$MAGIC\" > /tmp/hello-test.txt"
+              command: "echo \"$MAGIC\" > /opt/hello-test.txt"
               env:
                 MAGIC: "Hello example from the environment!"
               cwd: "~"
@@ -84,16 +81,18 @@ Resources:
           !Sub |
             #!/bin/bash -xe
             yum update -y
-            yum install -y pip
+            #yum install -y pip
 
             # Get the latest CloudFormation helper scripts
             yum install -y aws-cfn-bootstrap
             
             # Start cfn-init
-            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource WebServerHost --region ${AWS::Region}
+            echo /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MyDockerServerHost --region ${AWS::Region} >> /opt/out.txt
+            /opt/aws/bin/cfn-init -v --stack ${AWS::StackName} --resource MyDockerServerHost --region ${AWS::Region}
             
             # cfn-init completed so signal success or not
-            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource WebServerHost --region ${AWS::Region}
+            echo /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MyDockerServerHost --region ${AWS::Region} >> /opt/out.txt
+            /opt/aws/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource MyDockerServerHost --region ${AWS::Region}
         
       Tags:
       - Key: Name
