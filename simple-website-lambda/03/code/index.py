@@ -7,12 +7,14 @@ s3_client = boto3.client("s3")
 # environment variables of lambda functions
 s3_bucket = os.environ["S3_BUCKET"]
 s3_prefix = ""
-s3_file = "test.txt"
+s3_file = "files/ng-test.txt"
 
 s3_path = "upload/" + s3_file
 
 def s3_write(s3_path,s3_bucket):
-    string = "dfghj"
+    f = open(s3_file,"r")
+    string = f.read()
+    #string = "dfghj"
     encoded_string = string.encode("utf-8")
     s3 = boto3.resource("s3")
     s3.Bucket(s3_bucket).put_object(Key=s3_path, Body=encoded_string)
