@@ -1,33 +1,31 @@
-fix the error:
+## Fix the error:
 
-```bash
+### Error 1:
+fix `web.tf`
 
-$ terraform plan
-╷
-│ Error: Missing required argument
-│ 
-│   with aws_instance.web,
-│   on web.tf line 1, in resource "aws_instance" "web":
-│    1: resource "aws_instance" "web" {
-│ 
-│ "ami": one of `ami,launch_template` must be specified
-╵
-╷
-│ Error: Missing required argument
-│ 
-│   with aws_instance.web,
-│   on web.tf line 1, in resource "aws_instance" "web":
-│    1: resource "aws_instance" "web" {
-│ 
-│ "instance_type": one of `instance_type,launch_template` must be specified
-╵
-╷
-│ Error: Missing required argument
-│ 
-│   with aws_instance.web,
-│   on web.tf line 1, in resource "aws_instance" "web":
-│    1: resource "aws_instance" "web" {
-│ 
-│ "launch_template": one of `ami,instance_type,launch_template` must be specified
-╵
+```java
+"launch_template": one of `ami,instance_type,launch_template` must be specified
+"ami": one of `ami,launch_template` must be specified
+"instance_type": one of `instance_type,launch_template` must be specified
+
 ```
+
+
+---
+
+### Error 2:
+```java
+Provider "registry.terraform.io/hashicorp/aws" requires explicit configuration.
+Add a provider block to the root module
+```
+
+### Sulotion:
+create `main.tf` file
+
+```hcl
+provider "aws" {
+  region = "us-east-1"
+}
+
+```
+
