@@ -10,6 +10,10 @@ resource "aws_instance" "app_server" {
   }
 }
 
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "ey-999-test"
+}
+
 output "ip" {
   value = aws_instance.app_server.public_ip
 }
