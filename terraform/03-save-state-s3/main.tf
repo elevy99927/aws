@@ -5,8 +5,8 @@ terraform {
     region = "us-west-2"
 
     # LocalStack
-    endpoint     = "http://localhost:4566"
-    sts_endpoint = "http://localhost:4566"
+    #endpoint     = "http://localhost:4566"
+    #sts_endpoint = "http://localhost:4566"
 
     access_key = "test"
     secret_key = "test"
