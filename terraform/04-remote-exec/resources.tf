@@ -1,25 +1,15 @@
 # Generate SSH key pair before creating the key pair in AWS
 # This ensures that the private key is available locally for SSH access
-# `null_resource` is a resource used to control execution order or run provisioners, without creating infrastructure.
-resource "null_resource" "generate_ssh_key" {
-  provisioner "local-exec" {
-    command = "sh ./generate_ssh_key.sh"
-  }
-}
+# run 'sh ./generate_ssh_key.sh'
 
-locals {
-  public_key_file = "${path.module}/ssh/terraform-key.pub"
-}
 
+# use pre-existing key pair
 resource "aws_key_pair" "example" {
   key_name   = "terraform-key"
-  public_key = try(file(local.public_key_file), "")
-
-  # Ensure the SSH key is generated before creating the key pair in AWS
-  depends_on = [null_resource.generate_ssh_key]
+  public_key = file("${path.module}/ssh/terraform-key.pub")
 }
 
-
+# Create EC2 instance with pre-existing key pair
 resource "aws_instance" "example" {
   ami           = var.AMIS[var.AWS_REGION]
   instance_type = "t2.micro"
@@ -28,7 +18,7 @@ resource "aws_instance" "example" {
   connection {
     type        = "ssh"
     user        = "ubuntu"   #if not working, check vars.tf -> AMIS
-    private_key = file("${path.module}/ssh/terraform-key")
+    private_key = try(file("${path.module}/ssh/terraform-key"), "")
     host        = self.public_ip
   }
 
