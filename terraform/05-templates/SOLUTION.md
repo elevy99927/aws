@@ -1,5 +1,5 @@
 ### Sulotion:
-create `main.tf` file
+create `provider.tf` file
 
 ```hcl
 provider "aws" {

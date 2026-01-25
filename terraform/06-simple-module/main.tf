@@ -25,8 +25,7 @@ resource "aws_instance" "database1" {
   instance_type = "t2.micro"
 }
 
-
 # print user_data as output
 output "web_user_data" {
-  value = aws_instance.web.user_data
+  value = aws_instance.database1.user_data
 }
