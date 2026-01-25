@@ -19,13 +19,5 @@ Provider "registry.terraform.io/hashicorp/aws" requires explicit configuration.
 Add a provider block to the root module
 ```
 
-### Sulotion:
-create `main.tf` file
 
-```hcl
-provider "aws" {
-  region = "us-east-1"
-}
-
-```
-
+**[Solution](https://github.com/elevy99927/aws/blob/main/terraform/05-templates/SOLUTION◊.md)**
