@@ -20,4 +20,4 @@ Add a provider block to the root module
 ```
 
 
-**[Solution](https://github.com/elevy99927/aws/blob/main/terraform/05-templates/SOLUTION◊.md)**
+**[Solution](https://github.com/elevy99927/aws/blob/main/terraform/05-templates/SOLUTION.md)**
