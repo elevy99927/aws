@@ -1,5 +1,0 @@
-Resources:
-  MyS3Bucket:
-    Type: AWS::S3::Bucket
-    Properties:
-      BucketName: "eyal-s3-sample-01"
