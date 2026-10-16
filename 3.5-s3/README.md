@@ -2,16 +2,16 @@
 
 ## Topics
 
-- What is Amazon S3 – object storage, buckets, objects and keys
-- S3 vs. EBS vs. EFS – when to use which
-- Storage classes (overview)
-- Versioning – keeping every version of an object
-- S3 permissions – Block Public Access, IAM policies, bucket policies, ACLs
-- Permissions example 1: giving a specific IAM user access to a bucket
-- Permissions example 2: public read access for a website
-- Hands-on: create a bucket with the CLI and view it in the Console
-- Hands-on: host a static website on S3
-- Terraform: the same resources as code
+- [What is Amazon S3 – object storage, buckets, objects and keys](#1-what-is-amazon-s3)
+- [S3 vs. EBS vs. EFS – when to use which](#2-s3-vs-ebs-vs-efs)
+- [Storage classes (overview)](#3-storage-classes-overview)
+- [Versioning – keeping every version of an object](#4-versioning)
+- [S3 permissions – Block Public Access, IAM policies, bucket policies, ACLs](#5-s3-permissions)
+- [Permissions example 1: giving a specific IAM user access to a bucket](#example-1-give-a-specific-iam-user-access-to-a-bucket)
+- [Permissions example 2: public read access for a website](#example-2-public-read-access-for-a-website)
+- [Hands-on: create a bucket with the CLI and view it in the Console](#-lab-1-basic-create-an-s3-bucket-with-the-cli)
+- [Hands-on: host a static website on S3](#-lab-2-basic-host-a-static-website-on-s3)
+- [Terraform: the same resources as code](#-terraform)
 
 ---
 
@@ -169,7 +169,7 @@ A bucket policy that lets **anyone on the internet** read (download) objects, bu
 
 ---
 
-## 🧪 LAB 1 (Basic): Create an S3 Bucket with the CLI
+## LAB 1 (Basic): Create an S3 Bucket with the CLI
 
 **Goal:** Create a bucket from the command line, enable versioning, and inspect the bucket in the Console.
 
@@ -177,8 +177,13 @@ A bucket policy that lets **anyone on the internet** read (download) objects, bu
 
 ### Tasks
 
-1. Choose a **globally unique** bucket name, for example `s3-lab-<your-name>-<random-number>`, and save it in a shell variable together with your Region.
+1. Choose a **globally unique** bucket name, for example `s3-lab-<your-name>-<random-number>`.
 2. Create the bucket with the **AWS CLI**.
+#### Hint:
+```bash
+aws s3 help
+```
+
 3. List your buckets with the CLI and confirm the new bucket appears.
 4. **Enable versioning** on the bucket with the CLI.
 5. Sign in to the **AWS Management Console**, open **S3** and find your bucket. Check:
@@ -194,7 +199,7 @@ A bucket policy that lets **anyone on the internet** read (download) objects, bu
 
 ---
 
-## 🧪 LAB 2 (Basic): Host a Static Website on S3
+## LAB 2 (Basic): Host a Static Website on S3
 
 **Goal:** Make the bucket from Lab 1 publicly readable, upload an HTML page and open it in a browser.
 

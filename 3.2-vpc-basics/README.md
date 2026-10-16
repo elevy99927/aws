@@ -2,15 +2,15 @@
 
 ## Topics
 
-- What is a VPC – your private, isolated network in an AWS Region
-- CIDR blocks and IP addressing basics
-- The **default VPC** – what AWS creates for you (default subnets, Internet Gateway, route table, default security group)
-- Recreating a deleted default VPC
-- Subnets – each subnet lives in **one Availability Zone**
-- Public vs. private subnets
-- Internet Gateway (IGW) and route tables
-- Creating a basic VPC with the *VPC and more* wizard
-- Security Groups vs. Network ACLs (recap from 2.3)
+- [What is a VPC – your private, isolated network in an AWS Region](#1-what-is-a-vpc)
+- [CIDR blocks and IP addressing basics](#2-cidr-basics)
+- [The **default VPC** – what AWS creates for you (default subnets, Internet Gateway, route table, default security group)](#3-the-default-vpc)
+- [Recreating a deleted default VPC](#3-the-default-vpc)
+- [Subnets – each subnet lives in **one Availability Zone**](#4-subnets-route-tables-and-the-internet-gateway)
+- [Public vs. private subnets](#what-makes-a-subnet-public)
+- [Internet Gateway (IGW) and route tables](#4-subnets-route-tables-and-the-internet-gateway)
+- [Creating a basic VPC with the *VPC and more* wizard](#-lab-2-basic-create-a-vpc-with-the-vpc-and-more-wizard)
+- [Security Groups vs. Network ACLs (recap from 2.3)](#5-security-groups-vs-network-acls-recap)
 
 ---
 

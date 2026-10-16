@@ -2,15 +2,15 @@
 
 ## Topics
 
-- Root user – what it is and why to lock it away (MFA, no access keys)
-- IAM Users, Groups and Roles
-- IAM Policies – JSON structure (Effect, Action, Resource, Condition)
-- Principle of least privilege
-- Multi-Factor Authentication (MFA)
-- Password policies and access keys
-- IAM Credentials Report and IAM Access Advisor
-- AWS IAM Identity Center (successor to AWS SSO) and federation
-- AWS Secrets Manager and AWS Systems Manager Parameter Store
+- [Root user – what it is and why to lock it away (MFA, no access keys)](#2-the-root-user)
+- [IAM Users, Groups and Roles](#3-identities-users-groups-and-roles)
+- [IAM Policies – JSON structure (Effect, Action, Resource, Condition)](#4-policies)
+- [Principle of least privilege](#5-principle-of-least-privilege)
+- [Multi-Factor Authentication (MFA)](#6-credentials--mfa)
+- [Password policies and access keys](#6-credentials--mfa)
+- [IAM Credentials Report and IAM Access Advisor](#7-auditing--security-tools)
+- [AWS IAM Identity Center (successor to AWS SSO) and federation](#8-beyond-iam-users)
+- [AWS Secrets Manager and AWS Systems Manager Parameter Store](#8-beyond-iam-users)
 
 ---
 
