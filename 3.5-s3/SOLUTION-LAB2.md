@@ -1,91 +1,8 @@
-# 3.5 Amazon S3 – Lab Solutions
+# 3.5 Amazon S3 – Lab 2 Solution
 
-[⬅ Back to 3.5 Amazon S3](README.md)
+[⬅ Lab 1 Solution](SOLUTION-LAB1.md) | [⬅ Back to 3.5 Amazon S3](README.md)
 
-> Tested with AWS CLI v2 in `us-east-1`. Run the commands in one terminal session, because later steps use the shell variables from Lab 1.
-
----
-
-## LAB 1 (Basic): Create an S3 Bucket with the CLI
-
-### Steps 1–3: Create and list the bucket
-
-```bash
-export AWS_PAGER=""
-REGION=us-east-1
-BUCKET=s3-lab-<your-name>-$RANDOM      # must be globally unique, lowercase
-
-aws s3 mb s3://$BUCKET --region $REGION
-aws s3 ls | grep $BUCKET
-```
-
-Output:
-
-```
-make_bucket: s3-lab-student-1976520705
-2026-10-16 13:07:06 s3-lab-student-1976520705
-```
-
-### Step 4: Enable versioning
-
-```bash
-aws s3api put-bucket-versioning --bucket $BUCKET \
-  --versioning-configuration Status=Enabled
-aws s3api get-bucket-versioning --bucket $BUCKET
-```
-
-```json
-{
-    "Status": "Enabled"
-}
-```
-
-### Step 5: View the bucket in the Console
-
-Open **S3 → General purpose buckets** and type `s3-lab` in the search box:
-
-![Bucket list](images/01-bucket-list.jpg)
-
-Select the bucket:
-
-- **Objects** tab: the bucket is empty.
-- **Properties** tab: the Region is `us-east-1` and **Bucket Versioning** is **Enabled**.
-
-![Properties – versioning enabled](images/02-bucket-properties-versioning.jpg)
-
-- **Permissions** tab: **Block all public access** is **On**, and there is no bucket policy.
-
-![Permissions – Block Public Access on](images/03-bucket-permissions-bpa-on.jpg)
-
-You can check the same setting with the CLI:
-
-```bash
-aws s3api get-public-access-block --bucket $BUCKET
-```
-
-```json
-{
-    "PublicAccessBlockConfiguration": {
-        "BlockPublicAcls": true,
-        "IgnorePublicAcls": true,
-        "BlockPublicPolicy": true,
-        "RestrictPublicBuckets": true
-    }
-}
-```
-
-### Answers
-
-- **A name that's already taken:** bucket names are global across all AWS accounts, so the request fails:
-
-  ```
-  make_bucket failed: s3://test An error occurred (BucketAlreadyExists) when calling the
-  CreateBucket operation: The requested bucket name is not available. The bucket namespace
-  is shared by all users of the system. Please select a different name and try again.
-  ```
-
-- **Public or private?** **Private.** Block Public Access is on by default for every new bucket, and there is no bucket policy.
-- **The same file uploaded twice:** because versioning is enabled, the second upload creates a **new version**, and the first version is kept. Turn on **Show versions** on the Objects tab to see both.
+> Tested with AWS CLI v2 in `us-east-1`. Continue in the same terminal session as Lab 1, because the steps use the `$BUCKET` variable. In a new session, set it again: `BUCKET=<your-bucket-name>`.
 
 ---
 
@@ -250,4 +167,4 @@ terraform destroy   # Destroy complete! Resources: 6 destroyed.
 
 ---
 
-[⬅ Back to 3.5 Amazon S3](README.md)
+[⬅ Lab 1 Solution](SOLUTION-LAB1.md) | [⬅ Back to 3.5 Amazon S3](README.md)

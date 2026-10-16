@@ -177,6 +177,8 @@ A bucket policy that lets **anyone on the internet** read (download) objects, bu
 
 ### Tasks
 
+**Part A: Create the S3 bucket**
+
 1. Choose a **globally unique** bucket name, for example `s3-lab-<your-name>-<random-number>`.
 2. Create the bucket with the **AWS CLI**.
 #### Hint:
@@ -185,14 +187,22 @@ aws s3 help
 ```
 
 3. List your buckets with the CLI and confirm the new bucket appears.
-4. **Enable versioning** on the bucket with the CLI.
-5. Sign in to the **AWS Management Console**, open **S3** and find your bucket. Check:
+4. Sign in to the **AWS Management Console**, open **S3** and find your bucket. Check:
    - **Objects** tab: the bucket is empty.
    - **Properties** tab: the **Region** and **Bucket Versioning** status.
    - **Permissions** tab: the **Block public access** settings.
 
-### Questions
+**Part B: Versioning**
 
+5. **Enable versioning** on the bucket with the CLI.
+
+**Part C: Limit access to the bucket**
+
+6. Allow access only from your default VPC.
+7. Allow access only with TLS 1.2 or higher.
+8. Remove the bucket policy (and the VPC endpoint, if you created one) before Lab 2.
+
+### Questions
 - What happens if you try to create a bucket with a name that someone else already uses?
 - Is the new bucket public or private? How can you tell?
 - What happens to an object in this bucket if you upload a file with the same name twice?
@@ -252,7 +262,10 @@ terraform destroy    # clean up
 
 ## ✅ Solutions
 
-Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
+Step-by-step solutions:
+
+- **[Lab 1 Solution](SOLUTION-LAB1.md)**: create a bucket, versioning, and limiting access by VPC and TLS
+- **[Lab 2 Solution](SOLUTION-LAB2.md)**: static website, cleanup, and Terraform
 
 ---
 
