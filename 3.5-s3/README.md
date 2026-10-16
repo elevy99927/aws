@@ -9,8 +9,8 @@
 - [S3 permissions – Block Public Access, IAM policies, bucket policies, ACLs](#5-s3-permissions)
 - [Permissions example 1: giving a specific IAM user access to a bucket](#example-1-give-a-specific-iam-user-access-to-a-bucket)
 - [Permissions example 2: public read access for a website](#example-2-public-read-access-for-a-website)
-- [Hands-on: create a bucket with the CLI and view it in the Console](#-lab-1-basic-create-an-s3-bucket-with-the-cli)
-- [Hands-on: host a static website on S3](#-lab-2-basic-host-a-static-website-on-s3)
+- [Lab 1: create a bucket with the CLI and view it in the Console](#lab-1-basic-create-an-s3-bucket-with-the-cli)
+- [Lab 2: host a static website on S3](#lab-2-basic-host-a-static-website-on-s3)
 - [Terraform: the same resources as code](#-terraform)
 
 ---
