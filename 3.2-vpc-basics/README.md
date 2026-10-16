@@ -98,7 +98,7 @@ The command fails with `DefaultVpcAlreadyExists` if the Region already has one.
 | **Route table** | Rules that decide where traffic goes. Every subnet is associated with **exactly one** route table |
 | **`local` route** | Added automatically. Allows traffic between all subnets in the VPC. You can't delete it |
 | **Internet Gateway (IGW)** | A highly available gateway that connects the VPC to the internet. **One IGW per VPC** |
-| **NAT Gateway** | Lets **private** subnets reach the internet for **outbound** traffic only, for example to download updates. It's paid. Covered in [3.7 Advanced VPC](../3.7-advanced-vpc/README.md) |
+| **NAT Gateway** | Lets **private** subnets reach the internet for **outbound** traffic only, for example to download updates. It's paid. Covered in [3.8 Advanced VPC](../3.8-advanced-vpc/README.md) |
 
 ### What makes a subnet "public"?
 

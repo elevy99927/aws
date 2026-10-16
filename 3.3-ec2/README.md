@@ -16,7 +16,7 @@
 
 ---
 
-[⬅ Previous: 3.2 VPC Basics](../3.2-vpc-basics/README.md) | [🏠 Home](../README.md) | [Next: 3.4 Storage: EBS, EFS & S3 ➡](../3.4-storage/README.md)
+[⬅ Previous: 3.2 VPC Basics](../3.2-vpc-basics/README.md) | [🏠 Home](../README.md) | [Next: 3.4 Storage: EBS & EFS ➡](../3.4-storage/README.md)
 
 ---
 ## Contact

@@ -95,7 +95,7 @@ A Default VPC already exists for this account in this region.
 ### Answers
 
 - **Public vs. private route tables:** the public one has `0.0.0.0/0 → igw`. The private ones only have `10.0.0.0/16 → local`.
-- **Updates from a private subnet:** not as it is, because there is no route to the internet. Add a **NAT Gateway** in a public subnet, plus a route `0.0.0.0/0 → nat-…` in the private route tables. You can choose this in the wizard, but it is a paid resource. See [3.7 Advanced VPC](../3.7-advanced-vpc/README.md).
+- **Updates from a private subnet:** not as it is, because there is no route to the internet. Add a **NAT Gateway** in a public subnet, plus a route `0.0.0.0/0 → nat-…` in the private route tables. You can choose this in the wizard, but it is a paid resource. See [3.8 Advanced VPC](../3.8-advanced-vpc/README.md).
 
 ---
 

@@ -13,7 +13,7 @@
 
 ---
 
-[⬅ Previous: 3.8 Monitoring & Auditing](../3.8-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.2 Account & Cost Management ➡](../4.2-accounts-and-cost-management/README.md)
+[⬅ Previous: 3.9 Monitoring & Auditing](../3.9-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.2 Account & Cost Management ➡](../4.2-accounts-and-cost-management/README.md)
 
 ---
 ## Contact

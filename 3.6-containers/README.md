@@ -1,4 +1,4 @@
-# 3.5 Containers: ECR, ECS & Fargate
+# 3.6 Containers: ECR, ECS & Fargate
 
 ## Topics
 
@@ -13,7 +13,7 @@
 
 ---
 
-[⬅ Previous: 3.4 Storage: EBS, EFS & S3](../3.4-storage/README.md) | [🏠 Home](../README.md) | [Next: 3.6 Databases ➡](../3.6-databases/README.md)
+[⬅ Previous: 3.5 Amazon S3](../3.5-s3/README.md) | [🏠 Home](../README.md) | [Next: 3.7 Databases ➡](../3.7-databases/README.md)
 
 ---
 ## Contact

@@ -1,4 +1,4 @@
-# 3.7 Advanced VPC
+# 3.8 Advanced VPC
 
 ## Topics
 
@@ -14,7 +14,7 @@
 
 ---
 
-[⬅ Previous: 3.6 Databases](../3.6-databases/README.md) | [🏠 Home](../README.md) | [Next: 3.8 Monitoring & Auditing ➡](../3.8-monitoring/README.md)
+[⬅ Previous: 3.7 Databases](../3.7-databases/README.md) | [🏠 Home](../README.md) | [Next: 3.9 Monitoring & Auditing ➡](../3.9-monitoring/README.md)
 
 ---
 ## Contact

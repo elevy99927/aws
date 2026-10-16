@@ -1,4 +1,4 @@
-# 3.8 Monitoring & Auditing
+# 3.9 Monitoring & Auditing
 
 ## Topics
 
@@ -12,7 +12,7 @@
 
 ---
 
-[⬅ Previous: 3.7 Advanced VPC](../3.7-advanced-vpc/README.md) | [🏠 Home](../README.md) | [Next: 4.1 EC2 Pricing Models ➡](../4.1-ec2-pricing-models/README.md)
+[⬅ Previous: 3.8 Advanced VPC](../3.8-advanced-vpc/README.md) | [🏠 Home](../README.md) | [Next: 4.1 EC2 Pricing Models ➡](../4.1-ec2-pricing-models/README.md)
 
 ---
 ## Contact

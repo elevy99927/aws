@@ -34,11 +34,12 @@ The course covers cloud fundamentals that overlap with entry-level AWS certifica
 | 3 – Technology & Services | 3.1 | [AWS Global Infrastructure](3.1-global-infrastructure/README.md) |
 |  | 3.2 | [VPC Basics](3.2-vpc-basics/README.md) |
 |  | 3.3 | [Compute: Amazon EC2](3.3-ec2/README.md) |
-|  | 3.4 | [Storage: EBS, EFS & S3](3.4-storage/README.md) |
-|  | 3.5 | [Containers: ECR, ECS & Fargate](3.5-containers/README.md) |
-|  | 3.6 | [Databases](3.6-databases/README.md) |
-|  | 3.7 | [Advanced VPC](3.7-advanced-vpc/README.md) |
-|  | 3.8 | [Monitoring & Auditing](3.8-monitoring/README.md) |
+|  | 3.4 | [Storage: EBS & EFS](3.4-storage/README.md) |
+|  | 3.5 | [Amazon S3](3.5-s3/README.md) |
+|  | 3.6 | [Containers: ECR, ECS & Fargate](3.6-containers/README.md) |
+|  | 3.7 | [Databases](3.7-databases/README.md) |
+|  | 3.8 | [Advanced VPC](3.8-advanced-vpc/README.md) |
+|  | 3.9 | [Monitoring & Auditing](3.9-monitoring/README.md) |
 | 4 – Billing, Pricing & Support | 4.1 | [EC2 Pricing Models](4.1-ec2-pricing-models/README.md) |
 |  | 4.2 | [Account & Cost Management](4.2-accounts-and-cost-management/README.md) |
 |  | 4.3 | [Support Plans & Course Review](4.3-support-plans-and-review/README.md) |

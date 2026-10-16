@@ -1,4 +1,4 @@
-# 3.6 Databases
+# 3.7 Databases
 
 ## Topics
 
@@ -13,7 +13,7 @@
 
 ---
 
-[⬅ Previous: 3.5 Containers: ECR, ECS & Fargate](../3.5-containers/README.md) | [🏠 Home](../README.md) | [Next: 3.7 Advanced VPC ➡](../3.7-advanced-vpc/README.md)
+[⬅ Previous: 3.6 Containers: ECR, ECS & Fargate](../3.6-containers/README.md) | [🏠 Home](../README.md) | [Next: 3.8 Advanced VPC ➡](../3.8-advanced-vpc/README.md)
 
 ---
 ## Contact
