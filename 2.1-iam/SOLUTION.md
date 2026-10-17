@@ -32,6 +32,15 @@
 
 8. Choose **Next → Create user**.
 
+### Step 3 (continued): Attach the policy directly to the user
+
+In the *Create user* wizard, **Add user to group** and **Attach policies directly** are **mutually exclusive** options, so you add the direct policy **after** the user is created:
+
+1. Open **Users → `lab-user-1`**. On the **Permissions** tab, choose **Add permissions → Add permissions**.
+2. Select **Attach policies directly**, search for `AmazonS3ReadOnlyAccess`, select it and choose **Next → Add permissions**.
+
+![Attach policy directly](images/04b-attach-policy-directly.jpg)
+
 ### Step 4: Sign-in URL
 
 The final screen shows the **Console sign-in URL**, in the form `https://<account-id>.signin.aws.amazon.com/console`. Copy it, or choose **Download .csv file**.
@@ -50,13 +59,16 @@ You can confirm the same result without signing in by using the **IAM Policy Sim
 
 ### Step 7: Where do the permissions come from?
 
-On the user's **Permissions** tab, `AmazonS3ReadOnlyAccess` is listed as **Attached via group `lab-s3-readers`**. You'll also see `IAMUserChangePassword` attached **directly**. AWS adds it automatically when you select *Users must create a new password at next sign-in*.
+On the user's **Permissions** tab, `AmazonS3ReadOnlyAccess` appears **once**, with **Attached via: Directly, Group `lab-s3-readers`**. The user gets the same permission from **two sources**.
+
+If you selected *Users must create a new password at next sign-in*, you'll also see `IAMUserChangePassword` attached **directly**. AWS adds it automatically so the user can set a new password.
 
 ![User permissions](images/07-user-permissions.jpg)
 
 ### Answers
 
 - **Group vs. user:** Groups make permissions easy to manage at scale. When a new person joins, you add them to the group. When they move teams, you remove them. You never edit per-user policies.
+  The direct attachment in step 3 shows the problem. If you now remove `lab-user-1` from the group, it **still** has S3 read access through the direct policy. Permissions attached directly to users are easy to forget, and they "leak" past group changes. In real accounts, avoid them and use groups or roles.
 - **Policy type:** `AmazonS3ReadOnlyAccess` is an **AWS managed** policy.
 - **Why the bucket creation fails:** Because of the **implicit deny**. Nothing allows `s3:CreateBucket`, and anything that isn't explicitly allowed is denied.
 
@@ -67,6 +79,8 @@ Delete the user `lab-user-1` (**Users → select → Delete**), then delete the 
 ---
 
 ## LAB 2 (Advanced): Least Privilege with the AWS CLI
+
+> Prerequisite: [3.5 Amazon S3](../3.5-s3/README.md). This lab assumes you know how to create a bucket and how bucket and object ARNs differ.
 
 > Tested with AWS CLI v2. Run the commands in one terminal session, because later steps use the shell variables from Part A.
 > IAM changes are **eventually consistent**. If a command fails with `InvalidClientTokenId` or `AccessDenied` right after a change, wait 10–15 seconds and try again.
