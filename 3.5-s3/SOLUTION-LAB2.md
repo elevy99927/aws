@@ -8,6 +8,14 @@
 
 ## LAB 2 (Basic): Host a Static Website on S3
 
+**Jump to:**
+- [Part A: Allow public read access](#part-a-allow-public-read-access)
+- [Part B: Upload the web page](#part-b-upload-the-web-page)
+- [Part C: Browse to the website](#part-c-browse-to-the-website)
+- [Part D: Clean up](#part-d-clean-up)
+- [Answers](#answers)
+- [Terraform](#terraform)
+
 ### Part A: Allow public read access
 
 1. Open the bucket's **Permissions** tab. Under **Block public access (bucket settings)**, choose **Edit**.

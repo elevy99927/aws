@@ -8,6 +8,14 @@
 
 ## LAB 1 (Basic): Create an S3 Bucket with the CLI
 
+**Jump to:**
+- [Part A: Create the S3 bucket](#part-a-create-the-s3-bucket)
+- [Part B: Versioning](#part-b-versioning)
+- [Part C: Limit access to the bucket](#part-c-limit-access-to-the-bucket)
+  - [Step 6: Allow access only from your default VPC](#step-6-allow-access-only-from-your-default-vpc)
+  - [Step 7: Allow access only with TLS 1.2 or higher](#step-7-allow-access-only-with-tls-12-or-higher)
+- [Answers](#answers)
+
 ### Part A: Create the S3 bucket
 
 #### Steps 1–3: Create and list the bucket

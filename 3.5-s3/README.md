@@ -194,9 +194,9 @@ aws s3 help
 
 **Part B: Versioning**
 
-5. **Enable versioning** on the bucket with the CLI.
+5. **Enable versioning** on the bucket using the Console or with AWS CLI.
 
-**Part C: Limit access to the bucket**
+**Part C (HARD!): Limit access to the bucket**
 
 6. Allow access only from your default VPC.
 7. Allow access only with TLS 1.2 or higher.
@@ -219,7 +219,7 @@ aws s3 help
 
 **Part A: Allow public read access**
 
-1. In the Console, open your bucket and go to the **Permissions** tab.
+1. In the **Console**, open your bucket and go to the **Permissions** tab.
 2. Under **Block public access (bucket settings)**, choose **Edit**, clear **Block all public access**, save and confirm.
 3. Under **Bucket policy**, choose **Edit** and add the **public read** policy from [Example 2](#example-2-public-read-access-for-a-website). Replace the bucket name with your own.
 4. Confirm that the **Permissions** tab now shows **Block all public access: Off** and the new bucket policy.
