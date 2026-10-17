@@ -13,7 +13,7 @@
 
 ---
 
-[⬅ Previous: 3.9 Monitoring & Auditing](../3.9-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.2 Account & Cost Management ➡](../4.2-accounts-and-cost-management/README.md)
+[⬅ Previous: 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53](../3.10-advanced-ec2/README.md) | [🏠 Home](../README.md) | [Next: 4.2 Account & Cost Management ➡](../4.2-accounts-and-cost-management/README.md)
 
 ---
 ## Contact

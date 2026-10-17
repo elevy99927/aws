@@ -12,7 +12,7 @@
 
 ---
 
-[⬅ Previous: 3.8 Advanced VPC](../3.8-advanced-vpc/README.md) | [🏠 Home](../README.md) | [Next: 4.1 EC2 Pricing Models ➡](../4.1-ec2-pricing-models/README.md)
+[⬅ Previous: 3.8 Advanced VPC](../3.8-advanced-vpc/README.md) | [🏠 Home](../README.md) | [Next: 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53 ➡](../3.10-advanced-ec2/README.md)
 
 ---
 ## Contact
