@@ -73,7 +73,7 @@ If you see your account and user, you're ready.
 
 ---
 
-[⬅ 🏠 Home](../README.md) | [Next: 1.1 What is Cloud Computing? ➡](../1.1-what-is-cloud-computing/README.md)
+[⬅ 🏠 Home](../README.md) | [Next: 1.01 What is Cloud Computing? ➡](../1.01-what-is-cloud-computing/README.md)
 
 ---
 ## Contact

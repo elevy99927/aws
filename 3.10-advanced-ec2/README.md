@@ -1,6 +1,6 @@
 # 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53
 
-> **Prerequisite:** you already know how to launch an EC2 instance with **user data** that installs Docker and runs a container ([3.3 EC2](../3.3-ec2/README.md)).
+> **Prerequisite:** you already know how to launch an EC2 instance with **user data** that installs Docker and runs a container ([3.03 EC2](../3.03-ec2/README.md)).
 
 ## Topics
 
@@ -189,7 +189,7 @@ All labs run in the **default VPC** in **`us-east-1`**.
 
 Everything in these labs running together costs about **$48/month**, which is **~$0.065/hour**. Each lab takes **up to 2 hours**, so it costs about **$0.15**. **Always clean up**: a forgotten ALB and ASG keep billing around the clock.
 
-> 💡 Set up an **AWS Budget** alert (for example $5/month) before you start. See [4.2 Account & Cost Management](../4.2-accounts-and-cost-management/README.md).
+> 💡 Set up an **AWS Budget** alert (for example $5/month) before you start. See [4.02 Account & Cost Management](../4.02-accounts-and-cost-management/README.md).
 
 ---
 
@@ -387,7 +387,7 @@ terraform destroy    # ~6 minutes, removes all 13 resources
 
 ---
 
-[⬅ Previous: 3.9 Monitoring & Auditing](../3.9-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.1 EC2 Pricing Models ➡](../4.1-ec2-pricing-models/README.md)
+[⬅ Previous: 3.09 Monitoring & Auditing](../3.09-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.01 EC2 Pricing Models ➡](../4.01-ec2-pricing-models/README.md)
 
 ---
 ## Contact
