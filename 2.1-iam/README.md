@@ -258,7 +258,10 @@ Grant **only** the permissions needed to perform a task, and nothing more.
 
 ## 🧪 LAB 2 (Advanced): Least Privilege with the AWS CLI
 
-> 📌 **Before you start:** this lab uses **Amazon S3** (buckets, objects, bucket vs. object ARNs). If you haven't worked with S3 yet, first complete **[3.5 Amazon S3](../3.5-s3/README.md)**, at least the background, the permissions section and Lab 1. Then come back here and do this lab.
+> ### Note!
+> **Before you start:** this lab uses **Amazon S3** (buckets, objects, bucket vs. object ARNs). If you haven't worked with S3 yet, first complete **[3.5 Amazon S3](../3.5-s3/README.md)**, at least the background, the permissions section and Lab 1. Then come back here and do this lab.
+
+---
 
 **Goal:** Use the CLI to build a least-privilege user with a customer managed policy, see an explicit deny win over an allow, and use a role to get temporary credentials.
 
