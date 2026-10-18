@@ -387,7 +387,7 @@ terraform destroy    # ~6 minutes, removes all 13 resources
 
 ---
 
-[⬅ Previous: 3.09 Monitoring & Auditing](../3.09-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 4.01 EC2 Pricing Models ➡](../4.01-ec2-pricing-models/README.md)
+[⬅ Previous: 3.09 Monitoring & Auditing](../3.09-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 3.11 Serverless: AWS Lambda ➡](../3.11-lambda/README.md)
 
 ---
 ## Contact

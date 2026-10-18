@@ -13,7 +13,7 @@
 
 ---
 
-[⬅ Previous: 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53](../3.10-advanced-ec2/README.md) | [🏠 Home](../README.md) | [Next: 4.02 Account & Cost Management ➡](../4.02-accounts-and-cost-management/README.md)
+[⬅ Previous: 3.11 Serverless: AWS Lambda](../3.11-lambda/README.md) | [🏠 Home](../README.md) | [Next: 4.02 Account & Cost Management ➡](../4.02-accounts-and-cost-management/README.md)
 
 ---
 ## Contact

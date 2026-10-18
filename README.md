@@ -41,6 +41,7 @@ The course covers cloud fundamentals that overlap with entry-level AWS certifica
 |  | 3.08 | [Advanced VPC](3.08-advanced-vpc/README.md) |
 |  | 3.09 | [Monitoring & Auditing](3.09-monitoring/README.md) |
 |  | 3.10 | [Advanced EC2: Load Balancing, Auto Scaling & Route 53](3.10-advanced-ec2/README.md) |
+|  | 3.11 | [Serverless: AWS Lambda](3.11-lambda/README.md) |
 | 4 – Billing, Pricing & Support | 4.01 | [EC2 Pricing Models](4.01-ec2-pricing-models/README.md) |
 |  | 4.02 | [Account & Cost Management](4.02-accounts-and-cost-management/README.md) |
 |  | 4.03 | [Support Plans & Course Review](4.03-support-plans-and-review/README.md) |
