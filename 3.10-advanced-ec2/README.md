@@ -15,7 +15,7 @@
 - [LAB 1: ALB in front of two instances](#-lab-1-advanced-alb-in-front-of-two-instances)
 - [LAB 2: Auto Scaling behind the ALB](#-lab-2-advanced-auto-scaling-behind-the-alb)
 - [LAB 3: Route 53 private hosted zone](#-lab-3-advanced-route-53-private-hosted-zone)
-- [Terraform](#-terraform)
+- [Terraform](#terraform-code)
 
 ---
 
@@ -364,7 +364,19 @@ docker run -d --restart always --name echo -p 80:5678 \
 
 ---
 
-## 🏗️ Terraform
+## Solutions
+
+- **[Lab 1 Solution](SOLUTION-LAB1.md)**: security groups, instances, target group, ALB, testing and failover
+- **[Lab 2 Solution](SOLUTION-LAB2.md)**: IAM role, Launch Template, ASG, manual and automatic scaling
+- **[Lab 3 Solution](SOLUTION-LAB3.md)**: private hosted zone, Alias record, Session Manager test, full cleanup
+
+---
+
+[⬅ Previous: 3.09 Monitoring & Auditing](../3.09-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 3.11 Serverless: AWS Lambda ➡](../3.11-lambda/README.md)
+
+---
+
+## Terraform Code
 
 > Terraform is covered later in the course. The code is here **for reference**, so you can compare it with what you built by hand.
 
@@ -379,17 +391,6 @@ terraform destroy    # ~6 minutes, removes all 13 resources
 
 ---
 
-## ✅ Solutions
-
-- **[Lab 1 Solution](SOLUTION-LAB1.md)**: security groups, instances, target group, ALB, testing and failover
-- **[Lab 2 Solution](SOLUTION-LAB2.md)**: IAM role, Launch Template, ASG, manual and automatic scaling
-- **[Lab 3 Solution](SOLUTION-LAB3.md)**: private hosted zone, Alias record, Session Manager test, full cleanup
-
----
-
-[⬅ Previous: 3.09 Monitoring & Auditing](../3.09-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 3.11 Serverless: AWS Lambda ➡](../3.11-lambda/README.md)
-
----
 ## Contact
 
 For questions or feedback, feel free to reach out:

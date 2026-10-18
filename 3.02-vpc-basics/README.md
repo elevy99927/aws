@@ -213,7 +213,17 @@ You'll build Security Groups hands-on in [3.03 EC2](../3.03-ec2/README.md).
 
 ---
 
-## 🏗️ Terraform
+## Solutions
+
+Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
+
+---
+
+[⬅ Previous: 3.01 AWS Global Infrastructure](../3.01-global-infrastructure/README.md) | [🏠 Home](../README.md) | [Next: 3.03 Compute: Amazon EC2 ➡](../3.03-ec2/README.md)
+
+---
+
+## Terraform Code
 
 The [`terraform/`](terraform/) folder builds the same VPC as Lab 3 as code. The Terraform part of the course will cover it in depth. To try it now:
 
@@ -227,15 +237,6 @@ terraform destroy    # clean up
 
 ---
 
-## ✅ Solutions
-
-Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
-
----
-
-[⬅ Previous: 3.01 AWS Global Infrastructure](../3.01-global-infrastructure/README.md) | [🏠 Home](../README.md) | [Next: 3.03 Compute: Amazon EC2 ➡](../3.03-ec2/README.md)
-
----
 ## Contact
 
 For questions or feedback, feel free to reach out:

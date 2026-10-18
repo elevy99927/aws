@@ -313,7 +313,7 @@ Grant **only** the permissions needed to perform a task, and nothing more.
 
 ---
 
-## ✅ Solutions
+## Solutions
 
 Step-by-step solutions for both labs: **[SOLUTION.md](SOLUTION.md)**
 

@@ -11,7 +11,7 @@
 - [Permissions example 2: public read access for a website](#example-2-public-read-access-for-a-website)
 - [Lab 1: create a bucket with the CLI and view it in the Console](#lab-1-basic-create-an-s3-bucket-with-the-cli)
 - [Lab 2: host a static website on S3](#lab-2-basic-host-a-static-website-on-s3)
-- [Terraform: the same resources as code](#-terraform)
+- [Terraform: the same resources as code](#terraform-code)
 
 ---
 
@@ -247,7 +247,20 @@ aws s3 help
 
 ---
 
-## 🏗️ Terraform
+## Solutions
+
+Step-by-step solutions:
+
+- **[Lab 1 Solution](SOLUTION-LAB1.md)**: create a bucket, versioning, and limiting access by VPC and TLS
+- **[Lab 2 Solution](SOLUTION-LAB2.md)**: static website, cleanup, and Terraform
+
+---
+
+[⬅ Previous: 3.04 Storage: EBS & EFS](../3.04-storage/README.md) | [🏠 Home](../README.md) | [Next: 3.06 Containers: ECR, ECS & Fargate ➡](../3.06-containers/README.md)
+
+---
+
+## Terraform Code
 
 The [`terraform/`](terraform/) folder builds the full result of both labs as code: the bucket, versioning, public access settings, the bucket policy, static website hosting and the `index.html` upload.
 
@@ -260,18 +273,6 @@ terraform destroy    # clean up
 
 ---
 
-## ✅ Solutions
-
-Step-by-step solutions:
-
-- **[Lab 1 Solution](SOLUTION-LAB1.md)**: create a bucket, versioning, and limiting access by VPC and TLS
-- **[Lab 2 Solution](SOLUTION-LAB2.md)**: static website, cleanup, and Terraform
-
----
-
-[⬅ Previous: 3.04 Storage: EBS & EFS](../3.04-storage/README.md) | [🏠 Home](../README.md) | [Next: 3.06 Containers: ECR, ECS & Fargate ➡](../3.06-containers/README.md)
-
----
 ## Contact
 
 For questions or feedback, feel free to reach out:

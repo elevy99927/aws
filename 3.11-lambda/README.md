@@ -12,7 +12,7 @@
 - [Limits worth knowing](#7-limits-worth-knowing)
 - [LAB 1: Your first Lambda function](#-lab-1-basic-your-first-lambda-function)
 - [LAB 2: S3 upload → Lambda "scanner" → clean bucket](LAB2.md)
-- [Terraform](#-terraform)
+- [Terraform](#terraform-code)
 
 ---
 
@@ -256,7 +256,19 @@ Lab 2 has its own page: **[LAB2.md](LAB2.md)**
 
 ---
 
-## 🏗️ Terraform
+
+## Solutions
+
+- **[Lab 1 Solution](SOLUTION-LAB1.md)**: Console steps, screenshots and CLI commands for the first function
+- **[Lab 2 Solution](SOLUTION-LAB2.md)**: the S3 → Lambda → S3 pipeline, Console and CLI
+
+---
+
+[⬅ Previous: 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53](../3.10-advanced-ec2/README.md) | [🏠 Home](../README.md) | [Next: 4.01 EC2 Pricing Models ➡](../4.01-ec2-pricing-models/README.md)
+
+---
+
+## Terraform Code
 
 > Terraform is covered later in the course. The code is here **for reference**.
 
@@ -271,16 +283,6 @@ terraform destroy
 
 ---
 
-## ✅ Solutions
-
-- **[Lab 1 Solution](SOLUTION-LAB1.md)**: Console steps, screenshots and CLI commands for the first function
-- **[Lab 2 Solution](SOLUTION-LAB2.md)**: the S3 → Lambda → S3 pipeline, Console and CLI
-
----
-
-[⬅ Previous: 3.10 Advanced EC2: Load Balancing, Auto Scaling & Route 53](../3.10-advanced-ec2/README.md) | [🏠 Home](../README.md) | [Next: 4.01 EC2 Pricing Models ➡](../4.01-ec2-pricing-models/README.md)
-
----
 ## Contact
 
 For questions or feedback, feel free to reach out:
