@@ -121,6 +121,15 @@ REPORT ... Duration:  79.95 ms  Billed Duration:  80 ms ...                     
 - Put expensive setup, such as creating an SDK client, **outside the handler**, so it runs once per environment and not on every invocation.
 - Changing the code or configuration (for example an environment variable) creates **new** environments, which means a cold start again.
 
+### Reserved Concurrency vs. Provisioned Concurrency
+
+It is common to confuse these two controls, but they serve entirely different primary purposes:
+
+| Feature | Primary Purpose | Cost | Cold Start Impact |
+|---------|-----------------|------|-------------------|
+| **Reserved Concurrency** | Limits the maximum execution environments a function can consume (protects downstream resources or guarantees an account quota pool). | Free | None (still subjects environments to cold starts). |
+| **Provisioned Concurrency** | Pre-allocates and warms environments to ensure instant response times. | Paid (incurs a continuous hourly charge) | Eliminates cold starts up to the provisioned limit. |
+
 ---
 
 ## 5. Pricing
@@ -226,7 +235,7 @@ def lambda_handler(event, context):
 
 **Part F (optional): Invoke from the CLI**
 
-14. Invoke the function from your terminal with the payload `{"name": "CLI"}` and print the response.
+14. Invoke the function from your terminal with the payload `{"name": "CLI"}` and print the response. **Google it...**
 
 **Part G: Clean up**
 

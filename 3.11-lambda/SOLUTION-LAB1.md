@@ -92,6 +92,8 @@ aws lambda invoke --function-name lab-hello \
 cat out.json
 ```
 
+The same commands are saved as a script: [`artifacts/cli/run.sh`](artifacts/cli/run.sh). Run it with `bash artifacts/cli/run.sh`. The expected response is in [`artifacts/cli/out.json`](artifacts/cli/out.json).
+
 ```
 START RequestId: 982e0a2c-... Version: $LATEST
 request_id=982e0a2c-... message=Shalom, CLI!
