@@ -61,7 +61,7 @@ In [jb-lab-1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per insta
 
 ## 🧪 jb-lab-2 (Basic): Two Services Behind One ALB
 
-> 💰 **Cost:** the ALB plus 2 × t3.micro from jb-lab-1, about **$0.06/hour**. Up to 2 hours ≈ **$0.12**. If left running ≈ **$45/month**.
+> 💰 **Cost:** the ALB plus 2 × t3.small from jb-lab-1, about **$0.08/hour**. Up to 2 hours ≈ **$0.16**. If left running ≈ **$58/month**.
 
 **Goal:** Run two services, `admin` and `store`, on the jb-lab-1 cluster with **dynamic host ports**. Put **one ALB** in front of them that routes by **path**, and see several tasks share one instance.
 
@@ -81,7 +81,7 @@ In [jb-lab-1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per insta
 
 **Part B: Task definitions with dynamic ports**
 
-4. Create two task definitions, **`jb-admin`** and **`jb-store`**. Use EC2, network mode **bridge**, 0.125 vCPU and 0.125 GB:
+4. Create two task definitions, **`jb-admin`** and **`jb-store`**. Use EC2, network mode **bridge**, 0.25 vCPU and 0.5 GB:
    - Image `traefik/whoami`, container port **80**, and **no host port** (leave it empty).
    - Environment variable `WHOAMI_NAME` = `admin` or `store`.
 

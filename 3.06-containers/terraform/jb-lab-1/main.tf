@@ -86,7 +86,7 @@ resource "aws_ecs_cluster" "this" {
 resource "aws_launch_template" "ecs" {
   name          = "jb-ecs-lt"
   image_id      = data.aws_ssm_parameter.ecs_ami.value
-  instance_type = "t3.micro"
+  instance_type = "t3.small"
 
   iam_instance_profile {
     name = aws_iam_instance_profile.instance.name
@@ -124,8 +124,8 @@ resource "aws_ecs_task_definition" "whoami" {
   family                   = "jb-whoami"
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
-  cpu                      = "128"
-  memory                   = "128"
+  cpu                      = "256"
+  memory                   = "512"
 
   container_definitions = jsonencode([{
     name         = "whoami"

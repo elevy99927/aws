@@ -48,8 +48,8 @@ These are the fields from the slides, as they appear in the task definition JSON
   "containerDefinitions": [{
     "name": "whoami",
     "image": "traefik/whoami",
-    "cpu": 128,
-    "memory": 128,
+    "cpu": 256,
+    "memory": 512,
     "portMappings": [{ "containerPort": 80, "hostPort": 8080, "protocol": "tcp" }]
   }]
 }
@@ -88,7 +88,7 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 ## 🧪 jb-lab-1 (Basic): Cluster, Task Definition and Service on EC2
 
-> 💰 **Cost:** 2 × t3.micro, about **$0.03/hour** including public IPs. Up to 2 hours ≈ **$0.06**. If left running ≈ **$22/month**. Clean up at the end, or continue to jb-lab-2.
+> 💰 **Cost:** 2 × t3.small, about **$0.05/hour** including public IPs. Up to 2 hours ≈ **$0.10**. If left running ≈ **$38/month**. Clean up at the end, or continue to jb-lab-2.
 
 **Goal:** Create an ECS cluster with EC2 instances, describe a container in a task definition, run it as a service with 2 tasks, and see ECS keep the desired count. Then find the limit of static port mapping.
 
@@ -105,21 +105,25 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 **Part B: Cluster with EC2 instances**
 
 2. In **ECS → Clusters → Create cluster**, name it **`jb-ecs-ec2`** and choose **Fargate and Self-managed instances**:
-   - Create a new Auto Scaling Group, OS **Amazon Linux 2023**, instance type **t3.micro**.
+   - Create a new Auto Scaling Group, OS **Amazon Linux 2023**, instance type **t3.small**.
    - Desired capacity: **min 2, max 2**. No SSH key pair.
    - Network: the **default VPC**, its public subnets, security group **`jb-ecs-instances-sg`**, auto-assign public IP **on**.
+   - Click `Create`
 3. Wait until **Infrastructure** shows **2 container instances**. Open one. What are its *Agent version* and *Docker version*?
 
 **Part C: Task definition**
 
 4. Create a task definition **`jb-whoami`**:
-   - Launch type **Amazon EC2 instances**, network mode **bridge**.
-   - Task size: CPU **0.125 vCPU**, memory **0.125 GB**.
+   - Launch type **Amazon EC2 instances** only (clear **AWS Fargate**, which doesn't support bridge mode).
+   - Network mode **bridge**.
+   - Task size: CPU **0.25 vCPU**, memory **0.5 GB** (the smallest size in the Console's list).
    - Container `whoami`, image **`traefik/whoami`**, port mapping **host port 8080 → container port 80**.
 
 **Part D: Service**
 
-5. In the cluster, create a service **`whoami-svc`** from `jb-whoami`, launch type **EC2**, **desired tasks: 2**.
+5. In the cluster, 
+   - Create a service **`whoami-svc`** from `jb-whoami`, launch type **EC2**, **desired tasks: 2**.
+   - Click `Create`
 6. Wait until **2 tasks** are *Running*. Which instance does each task run on?
 
 **Part E: Test**

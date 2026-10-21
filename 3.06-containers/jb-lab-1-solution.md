@@ -2,7 +2,7 @@
 
 [⬅ jb-lab-1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
 
-> Tested in `us-east-1` with the ECS-optimized Amazon Linux 2023 AMI (ECS agent 1.108.0, Docker 25.0.16) and `traefik/whoami`.
+> Tested in `us-east-1` on 2 × t3.small with the ECS-optimized Amazon Linux 2023 AMI (ECS agent 1.108.0, Docker 25.0.16) and `traefik/whoami`.
 
 **Jump to:** [Solution 1: Console](#solution-1-console-ui) · [Solution 2: AWS CLI](#solution-2-aws-cli) · [Answers](#answers) · [Solution 3: Terraform](#solution-3-terraform)
 
@@ -20,7 +20,7 @@
 
 ![Create cluster – Fargate and Self-managed instances](images/lab1-01-create-cluster-self-managed.jpg)
 
-- Auto Scaling group: **Create a new Auto Scaling group**, On-demand, **Amazon Linux 2023**, instance type **t3.micro**.
+- Auto Scaling group: **Create a new Auto Scaling group**, On-demand, **Amazon Linux 2023**, instance type **t3.small**.
 - EC2 instance role: **Create default role**. The Console creates `ecsInstanceRole`.
 - Desired capacity: **Minimum 2, Maximum 2**. SSH key pair: none.
 - Network settings: the default VPC, the subnets in **us-east-1a** and **us-east-1b**, security group `jb-ecs-instances-sg`, auto-assign public IP **Turn on**.
@@ -37,15 +37,20 @@ Choose **Create**. The Console uses CloudFormation to create the Auto Scaling Gr
 
 **ECS → Task definitions → Create new task definition**:
 
-- Family: `jb-whoami`. Launch type: **Amazon EC2 instances**. Network mode: **bridge**.
-- Task size: CPU **.125 vCPU**, memory **.125 GB**.
+- Family: `jb-whoami`. Launch type: **Amazon EC2 instances** only. Clear **AWS Fargate**, which is selected by default: Fargate supports only the `awsvpc` network mode.
+- Network mode: **bridge**.
+- Task size: CPU **.25 vCPU**, memory **.5 GB**.
 - Task execution role: **None**. The image is public and we don't send logs.
-- Container: name `whoami`, image `traefik/whoami`, port mapping **container port 80**, **host port 8080**.
+- Container: name `whoami`, image `traefik/whoami`, port mapping **host port 8080**, **container port 80**.
 - Log collection: clear **Use log collection** (it needs CloudWatch Logs and an execution role).
 
-The **JSON** tab shows exactly the fields from the background section:
+![Create task definition – EC2 only, bridge, .25 vCPU, .5 GB, no execution role](images/lab1-04-task-size.jpg)
 
-![Task definition JSON](images/lab1-04-task-definition-json.jpg)
+After **Create**, the task definition shows **Task CPU 256 units (0.25 vCPU)** and **Task memory 512 MiB**.
+
+> While **AWS Fargate** is still selected, CPU and memory are lists that start at **.25 vCPU** and **.5 GB**, the smallest Fargate size. We use that size here, so the same values work whether or not Fargate is selected.
+
+**How many tasks fit on an instance?** ECS places a task only on an instance with enough **free** CPU and memory. A t3.small gives ECS **2,048 CPU units** and **1,913 MiB** (the rest of its 2 GiB is for the OS and the ECS agent), so up to **3** of these tasks fit by memory (3 × 512 MiB). On a t3.micro (916 MiB) only one would fit, and jb-lab-2 needs two per instance.
 
 ### Part D: Service
 
@@ -61,14 +66,14 @@ Choose **Create**. After about a minute, **2 tasks** are *Running*, **one on eac
 Open `http://<public-ip-of-instance>:8080` for each instance (find the public IPs in **EC2 → Instances**):
 
 ```
-Hostname: eab05d01e7a9
+Hostname: 1aa3c18c261d
 IP: 127.0.0.1
 IP: 172.17.0.2
 ...
 ```
 
 ```
-Hostname: 17dd4924c2a3
+Hostname: cc4006a6de3a
 IP: 127.0.0.1
 IP: 172.17.0.2
 ...
@@ -87,7 +92,7 @@ IP: 172.17.0.2
 
 > *service whoami-svc was unable to place a task because no container instance met all of its requirements. The closest matching container-instance … is already using a port required by your task.*
 
-Both instances already use host port **8080**, so there's nowhere to put a third task. **10.** Set desired tasks back to **2**.
+Both instances already use host port **8080**, so there's nowhere to put a third task. CPU and memory aren't the problem: each instance still had **1,792 CPU units** and **1,401 MiB** free. **10.** Set desired tasks back to **2**.
 
 ### Part G: Clean up or continue
 
@@ -132,7 +137,7 @@ AMI_ID=$(aws ssm get-parameter --name /aws/service/ecs/optimized-ami/amazon-linu
   --query Parameter.Value --output text)
 UD=$(printf '#!/bin/bash\necho ECS_CLUSTER=jb-ecs-ec2 >> /etc/ecs/ecs.config\n' | base64 | tr -d '\n')
 cat > lt.json <<JSON
-{ "ImageId": "$AMI_ID", "InstanceType": "t3.micro",
+{ "ImageId": "$AMI_ID", "InstanceType": "t3.small",
   "IamInstanceProfile": { "Name": "ecsInstanceRole" },
   "NetworkInterfaces": [{ "DeviceIndex": 0, "AssociatePublicIpAddress": true, "Groups": ["$INST_SG"] }],
   "UserData": "$UD",
@@ -150,13 +155,15 @@ aws autoscaling create-auto-scaling-group --auto-scaling-group-name jb-ecs-asg \
 ```bash
 aws ecs describe-container-instances --cluster jb-ecs-ec2 \
   --container-instances $(aws ecs list-container-instances --cluster jb-ecs-ec2 --query containerInstanceArns --output text) \
-  --query 'containerInstances[].[ec2InstanceId,status,versionInfo.agentVersion,versionInfo.dockerVersion]' --output table
+  --query 'containerInstances[].[ec2InstanceId,status,versionInfo.agentVersion,versionInfo.dockerVersion,registeredResources[?name==`CPU`].integerValue|[0],registeredResources[?name==`MEMORY`].integerValue|[0]]' --output table
 ```
 
 ```
-|  i-0cf0be9e39c519bc6 |  ACTIVE |  1.108.0 |  DockerVersion: 25.0.16  |
-|  i-00b3a6a0b38f19c41 |  ACTIVE |  1.108.0 |  DockerVersion: 25.0.16  |
+|  i-068fd3af5bed2744a |  ACTIVE |  1.108.0 |  DockerVersion: 25.0.16  |  2048 |  1913 |
+|  i-0d54c013a83b02d79 |  ACTIVE |  1.108.0 |  DockerVersion: 25.0.16  |  2048 |  1913 |
 ```
+
+The last two columns are the CPU units and the memory (MiB) that each instance gives ECS for tasks.
 
 **Parts C–D: task definition and service:**
 
@@ -166,8 +173,8 @@ cat > td-whoami.json <<'JSON'
   "family": "jb-whoami",
   "networkMode": "bridge",
   "requiresCompatibilities": ["EC2"],
-  "cpu": "128",
-  "memory": "128",
+  "cpu": "256",
+  "memory": "512",
   "containerDefinitions": [{
     "name": "whoami",
     "image": "traefik/whoami",
@@ -230,7 +237,7 @@ aws iam delete-role --role-name ecsInstanceRole
 
 - **Task definition vs. task vs. service:** the **task definition** is the blueprint (JSON, versioned). A **task** is a running copy of it. A **service** keeps a desired number of tasks running, replaces failed ones, and can connect them to a load balancer.
 - **Who registered the instances:** the **ECS agent** on each instance. It reads the cluster name from `/etc/ecs/ecs.config` (written by the user data) and calls ECS with the permissions of the **instance role** (`AmazonEC2ContainerServiceforEC2Role`).
-- **Why the third task couldn't start:** both instances already use **host port 8080**, and a port can be bound only once per instance. You could add instances, or better, use **dynamic host ports** behind a load balancer, which is jb-lab-2.
+- **Why the third task couldn't start:** both instances already use **host port 8080**, and a port can be bound only once per instance. There was enough CPU and memory left for another task; only the port was missing. You could add instances, or better, use **dynamic host ports** behind a load balancer, which is jb-lab-2.
 - **S3 access for the container:** the **task role** (`taskRoleArn`). Not the instance role, which every task on the instance would share, and not the execution role, which ECS uses only to pull images and send logs.
 
 ---
@@ -251,11 +258,11 @@ for IP in $(eval "$(terraform output -raw find_instance_ips)"); do curl -s http:
 terraform destroy -var my_ip_cidr="0.0.0.0/32"                                   # about 3 minutes
 ```
 
-The tested run: `apply` took 55 s, and both tasks answered about 40 s later:
+The tested run (2 × t3.small): `apply` took 38 s, both tasks answered about 45 s later, and `destroy` took 186 s:
 
 ```
-Hostname: 91028b07a14d
-Hostname: c3d8dacdf188
+Hostname: 6f7bb6d7d042
+Hostname: 19314b929713
 ```
 
 > The Terraform code names the instance role `jb-ecs-instance-role`, so it doesn't collide with the `ecsInstanceRole` that the Console creates.

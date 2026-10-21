@@ -2,7 +2,7 @@
 
 [⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-3 ➡](jb-lab-3.md)
 
-> Tested in `us-east-1` on the `jb-ecs-ec2` cluster from jb-lab-1 (2 × t3.micro).
+> Tested in `us-east-1` on the `jb-ecs-ec2` cluster from jb-lab-1 (2 × t3.small).
 
 **Jump to:** [Solution 1: Console](#solution-1-console-ui) · [Solution 2: AWS CLI](#solution-2-aws-cli) · [Answers](#answers) · [Solution 3: Terraform](#solution-3-terraform)
 
@@ -20,7 +20,7 @@
 
 Create `jb-admin`, then `jb-store` (or create one and use **Create new revision → JSON**):
 
-- Launch type **EC2**, network mode **bridge**, 0.125 vCPU and 0.125 GB.
+- Launch type **EC2**, network mode **bridge**, 0.25 vCPU and 0.5 GB.
 - Container `whoami`, image `traefik/whoami`, **container port 80**, and **leave the host port empty**, which means dynamic.
 - Environment variable `WHOAMI_NAME` = `admin` (or `store`).
 
@@ -56,10 +56,9 @@ for i in 1 2 3 4 5 6; do curl -s http://<alb-dns>/admin | grep -E "^(Name|Hostna
 ```
 
 ```
-Name: admin Hostname: 9f1714a93597
-Name: admin Hostname: 727e07d6a98b
-Name: admin Hostname: 727e07d6a98b
-Name: admin Hostname: 9f1714a93597
+Name: admin Hostname: 5daa82303bab
+Name: admin Hostname: 5daa82303bab
+Name: admin Hostname: 58b521ec0dcf
 ...
 ```
 
@@ -69,10 +68,10 @@ A full response shows that the ALB adds the `X-Forwarded-*` headers and that eac
 
 ```
 Name: admin
-Hostname: 727e07d6a98b
-IP: 172.17.0.3
+Hostname: 277a7deb8d47
+IP: 172.17.0.4
 GET /admin HTTP/1.1
-Host: jb-ecs-alb-630146700.us-east-1.elb.amazonaws.com
+Host: jb-ecs-alb-2072728589.us-east-1.elb.amazonaws.com
 X-Forwarded-For: 203.0.113.10
 X-Forwarded-Port: 80
 X-Forwarded-Proto: http
@@ -83,11 +82,13 @@ X-Forwarded-Proto: http
 ![jb-admin-tg – dynamic host ports](images/lab2-01-dynamic-ports-targets.jpg)
 
 ```
-i-00b3a6a0b38f19c41   32769   healthy
-i-00b3a6a0b38f19c41   32770   healthy
-i-0cf0be9e39c519bc6   32768   healthy
-i-0cf0be9e39c519bc6   32770   healthy
+i-068fd3af5bed2744a   32768   healthy
+i-068fd3af5bed2744a   32770   healthy
+i-0d54c013a83b02d79   32769   healthy
+i-0d54c013a83b02d79   32770   healthy
 ```
+
+Each instance now runs **3 tasks** (2 admin + 1 store). With 0.5 GB per task, they use 1,536 of the 1,913 MiB that a t3.small gives ECS, so **377 MiB** are still free on each instance.
 
 ### Part F: Clean up or continue
 
@@ -116,8 +117,8 @@ cat > td-$SVC.json <<JSON
   "family": "jb-$SVC",
   "networkMode": "bridge",
   "requiresCompatibilities": ["EC2"],
-  "cpu": "128",
-  "memory": "128",
+  "cpu": "256",
+  "memory": "512",
   "containerDefinitions": [{
     "name": "whoami",
     "image": "traefik/whoami",
@@ -202,15 +203,15 @@ curl -s -w " [%{http_code}]\n" http://$(echo $URLS | cut -d/ -f3)/            # 
 terraform destroy    # about 9 minutes
 ```
 
-The tested run: `apply` took 157 s, and the targets were healthy about 1 minute later. Each path reaches its own service, and both tasks of each service answer:
+The tested run (2 × t3.small): `apply` took 160 s, and the targets were healthy about 1 minute later. Each path reaches its own service, and both tasks of each service answer:
 
 ```
-Name: admin Hostname: 490c86da6efa
-Name: admin Hostname: 490c86da6efa
-Name: admin Hostname: 5d6194b39366
-Name: store Hostname: cde7a1285434
-Name: store Hostname: 0ec886319a2e
-Name: store Hostname: cde7a1285434
+Name: admin Hostname: e5c1acfb0722
+Name: admin Hostname: 65da06089915
+Name: admin Hostname: e5c1acfb0722
+Name: store Hostname: 07233c963939
+Name: store Hostname: 07233c963939
+Name: store Hostname: c9a4c23e766e
 no route [404]
 ```
 
