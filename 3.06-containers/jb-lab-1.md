@@ -26,19 +26,6 @@
 
 <sub>Diagram source: [images/jb-ecs-ec2.drawio](images/jb-ecs-ec2.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
-```
- ┌──────────────────────────── ECS Cluster: jb-ecs-ec2 ────────────────────────────┐
- │                                                                                  │
- │  EC2 instance (ECS-optimized AMI)          EC2 instance (ECS-optimized AMI)      │
- │  ┌─────────────┐  ┌──────────────────┐     ┌─────────────┐  ┌────────────────┐   │
- │  │  ECS agent  │  │ task: whoami     │     │  ECS agent  │  │ task: whoami   │   │
- │  │  (registers)│  │ host 8080 → 80   │     │  (registers)│  │ host 8080 → 80 │   │
- │  └─────────────┘  └──────────────────┘     └─────────────┘  └────────────────┘   │
- │        ▲                                          ▲                              │
- └────────┼──────────────────────────────────────────┼──────────────────────────────┘
-          └──── Auto Scaling Group (capacity provider) ┘        Service: desired count = 2
-```
-
 ### What's in a task definition?
 
 These are the fields from the slides, as they appear in the task definition JSON:
