@@ -43,7 +43,7 @@ A browser window opens. Sign in to the Console, or pick an existing session, and
 aws configure
 # AWS Access Key ID [None]:     AKIA................
 # AWS Secret Access Key [None]: ****************************************
-# Default region name [None]:   eu-west-1
+# Default region name [None]:   us-east-1
 # Default output format [None]: json
 ```
 

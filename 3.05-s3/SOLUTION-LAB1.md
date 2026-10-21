@@ -4,6 +4,8 @@
 
 > Tested with AWS CLI v2 in `us-east-1`. Run the commands in one terminal session, because later steps use the shell variables.
 
+> 🏫 In the classroom account, your bucket name must start with **`jblabs-`**. Some screenshots and sample outputs on this page show an older lab bucket name, `s3-lab-student-…`. The steps and results are the same.
+
 ---
 
 ## LAB 1 (Basic): Create an S3 Bucket with the CLI
@@ -11,9 +13,10 @@
 **Jump to:**
 - [Part A: Create the S3 bucket](#part-a-create-the-s3-bucket)
 - [Part B: Versioning](#part-b-versioning)
-- [Part C: Limit access to the bucket](#part-c-limit-access-to-the-bucket)
-  - [Step 6: Allow access only from your default VPC](#step-6-allow-access-only-from-your-default-vpc)
-  - [Step 7: Allow access only with TLS 1.2 or higher](#step-7-allow-access-only-with-tls-12-or-higher)
+- [Part C: Upload the same file twice](#part-c-upload-the-same-file-twice)
+- [Part D (Advanced, HARD!): Limit access to the bucket](#part-d-advanced-hard-limit-access-to-the-bucket)
+  - [Step 10: Allow access only from your default VPC](#step-10-allow-access-only-from-your-default-vpc)
+  - [Step 11: Allow access only with TLS 1.2 or higher](#step-11-allow-access-only-with-tls-12-or-higher)
 - [Answers](#answers)
 
 ### Part A: Create the S3 bucket
@@ -25,7 +28,7 @@
 ```bash
 export AWS_PAGER=""
 REGION=us-east-1
-BUCKET=s3-lab-<your-name>-$RANDOM      # must be globally unique, lowercase
+BUCKET=jblabs-<your-name>-$RANDOM      # must be globally unique, lowercase, start with jblabs-
 
 aws s3 mb s3://$BUCKET --region $REGION
 aws s3 ls | grep $BUCKET
@@ -89,7 +92,57 @@ Refresh the **Properties** tab. **Bucket Versioning** is now **Enabled**:
 
 ![Properties – versioning enabled](images/02-bucket-properties-versioning.jpg)
 
-### Part C: Limit access to the bucket
+### Part C: Upload the same file twice
+
+#### Steps 6–7: Upload two versions of `notes.txt`
+
+```bash
+echo "version 1" > notes.txt
+aws s3 cp notes.txt s3://$BUCKET/notes.txt
+
+echo "version 2" > notes.txt
+aws s3 cp notes.txt s3://$BUCKET/notes.txt
+```
+
+#### Step 8: List the versions
+
+```bash
+aws s3api list-object-versions --bucket $BUCKET --prefix notes.txt \
+  --query 'Versions[].[Key,VersionId,IsLatest,Size]' --output table
+```
+
+```
+------------------------------------------------------------------
+|                       ListObjectVersions                       |
++-----------+------------------------------------+--------+------+
+|  notes.txt|  65OQIMD0spe2xDR1u4Gk1UJi4_7PNmbs  |  True  |  10  |
+|  notes.txt|  MeyPBFfgqppXcJWmRvDsa7az.IzedCyI  |  False |  10  |
++-----------+------------------------------------+--------+------+
+```
+
+There are **two versions**. The one with `IsLatest = True` is the **current** version, and it's what a normal download returns. In the Console, open the **Objects** tab and turn on **Show versions** to see both.
+
+#### Step 9: Download the older version
+
+```bash
+OLD_VERSION=$(aws s3api list-object-versions --bucket $BUCKET --prefix notes.txt \
+  --query 'Versions[?IsLatest==`false`].VersionId | [0]' --output text)
+
+aws s3api get-object --bucket $BUCKET --key notes.txt --version-id $OLD_VERSION old-notes.txt
+cat old-notes.txt                    # the older version
+aws s3 cp s3://$BUCKET/notes.txt -   # the current version
+```
+
+```
+version 1
+version 2
+```
+
+The same key, `notes.txt`, returns `version 1` when you ask for the **old version ID**, and `version 2` (the current version) without one.
+
+### Part D (Advanced, HARD!): Limit access to the bucket
+
+> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
 
 Both restrictions use a **bucket policy with `"Effect": "Deny"`**. An explicit deny overrides any allow, including the admin's own IAM permissions.
 
@@ -102,11 +155,11 @@ echo hello > test.txt
 aws s3 cp test.txt s3://$BUCKET/test.txt
 ```
 
-#### Step 6: Allow access only from your default VPC
+#### Step 10: Allow access only from your default VPC
 
 S3 knows that a request came from a VPC (the `aws:SourceVpc` condition key) **only if the request goes through a VPC endpoint**. Without an endpoint, the request reaches S3 over the internet, and the key is empty.
 
-**6a. Create an S3 Gateway endpoint in the default VPC.** Gateway endpoints for S3 are **free**.
+**10a. Create an S3 Gateway endpoint in the default VPC.** Gateway endpoints for S3 are **free**.
 
 ```bash
 VPC_ID=$(aws ec2 describe-vpcs --filters Name=is-default,Values=true \
@@ -121,7 +174,7 @@ VPCE_ID=$(aws ec2 create-vpc-endpoint --vpc-id $VPC_ID \
   --query VpcEndpoint.VpcEndpointId --output text)
 ```
 
-**6b. Add a bucket policy that denies data access from anywhere outside the default VPC:**
+**10b. Add a bucket policy that denies data access from anywhere outside the default VPC:**
 
 ```bash
 cat > vpc-only.json <<JSON
@@ -144,7 +197,7 @@ aws s3api put-bucket-policy --bucket $BUCKET --policy file://vpc-only.json
 
 > Why not `"Action": "s3:*"`? That would also deny `s3:DeleteBucketPolicy` and `s3:PutBucketPolicy` from your laptop. You'd lock yourself out of your own bucket, and only the account's **root user** could remove the policy. Denying only the **data** actions keeps the bucket manageable.
 
-**6c. Test from your laptop, which is outside the VPC:**
+**10c. Test from your laptop, which is outside the VPC:**
 
 ```bash
 aws s3 ls s3://$BUCKET
@@ -163,7 +216,7 @@ The Console runs in your browser, which is also outside the VPC, so it's denied 
 
 ![Console – access denied outside the VPC](images/12-vpc-only-console-denied.jpg)
 
-**6d. Prove that access from inside the VPC is allowed.** From an EC2 instance in the default VPC (see [3.03 EC2](../3.03-ec2/README.md)), the same commands work. Without an instance, ask the **IAM Policy Simulator** to evaluate the request with and without the VPC:
+**10d. Prove that access from inside the VPC is allowed.** From an EC2 instance in the default VPC (see [3.03 EC2](../3.03-ec2/README.md)), the same commands work. Without an instance, ask the **IAM Policy Simulator** to evaluate the request with and without the VPC:
 
 ```bash
 ME=$(aws sts get-caller-identity --query Arn --output text)    # must be an IAM user or role
@@ -183,14 +236,14 @@ allowed         ← request from the default VPC
 explicitDeny    ← request from anywhere else
 ```
 
-**6e. Remove the policy.** This works from your laptop because the policy doesn't deny `s3:DeleteBucketPolicy`.
+**10e. Remove the policy.** This works from your laptop because the policy doesn't deny `s3:DeleteBucketPolicy`.
 
 ```bash
 aws s3api delete-bucket-policy --bucket $BUCKET
 aws s3 ls s3://$BUCKET      # works again
 ```
 
-#### Step 7: Allow access only with TLS 1.2 or higher
+#### Step 11: Allow access only with TLS 1.2 or higher
 
 Two deny statements: one blocks plain **HTTP** (`aws:SecureTransport = false`), and the other blocks **TLS versions older than 1.2** (`s3:TlsVersion < 1.2`):
 
@@ -250,7 +303,7 @@ curl: (35) ... (the TLS handshake fails)
 
 > AWS already requires **TLS 1.2 or higher** on all its API endpoints, so a TLS 1.1 client can't even connect. The `s3:TlsVersion` statement is **defense in depth**: it documents the requirement in the policy, and it keeps protecting the bucket if endpoint defaults ever change. Security auditors look for both statements.
 
-**Clean up Part C** before Lab 2:
+**Clean up Part D** before Lab 2:
 
 ```bash
 aws s3api delete-bucket-policy --bucket $BUCKET
@@ -269,7 +322,7 @@ aws s3 rm s3://$BUCKET/test.txt
   ```
 
 - **Public or private?** **Private.** Block Public Access is on by default for every new bucket, and there is no bucket policy.
-- **The same file uploaded twice:** because versioning is enabled, the second upload creates a **new version**, and the first version is kept. Turn on **Show versions** on the Objects tab to see both.
+- **The same file uploaded twice:** because versioning is enabled, the second upload creates a **new version**, and the first version is kept. You saw both in Part C.
 
 ---
 

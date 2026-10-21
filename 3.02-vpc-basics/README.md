@@ -24,10 +24,10 @@ An **Amazon Virtual Private Cloud (VPC)** is your own logically isolated network
 - Creating a VPC, subnets, route tables and an Internet Gateway is **free**. NAT Gateways, VPC endpoints, Transit Gateway and public IPv4 addresses cost money.
 
 ```
-Region: eu-west-1
+Region: us-east-1
 ┌────────────────────────── VPC 10.0.0.0/16 ──────────────────────────┐
 │                                                                     │
-│   AZ eu-west-1a                      AZ eu-west-1b                  │
+│   AZ us-east-1a                      AZ us-east-1b                  │
 │   ┌──────────────────────────┐       ┌──────────────────────────┐   │
 │   │ Public   10.0.1.0/24     │       │ Public   10.0.2.0/24     │   │
 │   │   [EC2 web]              │       │   [EC2 web]              │   │
@@ -135,7 +135,9 @@ You'll build Security Groups hands-on in [3.03 EC2](../3.03-ec2/README.md).
 
 **Goal:** Understand what AWS creates for you in every Region.
 
-**Tools:** Console + AWS CLI. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `eu-west-1`, but you can use any Region.
+**Tools:** Console + AWS CLI. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `us-east-1`.
+
+> 🏫 **Classroom account rules:** work only in **`us-east-1`**.
 
 ### Tasks
 
@@ -157,6 +159,8 @@ You'll build Security Groups hands-on in [3.03 EC2](../3.03-ec2/README.md).
 ---
 
 ## 🧪 LAB 2 (Basic): Create a VPC with the "VPC and more" Wizard
+
+> 🏫 **Classroom account rules:** work only in **`us-east-1`**.
 
 **Goal:** Create a production-style VPC with public and private subnets in two AZs, in a few clicks.
 
@@ -186,6 +190,8 @@ You'll build Security Groups hands-on in [3.03 EC2](../3.03-ec2/README.md).
 ---
 
 ## 🧪 LAB 3 (Advanced): Build a VPC Piece by Piece with the CLI
+
+> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
 
 **Goal:** Understand every building block by creating a VPC manually. You'll create a VPC, a public and a private subnet, an Internet Gateway and a public route table.
 

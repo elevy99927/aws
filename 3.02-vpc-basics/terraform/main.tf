@@ -16,7 +16,7 @@ provider "aws" {
 
 variable "region" {
   type    = string
-  default = "eu-west-1"
+  default = "us-east-1"
 }
 
 variable "vpc_cidr" {

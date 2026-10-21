@@ -15,6 +15,11 @@ Each module contains a short README that lists its topics. Hands-on labs will us
 
 The course covers cloud fundamentals that overlap with entry-level AWS certification topics. It is free and open to everyone, but it does not map one-to-one to any AWS exam and does not guarantee exam results. Use the official resources below to check the current exam scope.
 
+### Basic and Advanced labs
+
+- **Basic labs** (and Parts A–C of a basic lab) are designed to work in a **restricted classroom AWS account**: work only in **`us-east-1`**, name S3 buckets **`jblabs-…`**, and name IAM users **`lab-…`**.
+- **Advanced labs** (and advanced parts of basic labs) are marked with ⚠️. They may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, so we recommend doing them in your own private AWS account.
+
 > **Disclaimer:** This is an independent course. It is **not** an official AWS course, and it is not affiliated with, endorsed by or sponsored by Amazon Web Services (AWS) or any AWS certification program. AWS and all related names are trademarks of Amazon.com, Inc. or its affiliates. This course does not contain any actual exam content.
 
 ---

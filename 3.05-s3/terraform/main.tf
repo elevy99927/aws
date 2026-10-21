@@ -21,7 +21,7 @@ variable "region" {
 
 # bucket_prefix lets AWS add a unique suffix (bucket names are global)
 resource "aws_s3_bucket" "site" {
-  bucket_prefix = "s3-lab-"
+  bucket_prefix = "jblabs-"
   force_destroy = true # allows "terraform destroy" to delete a non-empty bucket
 }
 

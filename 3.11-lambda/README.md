@@ -10,7 +10,7 @@
 - [Pricing and Free Tier](#5-pricing)
 - [Lambda vs. EC2 vs. containers](#6-lambda-vs-ec2-vs-containers)
 - [Limits worth knowing](#7-limits-worth-knowing)
-- [LAB 1: Your first Lambda function](#-lab-1-basic-your-first-lambda-function)
+- [LAB 1: Your first Lambda function](#-lab-1-advanced-your-first-lambda-function)
 - [LAB 2: S3 upload → Lambda "scanner" → clean bucket](LAB2.md)
 - [Terraform](#terraform-code)
 
@@ -172,7 +172,11 @@ A **GB-second** is memory (in GB) × run time (in seconds). A 128 MB function ru
 
 ---
 
-## 🧪 LAB 1 (Basic): Your First Lambda Function
+## 🧪 LAB 1 (Advanced): Your First Lambda Function
+
+> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
+
+> 🏫 **Classroom account:** Lambda and CloudWatch Logs are blocked in the classroom account, so this lab can't run there.
 
 > 💰 **Cost:** effectively **$0**, because everything stays inside the Lambda Free Tier.
 
@@ -269,6 +273,8 @@ Lab 2 has its own page: **[LAB2.md](LAB2.md)**
 ---
 
 ## Terraform Code
+
+> ⚠️ The Terraform code builds the **advanced** labs, so it may not work in every AWS account because of SCPs or other restrictions, for example in a classroom account. We recommend running it in your own private AWS account.
 
 > Terraform is covered later in the course. The code is here **for reference**.
 

@@ -4,6 +4,8 @@
 
 ---
 
+> 📍 **Region note:** run the labs in **`us-east-1`**. The screenshots and sample outputs on this page were captured in **`eu-west-1`** (Europe, Ireland). In `us-east-1` the Availability Zones are named `us-east-1a`–`us-east-1f`, the default VPC has **six** default subnets, and all IDs are different. The structure and the results are the same.
+
 ## LAB 1 (Basic): Explore the Default VPC
 
 ### Console
@@ -23,7 +25,7 @@
 ### CLI
 
 ```bash
-export AWS_PAGER="" AWS_REGION=eu-west-1
+export AWS_PAGER="" AWS_REGION=us-east-1
 
 DEFAULT_VPC=$(aws ec2 describe-vpcs --filters Name=is-default,Values=true \
   --query 'Vpcs[0].VpcId' --output text)
@@ -46,7 +48,7 @@ aws ec2 describe-internet-gateways --filters Name=attachment.vpc-id,Values=$DEFA
   --query 'InternetGateways[].[InternetGatewayId,Attachments[0].State]' --output table
 ```
 
-Sample output (eu-west-1):
+Sample output (captured in eu-west-1):
 
 ```
 |  eu-west-1b |  172.31.16.0/20   |  4089 |  True  |
@@ -101,10 +103,12 @@ A Default VPC already exists for this account in this region.
 
 ## LAB 3 (Advanced): Build a VPC Piece by Piece with the CLI
 
-> Tested with AWS CLI v2 in `eu-west-1`. Run everything in one terminal session, because later steps use the shell variables.
+> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
+
+> Tested with AWS CLI v2 (the sample output is from `eu-west-1`). Run everything in one terminal session, because later steps use the shell variables.
 
 ```bash
-export AWS_PAGER="" AWS_REGION=eu-west-1
+export AWS_PAGER="" AWS_REGION=us-east-1
 read AZ1 AZ2 _ < <(aws ec2 describe-availability-zones \
   --query 'AvailabilityZones[].ZoneName' --output text)
 
