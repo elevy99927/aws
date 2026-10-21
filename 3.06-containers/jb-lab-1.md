@@ -22,6 +22,10 @@
 | **Task** | A **running instance** of a task definition: one or more containers running together |
 | **Service** | Keeps a **desired count** of tasks running, replaces failed tasks, and can register them with a **load balancer** |
 
+![ECS Cluster jb-ecs-ec2: an Auto Scaling Group of 2 EC2 instances, each running the ECS agent and one whoami task on host port 8080, managed by the whoami-svc service](images/jb-ecs-ec2.jpg)
+
+<sub>Diagram source: [images/jb-ecs-ec2.drawio](images/jb-ecs-ec2.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
+
 ```
  ┌──────────────────────────── ECS Cluster: jb-ecs-ec2 ────────────────────────────┐
  │                                                                                  │
