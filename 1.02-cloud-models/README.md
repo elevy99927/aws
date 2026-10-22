@@ -15,7 +15,7 @@
 
 ---
 
-[⬅ Previous: 1.01 What is Cloud Computing?](../1.01-what-is-cloud-computing/README.md) | [🏠 Home](../README.md) | [Next: 1.03 Architecting in the Cloud ➡](../1.03-well-architected-cloud/README.md)
+[⬅ Previous: 1.01 What is Cloud Computing?](../1.01-what-is-cloud-computing/README.md) | [🏠 Home](../README.md) | [Next: 1.03 Shared Responsibility Model ➡](../1.03-shared-responsibility-model/README.md)
 
 ---
 ## Contact

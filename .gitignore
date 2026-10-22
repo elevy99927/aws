@@ -1,4 +1,5 @@
 .terraform*
+.env
 terraform.tfstate*
 node_modules
 *.zip
@@ -7,5 +8,5 @@ node_modules
 
 old/*
 limits.md
-3.11-lambda/artifacts/jb-lab-2/build/
+3.06-lambda/artifacts/jb-lab-2/build/
 errors/
