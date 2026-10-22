@@ -4,6 +4,10 @@
 
 > 📚 Based on the course slides *ECS – What it's all about*: clusters overview, ECS task definitions, ECS service, and the first follow-through (*Let's create an ECS cluster, a task and a service*).
 
+**▶ Video walkthrough** (7 min):
+
+[![Video: 3.06 Containers – jb-lab-1: ECS on EC2](https://img.youtube.com/vi/GOCXYJQ15L8/maxresdefault.jpg)](https://youtu.be/GOCXYJQ15L8)
+
 ---
 
 ## 1. What is Amazon ECS?
