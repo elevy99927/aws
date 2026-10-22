@@ -95,6 +95,8 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
 
 > 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
+>
+> **Class account:** do the [prerequisites](jb-lab-1-pre-req.md) first. The class account has no default VPC, so you create `jb-ecs-vpc` and use it in all the 3.06 labs.
 
 ### Tasks
 
