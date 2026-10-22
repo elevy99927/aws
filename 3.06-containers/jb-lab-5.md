@@ -1,6 +1,6 @@
-# 3.06 Containers – jb-lab-5: ECS Service Auto Scaling
+# 3.06 Containers – Lab 5: ECS Service Auto Scaling
 
-[⬅ jb-lab-4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
 
 > 📚 ECS Auto Scaling appears on the agenda of the course slides (*ECS clusters – getting things done with almighty ECS*). This page covers it hands-on.
 
@@ -38,28 +38,28 @@ Predefined metrics for target tracking:
 
 Target tracking creates two CloudWatch alarms. **AlarmHigh** scales out after about 3 minutes above the target. **AlarmLow** scales in after about 15 minutes below it, slowly on purpose, to avoid flapping. This is the same mechanism as the EC2 Auto Scaling Group in [3.10 Advanced EC2](../3.10-advanced-ec2/README.md).
 
-> **Why requests and not CPU here?** The `jb-web` container serves a static page, so it barely uses CPU, and a CPU target would hardly react. `ALBRequestCountPerTarget` measures exactly the load that the ALB sends to each task.
+> **Why requests and not CPU here?** The `web` container serves a static page, so it barely uses CPU, and a CPU target would hardly react. `ALBRequestCountPerTarget` measures exactly the load that the ALB sends to each task.
 
 ---
 
-## 🧪 jb-lab-5 (Basic): Scale the Service Under Load
+## 🧪 Lab 5 (Basic): Scale the Service Under Load
 
-> 💰 **Cost:** the ALB plus 1–4 Fargate tasks, about **$0.03–$0.09/hour**. Up to 2 hours ≈ **$0.15**. At the end of this lab, delete **everything** from jb-lab-1 to jb-lab-5.
+> 💰 **Cost:** the ALB plus 1–4 Fargate tasks, about **$0.03–$0.09/hour**. Up to 2 hours ≈ **$0.15**. At the end of this lab, delete **everything** from Lab 1 to Lab 5.
 
-**Goal:** Let ECS scale `jb-web-svc` automatically, out under load and back in when the load stops.
+**Goal:** Let ECS scale `web-svc` automatically, out under load and back in when the load stops.
 
-**Prerequisite:** the service `jb-web-svc` behind `jb-ecs-alb` from [jb-lab-4](jb-lab-4.md).
+**Prerequisite:** the service `web-svc` behind `ecs-alb` from [Lab 4](jb-lab-4.md).
 
 **Tools:** Console + AWS CLI + a load generator: `ab` (ApacheBench, built into macOS, `apache2-utils` on Linux) or `hey`.
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
+> Work in **`us-east-1`**.
 
 ### Tasks
 
 **Part A: Scalable target and policy**
 
-1. In `jb-web-svc` → **Update service → Service auto scaling**, set **minimum 1**, **desired 2**, **maximum 4** tasks.
-2. Add a **target tracking** policy **`jb-web-requests`**: metric **ALBRequestCountPerTarget**, target group `jb-web-tg`, target value **100**.
+1. In `web-svc` → **Update service → Service auto scaling**, set **minimum 1**, **desired 2**, **maximum 4** tasks.
+2. Add a **target tracking** policy **`web-requests`**: metric **ALBRequestCountPerTarget**, target group `web-tg`, target value **100**.
 3. In **CloudWatch → Alarms**, find the two alarms that the policy created.
 
 **Part B: Scale in without traffic**
@@ -75,7 +75,7 @@ Target tracking creates two CloudWatch alarms. **AlarmHigh** scales out after ab
 6. While it runs, watch:
    - **CloudWatch → Alarms**: `…AlarmHigh…` goes **In alarm**.
    - **The service → Events / Tasks**: new tasks start, up to **4**.
-   - **`jb-web-tg` → Targets**: new IPs go from `initial` to `healthy`.
+   - **`web-tg` → Targets**: new IPs go from `initial` to `healthy`.
 
 **Part D: Scale in after the load**
 
@@ -84,11 +84,11 @@ Target tracking creates two CloudWatch alarms. **AlarmHigh** scales out after ab
 **Part E: Clean up the whole chapter**
 
 8. Delete, in this order:
-   - the services `jb-web-svc`, `whoami-fargate-svc` and any services left in `jb-ecs-ec2` (which also removes the scaling policy and its alarms),
-   - the clusters `jb-ecs-fargate` and `jb-ecs-ec2`,
-   - the ALB `jb-ecs-alb`, then its target groups,
-   - the security groups `jb-fargate-tasks-sg`, `jb-ecs-instances-sg` and `jb-ecs-alb-sg`,
-   - the ECR repository `jb-web` (with its images),
+   - the services `web-svc`, `whoami-fargate-svc` and any services left in `ecs-ec2` (which also removes the scaling policy and its alarms),
+   - the clusters `ecs-fargate` and `ecs-ec2`,
+   - the ALB `ecs-alb`, then its target groups,
+   - the security groups `fargate-tasks-sg`, `ecs-instances-sg` and `ecs-alb-sg`,
+   - the ECR repository `web` (with its images),
    - the task definition revisions (deregister, then delete).
 
 ### Questions
@@ -100,11 +100,11 @@ Target tracking creates two CloudWatch alarms. **AlarmHigh** scales out after ab
 
 ---
 
-✅ **Solution:** [jb-lab-5 Solution](jb-lab-5-solution.md)
+✅ **Solution:** [Lab 5 Solution](jb-lab-5-solution.md)
 
 ---
 
-[⬅ jb-lab-4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
 
 ---
 

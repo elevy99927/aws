@@ -1,6 +1,6 @@
-# 3.06 Containers – jb-lab-4: Amazon ECR
+# 3.06 Containers – Lab 4: Amazon ECR
 
-[⬅ jb-lab-3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-5 ➡](jb-lab-5.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 > 📚 ECR appears on the agenda of the course slides (*ECS clusters – getting things done with almighty ECS*). This page covers it hands-on, including the "ECS IAM" agenda item: how a task gets permission to pull your image.
 
@@ -13,10 +13,10 @@
 | Concept | Meaning |
 |---------|---------|
 | **Registry** | One per account per Region: `<account-id>.dkr.ecr.<region>.amazonaws.com` |
-| **Repository** | Holds the versions of **one** image, for example `jb-web` |
+| **Repository** | Holds the versions of **one** image, for example `web` |
 | **Image tag** | A human-friendly name for a version, for example `v1`, `v2`, `latest` |
 | **Image digest** | The image's unique, unchangeable ID (`sha256:…`) |
-| **Image URI** | `<account-id>.dkr.ecr.us-east-1.amazonaws.com/jb-web:v1`, which is what goes into the task definition |
+| **Image URI** | `<account-id>.dkr.ecr.us-east-1.amazonaws.com/web:v1`, which is what goes into the task definition |
 
 ## 2. Features Worth Knowing
 
@@ -35,12 +35,12 @@
 
 ```
   your laptop                           Amazon ECR                         ECS (Fargate)
- docker build ──► docker push ──► [ jb-web:v1, jb-web:v2 ] ◄── pull ── task (uses the task EXECUTION role)
+ docker build ──► docker push ──► [ web:v1, web:v2 ] ◄── pull ── task (uses the task EXECUTION role)
                 (IAM credentials)                                    ecsTaskExecutionRole:
                                                                      AmazonECSTaskExecutionRolePolicy
 ```
 
-The **task execution role** (see [jb-lab-1](jb-lab-1.md#iam-roles-in-ecs)) gives ECS permission to get an ECR token and download the image layers. Your application code never needs these permissions.
+The **task execution role** (see [Lab 1](jb-lab-1.md#iam-roles-in-ecs)) gives ECS permission to get an ECR token and download the image layers. Your application code never needs these permissions.
 
 ## 4. CPU Architecture Matters
 
@@ -51,13 +51,13 @@ An image is built for a specific CPU architecture. If you build on an **Apple Si
 
 ---
 
-## 🧪 jb-lab-4 (Basic): Build, Push and Deploy Your Own Image
+## 🧪 Lab 4 (Basic): Build, Push and Deploy Your Own Image
 
-> 💰 **Cost:** ECR storage for a 29 MB image is fractions of a cent. The ALB and Fargate tasks from jb-lab-3 cost about **$0.06/hour**. Up to 2 hours ≈ **$0.12**.
+> 💰 **Cost:** ECR storage for a 29 MB image is fractions of a cent. The ALB and Fargate tasks from Lab 3 cost about **$0.06/hour**. Up to 2 hours ≈ **$0.12**.
 
 **Goal:** Build a small web image, push it to a **private ECR repository**, run it on **Fargate** behind the ALB, and then roll out a new version.
 
-**Prerequisite:** the cluster `jb-ecs-fargate`, the ALB `jb-ecs-alb` and the security groups from [jb-lab-3](jb-lab-3.md). You also need **Docker** locally. AWS CloudShell has Docker too.
+**Prerequisite:** the cluster `ecs-fargate`, the ALB `ecs-alb` and the security groups from [Lab 3](jb-lab-3.md). You also need **Docker** locally. AWS CloudShell has Docker too.
 
 **Files:** [`artifacts/jb-lab-4/`](artifacts/jb-lab-4/)
 
@@ -66,17 +66,17 @@ An image is built for a specific CPU architecture. If you build on an **Apple Si
 | [`Dockerfile`](artifacts/jb-lab-4/Dockerfile) | nginx from ECR Public, plus our page. `--build-arg VERSION=…` sets the version |
 | [`index.html`](artifacts/jb-lab-4/index.html) | The page: *Hello from Amazon ECR – version vX* |
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
+> Work in **`us-east-1`**.
 
 ### Tasks
 
 **Part A: Repository**
 
-1. In **ECR → Private registry → Repositories**, create a repository **`jb-web`** with **Scan on push** enabled.
+1. In **ECR → Private registry → Repositories**, create a repository **`web`** with **Scan on push** enabled.
 
 **Part B: Build and test locally**
 
-2. Build the image for **`linux/amd64`** with `VERSION=v1`, and tag it `jb-web:v1`.
+2. Build the image for **`linux/amd64`** with `VERSION=v1`, and tag it `web:v1`.
 3. Run it locally on port 8081 and open `http://localhost:8081/web/`.
 
 **Part C: Push to ECR**
@@ -87,24 +87,24 @@ An image is built for a specific CPU architecture. If you build on an **Apple Si
 
 **Part D: Run it on Fargate**
 
-7. Create a task definition **`jb-web`** (Fargate, 0.25 vCPU / 0.5 GB, execution role `ecsTaskExecutionRole`), with the image URI `…/jb-web:v1` and container port **80**.
-8. Create a target group **`jb-web-tg`** (target type **IP**, HTTP:80, health check `/`), and add an ALB rule: path **`/web*`** → `jb-web-tg`.
-9. Create a service **`jb-web-svc`** in `jb-ecs-fargate` with **2 tasks**, security group `jb-fargate-tasks-sg`, public IP on, and load balancing to `jb-web-tg`.
+7. Create a task definition **`web`** (Fargate, 0.25 vCPU / 0.5 GB, execution role `ecsTaskExecutionRole`), with the image URI `…/web:v1` and container port **80**.
+8. Create a target group **`web-tg`** (target type **IP**, HTTP:80, health check `/`), and add an ALB rule: path **`/web*`** → `web-tg`.
+9. Create a service **`web-svc`** in `ecs-fargate` with **2 tasks**, security group `fargate-tasks-sg`, public IP on, and load balancing to `web-tg`.
 10. Open `http://<alb-dns>/web/`. You should see **version v1**.
 
 **Part E: Roll out version 2**
 
 11. Build `VERSION=v2`, tag it `v2`, and push it.
-12. Create a **new revision** of `jb-web` that uses `:v2`, and **update the service** to it.
+12. Create a **new revision** of `web` that uses `:v2`, and **update the service** to it.
 13. Refresh `/web/` while the deployment runs. What do you see? How does the **Deployments** tab show the change?
 
 **Part F: Lifecycle policy**
 
-14. Add a lifecycle rule to `jb-web`: **keep only the 2 most recent images**.
+14. Add a lifecycle rule to `web`: **keep only the 2 most recent images**.
 
 **Part G: Clean up or continue**
 
-15. Continuing to [jb-lab-5](jb-lab-5.md)? Keep everything. Stopping here? Delete the service, the task definitions, the listener rule, the target group and the repository (with its images), plus the jb-lab-3 resources.
+15. Continuing to [Lab 5](jb-lab-5.md)? Keep everything. Stopping here? Delete the service, the task definitions, the listener rule, the target group and the repository (with its images), plus the Lab 3 resources.
 
 ### Questions
 
@@ -115,11 +115,11 @@ An image is built for a specific CPU architecture. If you build on an **Apple Si
 
 ---
 
-✅ **Solution:** [jb-lab-4 Solution](jb-lab-4-solution.md)
+✅ **Solution:** [Lab 4 Solution](jb-lab-4-solution.md)
 
 ---
 
-[⬅ jb-lab-3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-5 ➡](jb-lab-5.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 ---
 

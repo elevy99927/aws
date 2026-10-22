@@ -16,7 +16,7 @@
 
 ---
 
-[⬅ Previous: 3.02 VPC Basics](../3.02-vpc-basics/README.md) | [🏠 Home](../README.md) | [Next: 3.04 Storage: EBS & EFS ➡](../3.04-storage/README.md)
+[⬅ Previous: 3.02 VPC and Networking](../3.02-vpc-basics/README.md) | [🏠 Home](../README.md) | [Next: 3.04 Storage: EBS & EFS ➡](../3.04-storage/README.md)
 
 ---
 ## Contact

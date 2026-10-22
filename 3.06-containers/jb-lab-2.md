@@ -1,6 +1,6 @@
-# 3.06 Containers – jb-lab-2: ECS Service Load Balancing
+# 3.06 Containers – Lab 2: ECS Service Load Balancing
 
-[⬅ jb-lab-1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 > 📚 Based on the course slides *ECS – Connecting everything*: service load balancing, ALB features, ground rules, dynamic port forwarding, and the follow-through *Connecting ALB*.
 
@@ -30,7 +30,7 @@ From the slides, still true today:
 
 ## 3. Dynamic Host Port Mapping
 
-In [jb-lab-1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per instance. With a load balancer, set **no host port** (`hostPort: 0`). Docker then picks a **random free host port** (an ephemeral port, typically from 32768 to 65535) for each task. ECS registers *instance + port* in the target group, so the ALB knows where each task is.
+In [Lab 1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per instance. With a load balancer, set **no host port** (`hostPort: 0`). Docker then picks a **random free host port** (an ephemeral port, typically from 32768 to 65535) for each task. ECS registers *instance + port* in the target group, so the ALB knows where each task is.
 
 ```
                                           ┌──────── EC2 instance A ─────────┐
@@ -59,51 +59,49 @@ In [jb-lab-1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per insta
 
 ---
 
-## 🧪 jb-lab-2 (Basic): Two Services Behind One ALB
+## 🧪 Lab 2 (Basic): Two Services Behind One ALB
 
-> 💰 **Cost:** the ALB plus 2 × t3.small from jb-lab-1, about **$0.08/hour**. Up to 2 hours ≈ **$0.16**. If left running ≈ **$58/month**.
+> 💰 **Cost:** the ALB plus 2 × t3.small from Lab 1, about **$0.08/hour**. Up to 2 hours ≈ **$0.16**. If left running ≈ **$58/month**.
 
-**Goal:** Run two services, `admin` and `store`, on the jb-lab-1 cluster with **dynamic host ports**. Put **one ALB** in front of them that routes by **path**, and see several tasks share one instance.
+**Goal:** Run two services, `admin` and `store`, on the Lab 1 cluster with **dynamic host ports**. Put **one ALB** in front of them that routes by **path**, and see several tasks share one instance.
 
-**Prerequisite:** the cluster `jb-ecs-ec2` and the security group `jb-ecs-instances-sg` from [jb-lab-1](jb-lab-1.md).
+**Prerequisite:** the cluster `ecs-ec2` and the security group `ecs-instances-sg` from [Lab 1](jb-lab-1.md).
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`. The image `traefik/whoami` prints a `Name:` line from the environment variable `WHOAMI_NAME`, which shows which service answered.
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
 
 ### Tasks
 
 **Part A: Prepare**
 
-1. Delete the service `whoami-svc` from jb-lab-1 (or set its desired tasks to 0).
-2. Create a security group **`jb-ecs-alb-sg`** that allows **HTTP 80 from anywhere**.
-3. In **`jb-ecs-instances-sg`**, add an inbound rule: **TCP 32768–65535 from `jb-ecs-alb-sg`**.
+1. Delete the service `whoami-svc` from Lab 1 (or set its desired tasks to 0).
+2. Create a security group **`ecs-alb-sg`** that allows **HTTP 80 from anywhere**.
+3. In **`ecs-instances-sg`**, add an inbound rule: **TCP 32768–65535 from `ecs-alb-sg`**.
 
 **Part B: Task definitions with dynamic ports**
 
-4. Create two task definitions, **`jb-admin`** and **`jb-store`**. Use EC2, network mode **bridge**, 0.25 vCPU and 0.5 GB:
+4. Create two task definitions, **`admin`** and **`store`**. Use EC2, network mode **bridge**, 0.25 vCPU and 0.5 GB:
    - Image `traefik/whoami`, container port **80**, and **no host port** (leave it empty).
    - Environment variable `WHOAMI_NAME` = `admin` or `store`.
 
 **Part C: Load balancer**
 
-5. Create two target groups, **`jb-admin-tg`** and **`jb-store-tg`**: target type **Instances**, HTTP:80, health check path `/`. **Don't register any targets.** ECS will.
-6. Create an ALB **`jb-ecs-alb`**: internet-facing, all default subnets, security group `jb-ecs-alb-sg`. Set the listener **HTTP:80** with a **default action that returns a fixed 404** with the text `no route`.
-7. Add two listener rules: path **`/admin*`** → `jb-admin-tg`, and path **`/store*`** → `jb-store-tg`.
+5. Create two target groups, **`admin-tg`** and **`store-tg`**: target type **Instances**, HTTP:80, health check path `/`. **Don't register any targets.** ECS will.
+6. Create an ALB **`ecs-alb`**: internet-facing, all default subnets, security group `ecs-alb-sg`. Set the listener **HTTP:80** with a **default action that returns a fixed 404** with the text `no route`.
+7. Add two listener rules: path **`/admin*`** → `admin-tg`, and path **`/store*`** → `store-tg`.
 
 **Part D: Services**
 
-8. Create the services **`admin-svc`** (from `jb-admin`) and **`store-svc`** (from `jb-store`), each with **2 tasks**. Under **Load balancing**, choose the existing `jb-ecs-alb` and the matching target group.
+8. Create the services **`admin-svc`** (from `admin`) and **`store-svc`** (from `store`), each with **2 tasks**. Under **Load balancing**, choose the existing `ecs-alb` and the matching target group.
 
 **Part E: Test**
 
 9. Call `http://<alb-dns>/admin` and `http://<alb-dns>/store` several times. What do the `Name:` and `Hostname:` lines show?
 10. Call `http://<alb-dns>/`. What do you get, and why?
-11. Open `jb-admin-tg` → **Targets**. Which **ports** are registered? Are there two tasks on the **same** instance?
+11. Open `admin-tg` → **Targets**. Which **ports** are registered? Are there two tasks on the **same** instance?
 
 **Part F: Clean up or continue**
 
-12. Continuing to [jb-lab-3](jb-lab-3.md)? Delete the services, the task definitions' revisions and the cluster `jb-ecs-ec2`, but **keep the ALB `jb-ecs-alb` and `jb-ecs-alb-sg`**. Stopping here? Delete everything, including the ALB, the target groups and both security groups.
+12. Continuing to [Lab 3](jb-lab-3.md)? Delete the services, the task definitions' revisions and the cluster `ecs-ec2`, but **keep the ALB `ecs-alb` and `ecs-alb-sg`**. Stopping here? Delete everything, including the ALB, the target groups and both security groups.
 
 ### Questions
 
@@ -114,11 +112,11 @@ In [jb-lab-1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per insta
 
 ---
 
-✅ **Solution:** [jb-lab-2 Solution](jb-lab-2-solution.md)
+✅ **Solution:** [Lab 2 Solution](jb-lab-2-solution.md)
 
 ---
 
-[⬅ jb-lab-1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 

@@ -37,7 +37,7 @@ The course covers cloud fundamentals that overlap with entry-level AWS certifica
 |  | 2.02 | [Secrets Management](2.02-secrets-management/README.md) |
 |  | 2.03 | [Network & Application Protection, Compliance](2.03-network-application-protection-compliance/README.md) |
 | 3 – Technology & Services | 3.01 | [AWS Global Infrastructure](3.01-global-infrastructure/README.md) |
-|  | 3.02 | [VPC Basics](3.02-vpc-basics/README.md) |
+|  | 3.02 | [VPC and Networking](3.02-vpc-basics/README.md) |
 |  | 3.03 | [Compute: Amazon EC2](3.03-ec2/README.md) |
 |  | 3.04 | [Storage: EBS & EFS](3.04-storage/README.md) |
 |  | 3.05 | [Amazon S3](3.05-s3/README.md) |

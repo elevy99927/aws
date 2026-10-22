@@ -1,12 +1,12 @@
-# 3.06 Containers – jb-lab-1: ECS on EC2 – Cluster, Task Definition and Service
+# 3.06 Containers – Lab 1: ECS on EC2 – Cluster, Task Definition and Service
 
-[⬅ Back to 3.06 Containers](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > 📚 Based on the course slides *ECS – What it's all about*: clusters overview, ECS task definitions, ECS service, and the first follow-through (*Let's create an ECS cluster, a task and a service*).
 
 **▶ Video walkthrough** (7 min):
 
-[![Video: 3.06 Containers – jb-lab-1: ECS on EC2](https://img.youtube.com/vi/GOCXYJQ15L8/maxresdefault.jpg)](https://youtu.be/GOCXYJQ15L8)
+[![Video: 3.06 Containers – Lab 1: ECS on EC2](https://img.youtube.com/vi/GOCXYJQ15L8/maxresdefault.jpg)](https://youtu.be/GOCXYJQ15L8)
 
 ---
 
@@ -26,7 +26,7 @@
 | **Task** | A **running instance** of a task definition: one or more containers running together |
 | **Service** | Keeps a **desired count** of tasks running, replaces failed tasks, and can register them with a **load balancer** |
 
-![ECS Cluster jb-ecs-ec2: an Auto Scaling Group of 2 EC2 instances, each running the ECS agent and one whoami task on host port 8080, managed by the whoami-svc service](images/jb-ecs-ec2.jpg)
+![ECS Cluster ecs-ec2: an Auto Scaling Group of 2 EC2 instances, each running the ECS agent and one whoami task on host port 8080, managed by the whoami-svc service](images/jb-ecs-ec2.jpg)
 
 <sub>Diagram source: [images/jb-ecs-ec2.drawio](images/jb-ecs-ec2.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
@@ -46,7 +46,7 @@ These are the fields from the slides, as they appear in the task definition JSON
 
 ```json
 {
-  "family": "jb-whoami",
+  "family": "whoami",
   "networkMode": "bridge",
   "requiresCompatibilities": ["EC2"],
   "containerDefinitions": [{
@@ -66,7 +66,7 @@ These are the fields from the slides, as they appear in the task definition JSON
                  (host port)                          (container port)
 ```
 
-With a **static host port** (`hostPort: 8080`), only **one** task per instance can use that port. A second task on the same instance would fail to start, because the port is taken. [jb-lab-2](jb-lab-2.md) solves this with **dynamic host ports** and a load balancer.
+With a **static host port** (`hostPort: 8080`), only **one** task per instance can use that port. A second task on the same instance would fail to start, because the port is taken. [Lab 2](jb-lab-2.md) solves this with **dynamic host ports** and a load balancer.
 
 ### IAM roles in ECS
 
@@ -84,42 +84,40 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 | Option | Meaning |
 |--------|---------|
-| **Fargate only** | Serverless, with no instances ([jb-lab-3](jb-lab-3.md)) |
+| **Fargate only** | Serverless, with no instances ([Lab 3](jb-lab-3.md)) |
 | **Fargate and Managed Instances** | ECS launches and manages EC2 instances for you (patching, scaling), and you choose instance requirements |
 | **Fargate and Self-managed instances** | ECS creates an **Auto Scaling Group** of EC2 instances that **you** manage. **This lab uses this option** |
 
 ---
 
-## 🧪 jb-lab-1 (Basic): Cluster, Task Definition and Service on EC2
+## 🧪 Lab 1 (Basic): Cluster, Task Definition and Service on EC2
 
-> 💰 **Cost:** 2 × t3.small, about **$0.05/hour** including public IPs. Up to 2 hours ≈ **$0.10**. If left running ≈ **$38/month**. Clean up at the end, or continue to jb-lab-2.
+> 💰 **Cost:** 2 × t3.small, about **$0.05/hour** including public IPs. Up to 2 hours ≈ **$0.10**. If left running ≈ **$38/month**. Clean up at the end, or continue to Lab 2.
 
 **Goal:** Create an ECS cluster with EC2 instances, describe a container in a task definition, run it as a service with 2 tasks, and see ECS keep the desired count. Then find the limit of static port mapping.
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
->
-> **Class account:** do the [prerequisites](jb-lab-1-pre-req.md) first. The class account has no default VPC, so you create `jb-ecs-vpc` and use it in all the 3.06 labs.
+> **Before you start:** do the [Networking lab](../3.02-vpc-basics/jb-lab-1.md). All the 3.06 labs run in the network it builds, **`ecs-vpc`**: wherever a step says "the default VPC", use `ecs-vpc`.
 
 ### Tasks
 
 **Part A: Security group**
 
-1. Create a security group `jb-ecs-instances-sg` in the default VPC that allows **TCP 8080 from your IP** (*My IP*).
+1. Create a security group `ecs-instances-sg` in the default VPC that allows **TCP 8080 from your IP** (*My IP*).
 
 **Part B: Cluster with EC2 instances**
 
-2. In **ECS → Clusters → Create cluster**, name it **`jb-ecs-ec2`** and choose **Fargate and Self-managed instances**:
+2. In **ECS → Clusters → Create cluster**, name it **`ecs-ec2`** and choose **Fargate and Self-managed instances**:
    - Create a new Auto Scaling Group, OS **Amazon Linux 2023**, instance type **t3.small**.
    - Desired capacity: **min 2, max 2**. No SSH key pair.
-   - Network: the **default VPC**, its public subnets, security group **`jb-ecs-instances-sg`**, auto-assign public IP **on**.
+   - Network: the **default VPC**, its public subnets, security group **`ecs-instances-sg`**, auto-assign public IP **on**.
    - Click `Create`
 3. Wait until **Infrastructure** shows **2 container instances**. Open one. What are its *Agent version* and *Docker version*?
 
 **Part C: Task definition**
 
-4. Create a task definition **`jb-whoami`**:
+4. Create a task definition **`whoami`**:
    - Launch type **Amazon EC2 instances** only (clear **AWS Fargate**, which doesn't support bridge mode).
    - Network mode **bridge**.
    - Task size: CPU **0.25 vCPU**, memory **0.5 GB** (the smallest size in the Console's list).
@@ -128,7 +126,7 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 **Part D: Service**
 
 5. In the cluster, 
-   - Create a service **`whoami-svc`** from `jb-whoami`, launch type **EC2**, **desired tasks: 2**.
+   - Create a service **`whoami-svc`** from `whoami`, launch type **EC2**, **desired tasks: 2**.
    - Click `Create`
 6. Wait until **2 tasks** are *Running*. Which instance does each task run on?
 
@@ -144,7 +142,7 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 **Part G: Clean up or continue**
 
-11. Continuing to [jb-lab-2](jb-lab-2.md)? Keep the cluster. Stopping here? Delete the service, the cluster (this also deletes its Auto Scaling Group), the task definition revisions and the security group.
+11. Continuing to [Lab 2](jb-lab-2.md)? Keep the cluster. Stopping here? Delete the service, the cluster (this also deletes its Auto Scaling Group), the task definition revisions and the security group.
 
 ### Questions
 
@@ -155,11 +153,11 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 ---
 
-✅ **Solution:** [jb-lab-1 Solution](jb-lab-1-solution.md)
+✅ **Solution:** [Lab 1 Solution](jb-lab-1-solution.md)
 
 ---
 
-[⬅ Back to 3.06 Containers](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

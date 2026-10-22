@@ -1,6 +1,6 @@
-# 3.06 Containers – jb-lab-3: AWS Fargate
+# 3.06 Containers – Lab 3: AWS Fargate
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-4 ➡](jb-lab-4.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 > 📚 Based on the course slides *Fargate – The almighty*: what Fargate is, ECS with EC2 vs. ECS with Fargate, and the follow-through *Building a new cluster using Fargate*.
 
@@ -12,7 +12,7 @@
 
 ## 2. ECS with EC2 vs. ECS with Fargate
 
-| | **ECS on EC2** ([jb-lab-1](jb-lab-1.md)) | **ECS on Fargate** |
+| | **ECS on EC2** ([Lab 1](jb-lab-1.md)) | **ECS on Fargate** |
 |---|---|---|
 | Servers | **You** create the EC2 instances (an Auto Scaling Group) | **None.** No instances in your account |
 | Patching the OS and the ECS agent | **You** | AWS |
@@ -38,45 +38,43 @@
 
 ---
 
-## 🧪 jb-lab-3 (Basic): The Same Service, Without Servers
+## 🧪 Lab 3 (Basic): The Same Service, Without Servers
 
 > 💰 **Cost:** the ALB (about $0.0225/hour) plus 2–4 Fargate tasks (about $0.0123/hour each, plus a public IP at $0.005/hour each). Up to 2 hours ≈ **$0.15**. If left running ≈ **$45/month**.
 
-**Goal:** Build a **Fargate-only** cluster and run the `whoami` service behind the ALB from jb-lab-2, then scale it, without creating a single instance.
+**Goal:** Build a **Fargate-only** cluster and run the `whoami` service behind the ALB from Lab 2, then scale it, without creating a single instance.
 
-**Prerequisite:** the ALB `jb-ecs-alb` and the security group `jb-ecs-alb-sg` from [jb-lab-2](jb-lab-2.md). If you deleted them, create them again as in jb-lab-2, Parts A and C.
+**Prerequisite:** the ALB `ecs-alb` and the security group `ecs-alb-sg` from [Lab 2](jb-lab-2.md). If you deleted them, create them again as in Lab 2, Parts A and C.
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and name your resources with the **`jb-`** prefix.
 
 ### Tasks
 
 **Part A: A Fargate-only cluster**
 
-1. Create a cluster **`jb-ecs-fargate`** with infrastructure **Fargate only**.
+1. Create a cluster **`ecs-fargate`** with infrastructure **Fargate only**.
 
 **Part B: A Fargate task definition**
 
-2. Create a task definition **`jb-whoami-fargate`**:
+2. Create a task definition **`whoami-fargate`**:
    - Launch type **AWS Fargate**, OS **Linux/X86_64**, CPU **0.25 vCPU**, memory **0.5 GB**. The network mode is `awsvpc` and can't be changed.
    - Task execution role: **`ecsTaskExecutionRole`**. The Console creates it if it doesn't exist.
    - Container `whoami`, image `traefik/whoami`, container port **80**, environment variable `WHOAMI_NAME` = `fargate`.
 
 **Part C: Networking for the tasks**
 
-3. Create a security group **`jb-fargate-tasks-sg`** that allows **TCP 80 from `jb-ecs-alb-sg`** only.
-4. Create a target group **`jb-fargate-tg`** with target type **IP addresses**, HTTP:80, health check path `/`. Don't register targets.
-5. On the ALB's HTTP:80 listener, add a rule: path **`/fargate*`** → `jb-fargate-tg`.
+3. Create a security group **`fargate-tasks-sg`** that allows **TCP 80 from `ecs-alb-sg`** only.
+4. Create a target group **`fargate-tg`** with target type **IP addresses**, HTTP:80, health check path `/`. Don't register targets.
+5. On the ALB's HTTP:80 listener, add a rule: path **`/fargate*`** → `fargate-tg`.
 
 **Part D: Service**
 
-6. Create a service **`whoami-fargate-svc`** in `jb-ecs-fargate`: launch type **Fargate**, **2 tasks**, the default VPC's subnets, security group `jb-fargate-tasks-sg`, **public IP on**, and load balancing to `jb-ecs-alb` → `jb-fargate-tg`.
+6. Create a service **`whoami-fargate-svc`** in `ecs-fargate`: launch type **Fargate**, **2 tasks**, the default VPC's subnets, security group `fargate-tasks-sg`, **public IP on**, and load balancing to `ecs-alb` → `fargate-tg`.
 
 **Part E: Test and explore**
 
 7. Call `http://<alb-dns>/fargate` several times. What do `Name:`, `Hostname:` and `IP:` show?
-8. Open `jb-fargate-tg` → **Targets**. What's registered: instances or IPs?
+8. Open `fargate-tg` → **Targets**. What's registered: instances or IPs?
 9. Open the cluster's **Infrastructure** tab. How many container instances are there?
 10. In **EC2 → Network interfaces**, find the interfaces that belong to your tasks.
 
@@ -87,22 +85,22 @@
 
 **Part G: Clean up or continue**
 
-13. Continuing to [jb-lab-4](jb-lab-4.md)? Keep everything. Stopping here? Delete the service, the cluster, the listener rule, the target group, the ALB and the security groups.
+13. Continuing to [Lab 4](jb-lab-4.md)? Keep everything. Stopping here? Delete the service, the cluster, the listener rule, the target group, the ALB and the security groups.
 
 ### Questions
 
-- Why does a Fargate task need its own security group, while in jb-lab-1 the security group belonged to the instance?
-- Why does `jb-fargate-tg` use the target type **IP** and not **Instance**?
+- Why does a Fargate task need its own security group, while in Lab 1 the security group belonged to the instance?
+- Why does `fargate-tg` use the target type **IP** and not **Instance**?
 - In the slides: "Scaling? Just increase the task number. No more EC2!" What did you **not** have to do in Part F that you would have had to do with EC2?
 - Why does each task need a public IP in this lab? What would you use in a private subnet?
 
 ---
 
-✅ **Solution:** [jb-lab-3 Solution](jb-lab-3-solution.md)
+✅ **Solution:** [Lab 3 Solution](jb-lab-3-solution.md)
 
 ---
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-4 ➡](jb-lab-4.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 ---
 

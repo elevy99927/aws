@@ -1,6 +1,6 @@
-# 3.02 VPC Basics – Lab Solutions
+# 3.02 VPC and Networking – Lab Solutions
 
-[⬅ Back to 3.02 VPC Basics](README.md)
+[⬅ Back to 3.02 VPC and Networking](README.md)
 
 ---
 
@@ -204,4 +204,4 @@ terraform destroy   # removes all of them
 
 ---
 
-[⬅ Back to 3.02 VPC Basics](README.md)
+[⬅ Back to 3.02 VPC and Networking](README.md)

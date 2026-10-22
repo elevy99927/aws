@@ -1,4 +1,4 @@
-# jb-lab-3 – AWS Fargate: the whoami service on a Fargate-only cluster behind an ALB (/fargate)
+# Lab 3 – AWS Fargate: the whoami service on a Fargate-only cluster behind an ALB (/fargate)
 
 terraform {
   required_providers {
@@ -42,7 +42,7 @@ data "aws_subnets" "tasks" {
 
 # ---------- Security groups: ALB (internet) -> tasks (only from the ALB) ----------
 resource "aws_security_group" "alb" {
-  name        = "jb-ecs-alb-sg"
+  name        = "ecs-alb-sg"
   description = "ECS ALB - HTTP from anywhere"
   vpc_id      = data.aws_vpc.default.id
 
@@ -61,7 +61,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_security_group" "tasks" {
-  name        = "jb-fargate-tasks-sg"
+  name        = "fargate-tasks-sg"
   description = "Fargate tasks - HTTP only from the ALB"
   vpc_id      = data.aws_vpc.default.id
 
@@ -81,7 +81,7 @@ resource "aws_security_group" "tasks" {
 
 # ---------- ALB with a default 404 ----------
 resource "aws_lb" "this" {
-  name               = "jb-ecs-alb"
+  name               = "ecs-alb"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = data.aws_subnets.default.ids
@@ -104,11 +104,11 @@ resource "aws_lb_listener" "http" {
 
 # ---------- Fargate-only cluster and the task execution role ----------
 resource "aws_ecs_cluster" "this" {
-  name = "jb-ecs-fargate"
+  name = "ecs-fargate"
 }
 
 resource "aws_iam_role" "execution" {
-  name = "jb-ecs-task-execution-role"
+  name = "ecs-task-execution-role"
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Principal = { Service = "ecs-tasks.amazonaws.com" }, Action = "sts:AssumeRole" }]
@@ -122,7 +122,7 @@ resource "aws_iam_role_policy_attachment" "execution" {
 
 # ---------- Target group (type ip), listener rule /fargate* ----------
 resource "aws_lb_target_group" "app" {
-  name        = "jb-fargate-tg"
+  name        = "fargate-tg"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
@@ -154,7 +154,7 @@ resource "aws_lb_listener_rule" "app" {
 
 # ---------- Fargate task definition ----------
 resource "aws_ecs_task_definition" "app" {
-  family                   = "jb-whoami-fargate"
+  family                   = "whoami-fargate"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = "256"

@@ -1,4 +1,4 @@
-# jb-lab-1 – ECS on EC2: cluster (Auto Scaling Group of ECS-optimized instances), task definition, service
+# Lab 1 – ECS on EC2: cluster (Auto Scaling Group of ECS-optimized instances), task definition, service
 #   terraform apply -var my_ip_cidr="$(curl -s https://checkip.amazonaws.com)/32"
 
 terraform {
@@ -42,7 +42,7 @@ data "aws_ssm_parameter" "ecs_ami" {
 
 # ---------- Part A: security group ----------
 resource "aws_security_group" "instances" {
-  name        = "jb-ecs-instances-sg"
+  name        = "ecs-instances-sg"
   description = "ECS container instances"
   vpc_id      = data.aws_vpc.default.id
 
@@ -62,7 +62,7 @@ resource "aws_security_group" "instances" {
 
 # ---------- Part B: instance role, cluster, launch template, ASG ----------
 resource "aws_iam_role" "instance" {
-  name = "jb-ecs-instance-role"
+  name = "ecs-instance-role"
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Principal = { Service = "ec2.amazonaws.com" }, Action = "sts:AssumeRole" }]
@@ -75,16 +75,16 @@ resource "aws_iam_role_policy_attachment" "instance" {
 }
 
 resource "aws_iam_instance_profile" "instance" {
-  name = "jb-ecs-instance-role"
+  name = "ecs-instance-role"
   role = aws_iam_role.instance.name
 }
 
 resource "aws_ecs_cluster" "this" {
-  name = "jb-ecs-ec2"
+  name = "ecs-ec2"
 }
 
 resource "aws_launch_template" "ecs" {
-  name          = "jb-ecs-lt"
+  name          = "ecs-lt"
   image_id      = data.aws_ssm_parameter.ecs_ami.value
   instance_type = "t3.small"
 
@@ -102,12 +102,12 @@ resource "aws_launch_template" "ecs" {
 
   tag_specifications {
     resource_type = "instance"
-    tags          = { Name = "jb-ecs-instance" }
+    tags          = { Name = "ecs-instance" }
   }
 }
 
 resource "aws_autoscaling_group" "ecs" {
-  name                = "jb-ecs-asg"
+  name                = "ecs-asg"
   min_size            = 2
   max_size            = 2
   desired_capacity    = 2
@@ -121,7 +121,7 @@ resource "aws_autoscaling_group" "ecs" {
 
 # ---------- Part C: task definition (static port 8080 -> 80) ----------
 resource "aws_ecs_task_definition" "whoami" {
-  family                   = "jb-whoami"
+  family                   = "whoami"
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
   cpu                      = "256"
@@ -147,5 +147,5 @@ resource "aws_ecs_service" "whoami" {
 }
 
 output "find_instance_ips" {
-  value = "aws ec2 describe-instances --filters Name=tag:Name,Values=jb-ecs-instance Name=instance-state-name,Values=running --query 'Reservations[].Instances[].PublicIpAddress' --output text"
+  value = "aws ec2 describe-instances --filters Name=tag:Name,Values=ecs-instance Name=instance-state-name,Values=running --query 'Reservations[].Instances[].PublicIpAddress' --output text"
 }

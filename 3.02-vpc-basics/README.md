@@ -1,4 +1,14 @@
-# 3.02 VPC Basics
+# 3.02 VPC and Networking
+
+## Chapter Contents
+
+| # | Lab | Steps |
+|---|-----|-------|
+| 1 | **Build a VPC with Public Subnets** – a VPC, two public subnets in two Availability Zones, an internet gateway and a route table, step by step in the Console. The network for the labs that follow ([Containers](../3.06-containers/README.md)) | [Lab 1](jb-lab-1.md) |
+
+Next: [Advanced Networking](../3.08-advanced-vpc/README.md) – private subnets, NAT gateways, VPC endpoints, peering and IP address planning.
+
+---
 
 ## Topics
 

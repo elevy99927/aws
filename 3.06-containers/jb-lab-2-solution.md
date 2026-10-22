@@ -1,8 +1,8 @@
-# 3.06 Containers – jb-lab-2 Solution
+# 3.06 Containers – Lab 2 Solution
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
-> Tested in `us-east-1` on the `jb-ecs-ec2` cluster from jb-lab-1 (2 × t3.small).
+> Tested in `us-east-1` on the `ecs-ec2` cluster from Lab 1 (2 × t3.small).
 
 **Jump to:** [Solution 1: Console](#solution-1-console-ui) · [Solution 2: AWS CLI](#solution-2-aws-cli) · [Answers](#answers) · [Solution 3: Terraform](#solution-3-terraform)
 
@@ -12,13 +12,13 @@
 
 ### Part A: Prepare
 
-1. **ECS → jb-ecs-ec2 → Services → whoami-svc → Delete service** (or update it to 0 tasks).
-2. **EC2 → Security groups → Create**: `jb-ecs-alb-sg`, inbound **HTTP 80** from **Anywhere-IPv4**.
-3. Open `jb-ecs-instances-sg` → **Edit inbound rules → Add rule**: **Custom TCP**, port range **32768-65535**, source **`jb-ecs-alb-sg`** (start typing `sg-` and pick the group).
+1. **ECS → ecs-ec2 → Services → whoami-svc → Delete service** (or update it to 0 tasks).
+2. **EC2 → Security groups → Create**: `ecs-alb-sg`, inbound **HTTP 80** from **Anywhere-IPv4**.
+3. Open `ecs-instances-sg` → **Edit inbound rules → Add rule**: **Custom TCP**, port range **32768-65535**, source **`ecs-alb-sg`** (start typing `sg-` and pick the group).
 
 ### Part B: Task definitions with dynamic ports
 
-Create `jb-admin`, then `jb-store` (or create one and use **Create new revision → JSON**):
+Create `admin`, then `store` (or create one and use **Create new revision → JSON**):
 
 - Launch type **EC2**, network mode **bridge**, 0.25 vCPU and 0.5 GB.
 - Container `whoami`, image `traefik/whoami`, **container port 80**, and **leave the host port empty**, which means dynamic.
@@ -26,28 +26,28 @@ Create `jb-admin`, then `jb-store` (or create one and use **Create new revision 
 
 ### Part C: Load balancer
 
-1. **EC2 → Target groups → Create**: *Instances*, name `jb-admin-tg`, HTTP:80, the default VPC, health check path `/`. On *Register targets*, **don't select anything** and choose **Create**. Repeat for `jb-store-tg`.
-2. **EC2 → Load balancers → Create → Application Load Balancer**: name `jb-ecs-alb`, internet-facing, **all** default subnets, security group `jb-ecs-alb-sg`. Set the listener **HTTP:80** with default action **Return fixed response: 404, text/plain, `no route`**.
+1. **EC2 → Target groups → Create**: *Instances*, name `admin-tg`, HTTP:80, the default VPC, health check path `/`. On *Register targets*, **don't select anything** and choose **Create**. Repeat for `store-tg`.
+2. **EC2 → Load balancers → Create → Application Load Balancer**: name `ecs-alb`, internet-facing, **all** default subnets, security group `ecs-alb-sg`. Set the listener **HTTP:80** with default action **Return fixed response: 404, text/plain, `no route`**.
 3. Open the ALB → **Listeners → HTTP:80 → Add rule**:
-   - Priority **10**: condition **Path** `/admin*` → forward to `jb-admin-tg`
-   - Priority **20**: condition **Path** `/store*` → forward to `jb-store-tg`
+   - Priority **10**: condition **Path** `/admin*` → forward to `admin-tg`
+   - Priority **20**: condition **Path** `/store*` → forward to `store-tg`
 
 The listener rules after Part C:
 
 ```
-10       /admin*    forward          jb-admin-tg
-20       /store*    forward          jb-store-tg
+10       /admin*    forward          admin-tg
+20       /store*    forward          store-tg
 default  (default)  fixed-response   no route
 ```
 
 ### Part D: Services
 
-In the cluster → **Services → Create**, launch type **EC2**, family `jb-admin`, name `admin-svc`, desired tasks **2**. Under **Load balancing**:
-- Load balancer type **Application Load Balancer**, **Use an existing load balancer** → `jb-ecs-alb`.
+In the cluster → **Services → Create**, launch type **EC2**, family `admin`, name `admin-svc`, desired tasks **2**. Under **Load balancing**:
+- Load balancer type **Application Load Balancer**, **Use an existing load balancer** → `ecs-alb`.
 - Listener: **Use an existing listener** → `80:HTTP`.
-- Target group: **Use an existing target group** → `jb-admin-tg`.
+- Target group: **Use an existing target group** → `admin-tg`.
 
-Repeat for `store-svc` with `jb-store` and `jb-store-tg`.
+Repeat for `store-svc` with `store` and `store-tg`.
 
 ### Part E: Test
 
@@ -71,15 +71,15 @@ Name: admin
 Hostname: 277a7deb8d47
 IP: 172.17.0.4
 GET /admin HTTP/1.1
-Host: jb-ecs-alb-2072728589.us-east-1.elb.amazonaws.com
+Host: ecs-alb-2072728589.us-east-1.elb.amazonaws.com
 X-Forwarded-For: 203.0.113.10
 X-Forwarded-Port: 80
 X-Forwarded-Proto: http
 ```
 
-**11. Dynamic ports:** the target group registers *instance + random port*. After scaling `admin-svc` to **4** tasks, each instance runs **two** admin tasks on different host ports, which was impossible in jb-lab-1:
+**11. Dynamic ports:** the target group registers *instance + random port*. After scaling `admin-svc` to **4** tasks, each instance runs **two** admin tasks on different host ports, which was impossible in Lab 1:
 
-![jb-admin-tg – dynamic host ports](images/lab2-01-dynamic-ports-targets.jpg)
+![admin-tg – dynamic host ports](images/lab2-01-dynamic-ports-targets.jpg)
 
 ```
 i-068fd3af5bed2744a   32768   healthy
@@ -92,20 +92,20 @@ Each instance now runs **3 tasks** (2 admin + 1 store). With 0.5 GB per task, th
 
 ### Part F: Clean up or continue
 
-Continuing to jb-lab-3? Delete the services `admin-svc` and `store-svc`, the cluster `jb-ecs-ec2`, the listener rules, the target groups `jb-admin-tg` and `jb-store-tg`, and `jb-ecs-instances-sg`, but **keep `jb-ecs-alb`** (with its listener) and **`jb-ecs-alb-sg`**. Otherwise delete those too.
+Continuing to Lab 3? Delete the services `admin-svc` and `store-svc`, the cluster `ecs-ec2`, the listener rules, the target groups `admin-tg` and `store-tg`, and `ecs-instances-sg`, but **keep `ecs-alb`** (with its listener) and **`ecs-alb-sg`**. Otherwise delete those too.
 
 ---
 
 ## Solution 2: AWS CLI
 
-Continue in the terminal from jb-lab-1 (`$VPC_ID`, `$INST_SG`).
+Continue in the terminal from Lab 1 (`$VPC_ID`, `$INST_SG`).
 
 ```bash
 export AWS_PAGER="" AWS_REGION=us-east-1
 
 # Part A
-aws ecs delete-service --cluster jb-ecs-ec2 --service whoami-svc --force
-ALB_SG=$(aws ec2 create-security-group --group-name jb-ecs-alb-sg \
+aws ecs delete-service --cluster ecs-ec2 --service whoami-svc --force
+ALB_SG=$(aws ec2 create-security-group --group-name ecs-alb-sg \
   --description "ECS ALB - HTTP from anywhere" --vpc-id $VPC_ID --query GroupId --output text)
 aws ec2 authorize-security-group-ingress --group-id $ALB_SG --protocol tcp --port 80 --cidr 0.0.0.0/0
 aws ec2 authorize-security-group-ingress --group-id $INST_SG --protocol tcp --port 32768-65535 --source-group $ALB_SG
@@ -114,7 +114,7 @@ aws ec2 authorize-security-group-ingress --group-id $INST_SG --protocol tcp --po
 for SVC in admin store; do
 cat > td-$SVC.json <<JSON
 {
-  "family": "jb-$SVC",
+  "family": "$SVC",
   "networkMode": "bridge",
   "requiresCompatibilities": ["EC2"],
   "cpu": "256",
@@ -132,12 +132,12 @@ aws ecs register-task-definition --cli-input-json file://td-$SVC.json
 done
 
 # Part C: target groups, ALB, listener with a fixed 404, path rules
-ADMIN_TG=$(aws elbv2 create-target-group --name jb-admin-tg --protocol HTTP --port 80 --vpc-id $VPC_ID \
+ADMIN_TG=$(aws elbv2 create-target-group --name admin-tg --protocol HTTP --port 80 --vpc-id $VPC_ID \
   --target-type instance --health-check-path / --query 'TargetGroups[0].TargetGroupArn' --output text)
-STORE_TG=$(aws elbv2 create-target-group --name jb-store-tg --protocol HTTP --port 80 --vpc-id $VPC_ID \
+STORE_TG=$(aws elbv2 create-target-group --name store-tg --protocol HTTP --port 80 --vpc-id $VPC_ID \
   --target-type instance --health-check-path / --query 'TargetGroups[0].TargetGroupArn' --output text)
 SUBNETS=$(aws ec2 describe-subnets --filters Name=default-for-az,Values=true --query 'Subnets[].SubnetId' --output text)
-ALB_ARN=$(aws elbv2 create-load-balancer --name jb-ecs-alb --type application --scheme internet-facing \
+ALB_ARN=$(aws elbv2 create-load-balancer --name ecs-alb --type application --scheme internet-facing \
   --subnets $SUBNETS --security-groups $ALB_SG --query 'LoadBalancers[0].LoadBalancerArn' --output text)
 LISTENER_ARN=$(aws elbv2 create-listener --load-balancer-arn $ALB_ARN --protocol HTTP --port 80 \
   --default-actions 'Type=fixed-response,FixedResponseConfig={StatusCode=404,ContentType=text/plain,MessageBody=no route}' \
@@ -150,11 +150,11 @@ aws elbv2 wait load-balancer-available --load-balancer-arns $ALB_ARN
 ALB_DNS=$(aws elbv2 describe-load-balancers --load-balancer-arns $ALB_ARN --query 'LoadBalancers[0].DNSName' --output text)
 
 # Part D: services that register their tasks in the target groups
-aws ecs create-service --cluster jb-ecs-ec2 --service-name admin-svc --task-definition jb-admin \
+aws ecs create-service --cluster ecs-ec2 --service-name admin-svc --task-definition admin \
   --desired-count 2 --launch-type EC2 --load-balancers targetGroupArn=$ADMIN_TG,containerName=whoami,containerPort=80
-aws ecs create-service --cluster jb-ecs-ec2 --service-name store-svc --task-definition jb-store \
+aws ecs create-service --cluster ecs-ec2 --service-name store-svc --task-definition store \
   --desired-count 2 --launch-type EC2 --load-balancers targetGroupArn=$STORE_TG,containerName=whoami,containerPort=80
-aws ecs wait services-stable --cluster jb-ecs-ec2 --services admin-svc store-svc
+aws ecs wait services-stable --cluster ecs-ec2 --services admin-svc store-svc
 
 # Part E
 curl -s http://$ALB_DNS/admin; curl -s http://$ALB_DNS/store; curl -s -w " [%{http_code}]\n" http://$ALB_DNS/
@@ -162,16 +162,16 @@ aws elbv2 describe-target-health --target-group-arn $ADMIN_TG \
   --query 'TargetHealthDescriptions[].[Target.Id,Target.Port,TargetHealth.State]' --output text
 ```
 
-**Part F: clean up the EC2 part and keep the ALB for jb-lab-3:**
+**Part F: clean up the EC2 part and keep the ALB for Lab 3:**
 
 ```bash
-for S in admin-svc store-svc; do aws ecs delete-service --cluster jb-ecs-ec2 --service $S --force; done
-aws ecs wait services-inactive --cluster jb-ecs-ec2 --services admin-svc store-svc
+for S in admin-svc store-svc; do aws ecs delete-service --cluster ecs-ec2 --service $S --force; done
+aws ecs wait services-inactive --cluster ecs-ec2 --services admin-svc store-svc
 for R in $(aws elbv2 describe-rules --listener-arn $LISTENER_ARN --query 'Rules[?IsDefault==`false`].RuleArn' --output text); do
   aws elbv2 delete-rule --rule-arn $R; done
 aws elbv2 delete-target-group --target-group-arn $ADMIN_TG
 aws elbv2 delete-target-group --target-group-arn $STORE_TG
-# then delete the ASG, cluster, launch template, jb-ecs-instances-sg and the task definitions as in jb-lab-1, Part G
+# then delete the ASG, cluster, launch template, ecs-instances-sg and the task definitions as in Lab 1, Part G
 ```
 
 ---
@@ -185,13 +185,13 @@ aws elbv2 delete-target-group --target-group-arn $STORE_TG
 
 ---
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [jb-lab-3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 
 ## Solution 3: Terraform
 
-[`terraform/jb-lab-2/main.tf`](terraform/jb-lab-2/main.tf) is **standalone**. It builds the EC2 cluster from jb-lab-1 (without the static `whoami-svc`), the ALB with a default 404 and the `/admin*` and `/store*` rules, and the two services with dynamic host ports (`hostPort = 0`). It uses `for_each` to create both services from one block.
+[`terraform/jb-lab-2/main.tf`](terraform/jb-lab-2/main.tf) is **standalone**. It builds the EC2 cluster from Lab 1 (without the static `whoami-svc`), the ALB with a default 404 and the `/admin*` and `/store*` rules, and the two services with dynamic host ports (`hostPort = 0`). It uses `for_each` to create both services from one block.
 
 ```bash
 cd terraform/jb-lab-2

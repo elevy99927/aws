@@ -1,4 +1,4 @@
-# jb-lab-4: a tiny web image. The base image comes from ECR Public (no Docker Hub limits).
+# Lab 4: a tiny web image. The base image comes from ECR Public (no Docker Hub limits).
 FROM public.ecr.aws/nginx/nginx:alpine
 
 ARG VERSION=v1

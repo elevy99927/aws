@@ -1,5 +1,5 @@
-# jb-lab-2 – ECS service load balancing: two services (admin, store) with dynamic host ports
-# behind one ALB with path-based routing. Standalone: it also builds the EC2 cluster from jb-lab-1.
+# Lab 2 – ECS service load balancing: two services (admin, store) with dynamic host ports
+# behind one ALB with path-based routing. Standalone: it also builds the EC2 cluster from Lab 1.
 
 terraform {
   required_providers {
@@ -37,7 +37,7 @@ data "aws_ssm_parameter" "ecs_ami" {
 
 # ---------- Part A: security group ----------
 resource "aws_security_group" "instances" {
-  name        = "jb-ecs-instances-sg"
+  name        = "ecs-instances-sg"
   description = "ECS container instances"
   vpc_id      = data.aws_vpc.default.id
 
@@ -58,7 +58,7 @@ resource "aws_security_group" "instances" {
 
 # ---------- Part B: instance role, cluster, launch template, ASG ----------
 resource "aws_iam_role" "instance" {
-  name = "jb-ecs-instance-role"
+  name = "ecs-instance-role"
   assume_role_policy = jsonencode({
     Version   = "2012-10-17"
     Statement = [{ Effect = "Allow", Principal = { Service = "ec2.amazonaws.com" }, Action = "sts:AssumeRole" }]
@@ -71,16 +71,16 @@ resource "aws_iam_role_policy_attachment" "instance" {
 }
 
 resource "aws_iam_instance_profile" "instance" {
-  name = "jb-ecs-instance-role"
+  name = "ecs-instance-role"
   role = aws_iam_role.instance.name
 }
 
 resource "aws_ecs_cluster" "this" {
-  name = "jb-ecs-ec2"
+  name = "ecs-ec2"
 }
 
 resource "aws_launch_template" "ecs" {
-  name          = "jb-ecs-lt"
+  name          = "ecs-lt"
   image_id      = data.aws_ssm_parameter.ecs_ami.value
   instance_type = "t3.small"
 
@@ -98,12 +98,12 @@ resource "aws_launch_template" "ecs" {
 
   tag_specifications {
     resource_type = "instance"
-    tags          = { Name = "jb-ecs-instance" }
+    tags          = { Name = "ecs-instance" }
   }
 }
 
 resource "aws_autoscaling_group" "ecs" {
-  name                = "jb-ecs-asg"
+  name                = "ecs-asg"
   min_size            = 2
   max_size            = 2
   desired_capacity    = 2
@@ -117,7 +117,7 @@ resource "aws_autoscaling_group" "ecs" {
 
 # ---------- ALB security group ----------
 resource "aws_security_group" "alb" {
-  name        = "jb-ecs-alb-sg"
+  name        = "ecs-alb-sg"
   description = "ECS ALB - HTTP from anywhere"
   vpc_id      = data.aws_vpc.default.id
 
@@ -148,7 +148,7 @@ data "aws_subnets" "all_default" {
 
 # ---------- ALB, listener (default 404) and path rules ----------
 resource "aws_lb" "this" {
-  name               = "jb-ecs-alb"
+  name               = "ecs-alb"
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb.id]
   subnets            = data.aws_subnets.all_default.ids
@@ -175,7 +175,7 @@ locals {
 
 resource "aws_lb_target_group" "svc" {
   for_each    = local.services
-  name        = "jb-${each.key}-tg"
+  name        = "${each.key}-tg"
   port        = 80
   protocol    = "HTTP"
   vpc_id      = data.aws_vpc.default.id
@@ -209,7 +209,7 @@ resource "aws_lb_listener_rule" "svc" {
 # ---------- Task definitions with dynamic host ports (hostPort = 0) ----------
 resource "aws_ecs_task_definition" "svc" {
   for_each                 = local.services
-  family                   = "jb-${each.key}"
+  family                   = each.key
   network_mode             = "bridge"
   requires_compatibilities = ["EC2"]
   cpu                      = "256"

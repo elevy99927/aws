@@ -12,7 +12,7 @@
 
 ---
 
-[⬅ Previous: 2.03 Network & Application Protection, Compliance](../2.03-network-application-protection-compliance/README.md) | [🏠 Home](../README.md) | [Next: 3.02 VPC Basics ➡](../3.02-vpc-basics/README.md)
+[⬅ Previous: 2.03 Network & Application Protection, Compliance](../2.03-network-application-protection-compliance/README.md) | [🏠 Home](../README.md) | [Next: 3.02 VPC and Networking ➡](../3.02-vpc-basics/README.md)
 
 ---
 ## Contact

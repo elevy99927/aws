@@ -8,11 +8,11 @@ This chapter teaches how to run containers on AWS with **Amazon ECS** (Elastic C
 
 | # | Topic | Lab | Solution |
 |---|-------|-----|----------|
-| 1 | **ECS on EC2: Cluster, Task Definition and Service** – clusters, the ECS agent, task definitions, port mapping, services, IAM roles in ECS | [jb-lab-1](jb-lab-1.md) | [Solution](jb-lab-1-solution.md) |
-| 2 | **ECS Service Load Balancing** – ALB, dynamic host port mapping, path-based routing | [jb-lab-2](jb-lab-2.md) | [Solution](jb-lab-2-solution.md) |
-| 3 | **AWS Fargate** – serverless containers, `awsvpc` networking, EC2 vs. Fargate | [jb-lab-3](jb-lab-3.md) | [Solution](jb-lab-3-solution.md) |
-| 4 | **Amazon ECR** – build, push and deploy your own image | [jb-lab-4](jb-lab-4.md) | [Solution](jb-lab-4-solution.md) |
-| 5 | **ECS Service Auto Scaling** – scale tasks automatically with target tracking | [jb-lab-5](jb-lab-5.md) | [Solution](jb-lab-5-solution.md) |
+| 1 | **ECS on EC2: Cluster, Task Definition and Service** – clusters, the ECS agent, task definitions, port mapping, services, IAM roles in ECS | [Lab 1](jb-lab-1.md) | [Solution](jb-lab-1-solution.md) |
+| 2 | **ECS Service Load Balancing** – ALB, dynamic host port mapping, path-based routing | [Lab 2](jb-lab-2.md) | [Solution](jb-lab-2-solution.md) |
+| 3 | **AWS Fargate** – serverless containers, `awsvpc` networking, EC2 vs. Fargate | [Lab 3](jb-lab-3.md) | [Solution](jb-lab-3-solution.md) |
+| 4 | **Amazon ECR** – build, push and deploy your own image | [Lab 4](jb-lab-4.md) | [Solution](jb-lab-4-solution.md) |
+| 5 | **ECS Service Auto Scaling** – scale tasks automatically with target tracking | [Lab 5](jb-lab-5.md) | [Solution](jb-lab-5-solution.md) |
 
 Each lab has a solution in three ways: **Console (UI)**, **AWS CLI** and **Terraform**. The labs build on each other, so do them in order.
 
@@ -37,8 +37,8 @@ Each lab has a solution in three ways: **Console (UI)**, **AWS CLI** and **Terra
 | Service | In one line |
 |---------|-------------|
 | **EC2 + Docker** | Install Docker on an instance yourself. Full control, full responsibility |
-| **Amazon ECS on EC2** | ECS orchestrates containers on EC2 instances in your account ([jb-lab-1](jb-lab-1.md)) |
-| **Amazon ECS on Fargate** | ECS orchestrates containers on serverless compute, with no instances ([jb-lab-3](jb-lab-3.md)) |
+| **Amazon ECS on EC2** | ECS orchestrates containers on EC2 instances in your account ([Lab 1](jb-lab-1.md)) |
+| **Amazon ECS on Fargate** | ECS orchestrates containers on serverless compute, with no instances ([Lab 3](jb-lab-3.md)) |
 | **Amazon EKS** | Managed Kubernetes, on EC2 or Fargate |
 | **AWS App Runner** | Give it an image or code, and get an HTTPS web service |
 | **AWS Lambda** (container image) | A function packaged as an image of up to 10 GB ([3.11](../3.11-lambda/README.md)) |
