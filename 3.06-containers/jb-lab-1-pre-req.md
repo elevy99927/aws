@@ -4,6 +4,10 @@
 
 > 🏫 Do this **once, before jb-lab-1**, if you work in the John Bryce class account. In a private account you can skip it: the labs use the **default VPC**, which every account has.
 
+**▶ Video walkthrough** (6 min):
+
+[![Video: 3.06 Containers – Prerequisites: The Network](https://img.youtube.com/vi/SleiMAS1Tb4/maxresdefault.jpg)](https://youtu.be/SleiMAS1Tb4)
+
 The class account has **no VPC in `us-east-1`**, not even a default one. The 3.06 labs need a VPC with **public subnets in two Availability Zones** (the ALB in jb-lab-2 needs two AZs). You build it yourself, one piece at a time:
 
 ```
