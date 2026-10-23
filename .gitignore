@@ -1,5 +1,12 @@
 .terraform*
+.env
 terraform.tfstate*
 node_modules
 *.zip
 /ssh/
+.DS_Store
+
+old/*
+limits.md
+3.05-lambda/artifacts/jb-lab-2/build/
+errors/
