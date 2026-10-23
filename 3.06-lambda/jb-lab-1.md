@@ -1,12 +1,12 @@
-# 3.06 AWS Lambda – jb-lab-1: Lambda Runs Functions
+# 3.06 AWS Lambda – Lab 1: Lambda Runs Functions
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > 📚 Based on the course slides *AWS Lambda – What it's all about*: "So what is it?", "Lambda runs functions" and "How does it work?" (event source → function).
 
 ---
 
-## 🧪 jb-lab-1 (Basic): Lambda Runs Functions
+## 🧪 lab-1 (Basic): Lambda Runs Functions
 
 **Goal:** See how a Lambda function works from the inside. A function **runs only when it's invoked**, it receives an **event** (JSON) and a **context**, and it returns a **response**. Everything it prints goes to **CloudWatch Logs**. You'll invoke the same function with different events, make it fail, and invoke it both **synchronously** and **asynchronously**.
 
@@ -36,7 +36,7 @@ def lambda_handler(event, context):
     elif action == "upper":
         result = event.get("text", "").upper()
     else:
-        result = "Hello from jb-lab-1!"
+        result = "Hello from Lambda!"
 
     print(f"action={action} result={result} remaining_ms={context.get_remaining_time_in_millis()}")
 
@@ -59,8 +59,8 @@ def lambda_handler(event, context):
 
 **Part A: Create the function**
 
-1. In **IAM → Roles → Create role**, choose **AWS service → Lambda**, attach the AWS managed policy **`AWSLambdaBasicExecutionRole`**, and name the role **`lab-jb1-role`**.
-2. In **Lambda → Create function → Author from scratch**, create a function named **`jb-lab-1`** with runtime **Python 3.14**. Under *Change default execution role*, choose **Use an existing role → `lab-jb1-role`**.
+1. In **IAM → Roles → Create role**, choose **AWS service → Lambda**, attach the AWS managed policy **`AWSLambdaBasicExecutionRole`**, and name the role **`lab-1-role`**.
+2. In **Lambda → Create function → Author from scratch**, create a function named **`lab-1`** with runtime **Python 3.14**. Under *Change default execution role*, choose **Use an existing role → `lab-1-role`**.
 3. Replace the code in `lambda_function.py` with the lab code, and choose **Deploy**.
 
 **Part B: One function, many events**
@@ -84,7 +84,7 @@ def lambda_handler(event, context):
 
 **Part F: Clean up**
 
-11. Delete the function `jb-lab-1`, its log group `/aws/lambda/jb-lab-1`, and its execution role.
+11. Delete the function `lab-1`, its log group `/aws/lambda/lab-1`, and its execution role.
 
 ---
 
@@ -98,11 +98,11 @@ def lambda_handler(event, context):
 
 ---
 
-✅ **Solution:** [jb-lab-1 Solution](jb-lab-1-solution.md)
+✅ **Solution:** [Lab 1 Solution](jb-lab-1-solution.md)
 
 ---
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

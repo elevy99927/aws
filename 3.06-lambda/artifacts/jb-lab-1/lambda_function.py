@@ -19,7 +19,7 @@ def lambda_handler(event, context):
     elif action == "upper":
         result = event.get("text", "").upper()
     else:
-        result = "Hello from jb-lab-1!"
+        result = "Hello from Lambda!"
 
     print(f"action={action} result={result} remaining_ms={context.get_remaining_time_in_millis()}")
 

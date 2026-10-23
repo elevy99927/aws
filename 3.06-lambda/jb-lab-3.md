@@ -1,12 +1,12 @@
-# 3.06 AWS Lambda – jb-lab-3: Limits and Pricing
+# 3.06 AWS Lambda – Lab 3: Limits and Pricing
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 > 📚 Based on the course slides *Limitations of AWS Lambda* and *Pricing in AWS Lambda*. The slides are from 2020, and some of their numbers have changed since. In this lab you **measure** the current behavior yourself.
 
 ---
 
-## 🧪 jb-lab-3 (Basic): Limits and Pricing
+## 🧪 lab-3 (Basic): Limits and Pricing
 
 **Goal:** Measure how **memory** affects **speed** and **cost**, hit the **timeout** limit on purpose, and calculate what a function costs per month.
 
@@ -24,7 +24,7 @@ def lambda_handler(event, context):
     sleep_s = float(event.get("sleep", 0))      # waiting (no CPU), e.g. a slow API call
 
     start = time.time()
-    digest = b"jb-lab-3"
+    digest = b"lab-3"
     for _ in range(rounds):
         digest = hashlib.sha256(digest).digest()
     time.sleep(sleep_s)
@@ -54,8 +54,8 @@ Create 2 tests Events:
 
 **Part A: Create the function**
 
-1. Create an execution role **`lab-jb3-role`** for Lambda with `AWSLambdaBasicExecutionRole`, as in [jb-lab-1](jb-lab-1.md).
-2. Create a function **`jb-lab-3-benchmark`** with Python 3.14, the existing role `lab-jb3-role`, and the lab code. Keep the defaults: **128 MB** memory and a **3-second** timeout.
+1. Create an execution role **`lab-3-role`** for Lambda with `AWSLambdaBasicExecutionRole`, as in [Lab 1](jb-lab-1.md).
+2. Create a function **`lab-3-benchmark`** with Python 3.14, the existing role `lab-3-role`, and the lab code. Keep the defaults: **128 MB** memory and a **3-second** timeout.
 
 **Part B: Measure at 128 MB**
 
@@ -79,7 +79,7 @@ Create 2 tests Events:
 
 **Part F: Clean up**
 
-11. Delete the function `jb-lab-3-benchmark`, its log group `/aws/lambda/jb-lab-3-benchmark`, and its execution role.
+11. Delete the function `lab-3-benchmark`, its log group `/aws/lambda/lab-3-benchmark`, and its execution role.
 
 ---
 
@@ -93,11 +93,11 @@ Create 2 tests Events:
 
 ---
 
-✅ **Solution:** [jb-lab-3 Solution](jb-lab-3-solution.md)
+✅ **Solution:** [Lab 3 Solution](jb-lab-3-solution.md)
 
 ---
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 ---
 

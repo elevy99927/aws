@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – jb-lab-3 Solution
+# 3.06 AWS Lambda – Lab 3 Solution
 
-[⬅ jb-lab-3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 > Tested in `us-east-1` with Python 3.14 on x86_64. Your numbers will differ a little, but the ratios will be similar.
 
@@ -10,7 +10,7 @@
 
 ## Part A: Create the function
 
-**Console:** create the role `lab-jb3-role` as in [jb-lab-1](jb-lab-1-solution.md#part-a-create-the-function). Then **Lambda → Create function**: `jb-lab-3-benchmark`, **Python 3.14**, **Use an existing role → `lab-jb3-role`**. Paste the code → **Deploy**. Create the test events `cpu` and `slow` from the files.
+**Console:** create the role `lab-3-role` as in [Lab 1](jb-lab-1-solution.md#part-a-create-the-function). Then **Lambda → Create function**: `lab-3-benchmark`, **Python 3.14**, **Use an existing role → `lab-3-role`**. Paste the code → **Deploy**. Create the test events `cpu` and `slow` from the files.
 
 **CLI:**
 
@@ -19,20 +19,20 @@ export AWS_PAGER="" AWS_REGION=us-east-1
 cat > trust.json <<'JSON'
 { "Version": "2012-10-17", "Statement": [{ "Effect": "Allow", "Principal": { "Service": "lambda.amazonaws.com" }, "Action": "sts:AssumeRole" }] }
 JSON
-ROLE_ARN=$(aws iam create-role --role-name lab-jb3-role --assume-role-policy-document file://trust.json \
+ROLE_ARN=$(aws iam create-role --role-name lab-3-role --assume-role-policy-document file://trust.json \
   --query Role.Arn --output text)
-aws iam attach-role-policy --role-name lab-jb3-role \
+aws iam attach-role-policy --role-name lab-3-role \
   --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 sleep 10
 
 cd artifacts/jb-lab-3 && zip function.zip lambda_function.py
-aws lambda create-function --function-name jb-lab-3-benchmark --runtime python3.14 --role $ROLE_ARN \
+aws lambda create-function --function-name lab-3-benchmark --runtime python3.14 --role $ROLE_ARN \
   --handler lambda_function.lambda_handler --zip-file fileb://function.zip
-aws lambda wait function-active-v2 --function-name jb-lab-3-benchmark
+aws lambda wait function-active-v2 --function-name lab-3-benchmark
 
 # A helper: invoke with an event file and print the response and the REPORT line
 run() {
-  aws lambda invoke --function-name jb-lab-3-benchmark --cli-binary-format raw-in-base64-out \
+  aws lambda invoke --function-name lab-3-benchmark --cli-binary-format raw-in-base64-out \
     --payload file://events/$1.json --log-type Tail out.json --query LogResult --output text \
     | base64 --decode | grep REPORT
   cat out.json; echo
@@ -70,8 +70,8 @@ The first run was a **cold start** (`Init Duration`, which is also billed: 1247 
 **5.** **Configuration → General configuration → Edit → Memory: 1024 MB → Save**, then run `cpu` twice:
 
 ```bash
-aws lambda update-function-configuration --function-name jb-lab-3-benchmark --memory-size 1024
-aws lambda wait function-updated-v2 --function-name jb-lab-3-benchmark
+aws lambda update-function-configuration --function-name lab-3-benchmark --memory-size 1024
+aws lambda wait function-updated-v2 --function-name lab-3-benchmark
 run cpu; run cpu
 ```
 
@@ -113,8 +113,8 @@ Lambda **stopped** the function after 3 seconds, before it could return. The inv
 **8.** **Configuration → General configuration → Edit → Timeout: 10 sec → Save**, and run `slow` again:
 
 ```bash
-aws lambda update-function-configuration --function-name jb-lab-3-benchmark --timeout 10
-aws lambda wait function-updated-v2 --function-name jb-lab-3-benchmark
+aws lambda update-function-configuration --function-name lab-3-benchmark --timeout 10
+aws lambda wait function-updated-v2 --function-name lab-3-benchmark
 run slow
 ```
 
@@ -142,16 +142,16 @@ REPORT ... Duration: 5002.37 ms  Billed Duration: 5112 ms  Memory Size: 1024 MB 
 
 ## Part F: Clean up
 
-**Console:** delete the function `jb-lab-3-benchmark`, the log group `/aws/lambda/jb-lab-3-benchmark`, and the role `lab-jb3-role`.
+**Console:** delete the function `lab-3-benchmark`, the log group `/aws/lambda/lab-3-benchmark`, and the role `lab-3-role`.
 
 **CLI:**
 
 ```bash
-aws lambda delete-function --function-name jb-lab-3-benchmark
-aws logs delete-log-group --log-group-name /aws/lambda/jb-lab-3-benchmark
-aws iam detach-role-policy --role-name lab-jb3-role \
+aws lambda delete-function --function-name lab-3-benchmark
+aws logs delete-log-group --log-group-name /aws/lambda/lab-3-benchmark
+aws iam detach-role-policy --role-name lab-3-role \
   --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-aws iam delete-role --role-name lab-jb3-role
+aws iam delete-role --role-name lab-3-role
 ```
 
 ---
@@ -173,7 +173,7 @@ aws iam delete-role --role-name lab-jb3-role
 
 ---
 
-[⬅ jb-lab-3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 ---
 

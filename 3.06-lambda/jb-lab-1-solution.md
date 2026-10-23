@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – jb-lab-1 Solution
+# 3.06 AWS Lambda – Lab 1 Solution
 
-[⬅ jb-lab-1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > Tested in `us-east-1` with Python 3.14, 128 MB (the default) and a 3-second timeout (the default).
 
@@ -12,8 +12,8 @@
 
 **Console:**
 
-1. **IAM → Roles → Create role** → *AWS service*, use case **Lambda** → **Next** → select **`AWSLambdaBasicExecutionRole`** → **Next** → name **`lab-jb1-role`** → **Create role**.
-2. **Lambda → Create function** → *Author from scratch*: name **`jb-lab-1`**, runtime **Python 3.14**, architecture x86_64. Expand **Change default execution role** → **Use an existing role** → `lab-jb1-role` → **Create function**.
+1. **IAM → Roles → Create role** → *AWS service*, use case **Lambda** → **Next** → select **`AWSLambdaBasicExecutionRole`** → **Next** → name **`lab-1-role`** → **Create role**.
+2. **Lambda → Create function** → *Author from scratch*: name **`lab-1`**, runtime **Python 3.14**, architecture x86_64. Expand **Change default execution role** → **Use an existing role** → `lab-1-role` → **Create function**.
 3. **Code** tab: replace `lambda_function.py` with the lab code → **Deploy**.
 
 **CLI:**
@@ -23,16 +23,16 @@ export AWS_PAGER="" AWS_REGION=us-east-1
 cat > trust.json <<'JSON'
 { "Version": "2012-10-17", "Statement": [{ "Effect": "Allow", "Principal": { "Service": "lambda.amazonaws.com" }, "Action": "sts:AssumeRole" }] }
 JSON
-ROLE_ARN=$(aws iam create-role --role-name lab-jb1-role --assume-role-policy-document file://trust.json \
+ROLE_ARN=$(aws iam create-role --role-name lab-1-role --assume-role-policy-document file://trust.json \
   --query Role.Arn --output text)
-aws iam attach-role-policy --role-name lab-jb1-role \
+aws iam attach-role-policy --role-name lab-1-role \
   --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 sleep 10   # give IAM a few seconds before Lambda uses the new role
 
 cd artifacts/jb-lab-1 && zip function.zip lambda_function.py
-aws lambda create-function --function-name jb-lab-1 --runtime python3.14 --role $ROLE_ARN \
+aws lambda create-function --function-name lab-1 --runtime python3.14 --role $ROLE_ARN \
   --handler lambda_function.lambda_handler --zip-file fileb://function.zip
-aws lambda wait function-active-v2 --function-name jb-lab-1
+aws lambda wait function-active-v2 --function-name lab-1
 ```
 
 > **The handler** `lambda_function.lambda_handler` means *file* `lambda_function.py`, *function* `lambda_handler`. If you rename either one, update the handler too.
@@ -49,7 +49,7 @@ aws lambda wait function-active-v2 --function-name jb-lab-1
 
 ```bash
 for E in add upper empty; do
-  aws lambda invoke --function-name jb-lab-1 --cli-binary-format raw-in-base64-out \
+  aws lambda invoke --function-name lab-1 --cli-binary-format raw-in-base64-out \
     --payload file://events/$E.json --log-type Tail out-$E.json \
     --query 'LogResult' --output text | base64 --decode
   cat out-$E.json; echo
@@ -60,14 +60,14 @@ done
 |-------|----------|
 | `add` | `{"action": "add", "result": 42}` |
 | `upper` | `{"action": "upper", "result": "AWS LAMBDA RUNS FUNCTIONS"}` |
-| `empty` | `{"action": "hello", "result": "Hello from jb-lab-1!"}` |
+| `empty` | `{"action": "hello", "result": "Hello from Lambda!"}` |
 
 The log of the **first** invocation (`add`):
 
 ```
 START RequestId: aab5e4bf-74a9-4bf6-90b2-231e43b8d636 Version: $LATEST
 event received: {"action": "add", "numbers": [10, 20, 12]}
-function=jb-lab-1 memory=128MB request_id=aab5e4bf-74a9-4bf6-90b2-231e43b8d636
+function=lab-1 memory=128MB request_id=aab5e4bf-74a9-4bf6-90b2-231e43b8d636
 action=add result=42 remaining_ms=2999
 END RequestId: aab5e4bf-74a9-4bf6-90b2-231e43b8d636
 REPORT RequestId: aab5e4bf-...  Duration: 2.05 ms  Billed Duration: 103 ms  Memory Size: 128 MB  Max Memory Used: 39 MB  Init Duration: 100.44 ms
@@ -88,7 +88,7 @@ REPORT RequestId: aab5e4bf-...  Duration: 2.05 ms  Billed Duration: 103 ms  Memo
 **CLI:**
 
 ```bash
-aws lambda invoke --function-name jb-lab-1 --cli-binary-format raw-in-base64-out \
+aws lambda invoke --function-name lab-1 --cli-binary-format raw-in-base64-out \
   --payload file://events/bad-add.json out-bad.json
 cat out-bad.json
 ```
@@ -121,7 +121,7 @@ The `event received:` line is there too, so you can see exactly which input brok
 **8. Synchronous** (the default, `RequestResponse`): the CLI waits for the function and gets its return value:
 
 ```bash
-aws lambda invoke --function-name jb-lab-1 --cli-binary-format raw-in-base64-out \
+aws lambda invoke --function-name lab-1 --cli-binary-format raw-in-base64-out \
   --payload file://events/add.json response.json
 cat response.json
 ```
@@ -137,7 +137,7 @@ cat response.json
 **9. Asynchronous** (`Event`): Lambda puts the event in a queue and answers right away:
 
 ```bash
-aws lambda invoke --function-name jb-lab-1 --invocation-type Event --cli-binary-format raw-in-base64-out \
+aws lambda invoke --function-name lab-1 --invocation-type Event --cli-binary-format raw-in-base64-out \
   --payload file://events/upper.json async.json
 cat async.json
 ```
@@ -151,7 +151,7 @@ cat async.json
 `async.json` is **empty**. **202 Accepted** means "the event was received", not "the function succeeded". The function ran a moment later, and its result is only in the **logs**:
 
 ```bash
-aws logs tail /aws/lambda/jb-lab-1 --since 5m --format short
+aws logs tail /aws/lambda/lab-1 --since 5m --format short
 ```
 
 ```
@@ -165,16 +165,16 @@ aws logs tail /aws/lambda/jb-lab-1 --since 5m --format short
 
 ## Part E: Logs
 
-**Console:** in the function, **Monitor → View CloudWatch logs**. The log group is **`/aws/lambda/jb-lab-1`**. Each **log stream** belongs to one execution environment. In this test, all the invocations (CLI, asynchronous and Console) reused the **same warm environment**, so they're all in **one stream**:
+**Console:** in the function, **Monitor → View CloudWatch logs**. The log group is **`/aws/lambda/lab-1`**. Each **log stream** belongs to one execution environment. In this test, all the invocations (CLI, asynchronous and Console) reused the **same warm environment**, so they're all in **one stream**:
 
-![/aws/lambda/jb-lab-1 – one log stream with all invocations](images/jb1-03-cloudwatch-log-stream.jpg)
+![/aws/lambda/lab-1 – one log stream with all invocations](images/jb1-03-cloudwatch-log-stream.jpg)
 
 Every invocation has the same frame: `START` → your `print` lines → `END` → `REPORT` (duration, billed duration, memory). The failed invocation also has the `[ERROR]` line.
 
 **CLI:** search all streams for one phrase:
 
 ```bash
-aws logs filter-log-events --log-group-name /aws/lambda/jb-lab-1 \
+aws logs filter-log-events --log-group-name /aws/lambda/lab-1 \
   --filter-pattern '"event received"' --query 'events[].message' --output text
 ```
 
@@ -182,16 +182,16 @@ aws logs filter-log-events --log-group-name /aws/lambda/jb-lab-1 \
 
 ## Part F: Clean up
 
-**Console:** **Lambda → Functions → `jb-lab-1` → Actions → Delete**. Then **CloudWatch → Log groups → `/aws/lambda/jb-lab-1` → Delete**, and **IAM → Roles → `lab-jb1-role` → Delete**.
+**Console:** **Lambda → Functions → `lab-1` → Actions → Delete**. Then **CloudWatch → Log groups → `/aws/lambda/lab-1` → Delete**, and **IAM → Roles → `lab-1-role` → Delete**.
 
 **CLI:**
 
 ```bash
-aws lambda delete-function --function-name jb-lab-1
-aws logs delete-log-group --log-group-name /aws/lambda/jb-lab-1
-aws iam detach-role-policy --role-name lab-jb1-role \
+aws lambda delete-function --function-name lab-1
+aws logs delete-log-group --log-group-name /aws/lambda/lab-1
+aws iam detach-role-policy --role-name lab-1-role \
   --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-aws iam delete-role --role-name lab-jb1-role
+aws iam delete-role --role-name lab-1-role
 ```
 
 > Deleting the function does **not** delete its log group. Log groups have no retention by default (*Never expire*), so delete them yourself.
@@ -208,7 +208,7 @@ aws iam delete-role --role-name lab-jb1-role
 
 ---
 
-[⬅ jb-lab-1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 
