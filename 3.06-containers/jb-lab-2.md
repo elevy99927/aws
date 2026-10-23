@@ -32,17 +32,9 @@ From the slides, still true today:
 
 In [Lab 1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per instance. With a load balancer, set **no host port** (`hostPort: 0`). Docker then picks a **random free host port** (an ephemeral port, typically from 32768 to 65535) for each task. ECS registers *instance + port* in the target group, so the ALB knows where each task is.
 
-```
-                                          ┌──────── EC2 instance A ─────────┐
-                     /admin/*  ──────────►│  :32689 → admin task :80        │
-                                          │  :32657 → store task :80        │
-  www ──► Application Load Balancer       └─────────────────────────────────┘
-          (one listener, port 80)         ┌──────── EC2 instance B ─────────┐
-                     /store/*  ──────────►│  :32667 → admin task :80        │
-                                          │  :32713 → store task :80        │
-                                          └─────────────────────────────────┘
-                    random host ports per task  →  "dynamic port forwarding"
-```
+![Dynamic host port mapping: a browser sends requests to the ALB ecs-alb, whose HTTP:80 listener routes /admin* to the target group admin-tg and /store* to store-tg. Two EC2 instances in us-east-1a and us-east-1b each run one admin task and one store task, and each task maps its own random host port (for example 32789) to container port 80. The target groups list each instance with its task's port, and the instances' security group ecs-instances-sg allows ports 32768-65535 only from ecs-alb-sg](images/jb-lab-2.jpg)
+
+<sub>Diagram source: [images/jb-lab-2.drawio](images/jb-lab-2.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
 > 🔐 Because the host ports are random, the **instances' security group** must allow the ephemeral port range **from the ALB's security group**, not from the internet.
 
