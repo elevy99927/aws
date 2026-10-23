@@ -1,6 +1,6 @@
-# 3.06 Serverless: AWS Lambda – Lab 1 Solution
+# 3.05 Serverless: AWS Lambda – Lab 1 Solution
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](LAB2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](LAB2.md)
 
 > Tested in `us-east-1` with the **Python 3.14** runtime.
 
@@ -129,7 +129,7 @@ aws iam attach-role-policy --role-name lab-lambda-hello-role \
   --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
 sleep 10   # IAM roles take a few seconds to become usable
 
-# Package and create the function (run from the module folder, 3.06-lambda/)
+# Package and create the function (run from the module folder, 3.05-lambda/)
 (cd artifacts/hello && zip -q ../../hello.zip lambda_function.py)
 aws lambda create-function --function-name lab-hello \
   --runtime python3.14 --handler lambda_function.lambda_handler \
@@ -174,4 +174,4 @@ aws iam delete-role --role-name lab-lambda-hello-role
 
 ---
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](LAB2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](LAB2.md)

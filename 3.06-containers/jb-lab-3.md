@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 3: AWS Fargate
+# 3.06 Containers – Lab 3: AWS Fargate
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 > 📚 Based on the course slides *Fargate – The almighty*: what Fargate is, ECS with EC2 vs. ECS with Fargate, and the follow-through *Building a new cluster using Fargate*.
 
@@ -100,7 +100,7 @@
 
 ---
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 ---
 

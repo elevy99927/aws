@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 3: Limits and Pricing
+# 3.05 AWS Lambda – Lab 3: Limits and Pricing
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
 
 > 📚 Based on the course slides *Limitations of AWS Lambda* and *Pricing in AWS Lambda*. The slides are from 2020, and some of their numbers have changed since. In this lab you **measure** the current behavior yourself.
 
@@ -97,7 +97,7 @@ Create 2 tests Events:
 
 ---
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
 
 ---
 

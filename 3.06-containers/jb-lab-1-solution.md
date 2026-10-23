@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 1 Solution
+# 3.06 Containers – Lab 1 Solution
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > Tested in `us-east-1` on 2 × t3.small with the ECS-optimized Amazon Linux 2023 AMI (ECS agent 1.108.0, Docker 25.0.16) and `traefik/whoami`.
 
@@ -10,7 +10,7 @@
 
 ## Solution 1: Console (UI)
 
-> The lab runs in **`ecs-vpc`**, the network from the [Networking lab](../2.04-vpc-and-networking/jb-lab-1.md), with the subnets `ecs-public-1a` and `ecs-public-1b`.
+> The lab runs in **`ecs-vpc`**, the network from the [Networking lab](../2.04-vpc-and-networking/lab-1.md), with the subnets `ecs-public-1a` and `ecs-public-1b`.
 
 ### Part A: Security group
 
@@ -398,7 +398,7 @@ aws iam delete-role --role-name ecsInstanceRole
 
 ---
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 3 Solution
+# 3.05 AWS Lambda – Lab 3 Solution
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
 
 > Tested in `us-east-1` with Python 3.14 on x86_64. Your numbers will differ a little, but the ratios will be similar.
 
@@ -169,11 +169,11 @@ aws iam delete-role --role-name lab-3-role
   | Memory | 128 MB – 1,536 MB | **128 MB – 10,240 MB** (10 GB), in 1 MB steps |
   | Billing granularity | Rounded up to 100 ms | **Per 1 ms** (since December 2020) |
 
-- **Workloads not to run on Lambda:** anything that runs **longer than 15 minutes** (long video encoding, large batch/ETL jobs, ML training), workloads that need a **GPU**, **long-lived connections or state** (game servers, servers that keep sockets open), and **steady, high, round-the-clock traffic**, where always-on servers or containers are cheaper (see [3.13 Containers](../3.13-containers/README.md)).
+- **Workloads not to run on Lambda:** anything that runs **longer than 15 minutes** (long video encoding, large batch/ETL jobs, ML training), workloads that need a **GPU**, **long-lived connections or state** (game servers, servers that keep sockets open), and **steady, high, round-the-clock traffic**, where always-on servers or containers are cheaper (see [3.06 Containers](../3.06-containers/README.md)).
 
 ---
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
 
 ---
 

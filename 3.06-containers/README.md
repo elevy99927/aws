@@ -1,4 +1,4 @@
-# 3.13 Containers: ECR, ECS & Fargate
+# 3.06 Containers: ECR, ECS & Fargate
 
 > 📚 Based on the course slides *Welcome to the world of ECS – ECS clusters: getting things done with almighty ECS*, updated to the current AWS Console and features.
 
@@ -41,7 +41,7 @@ Each lab has a solution in three ways: **Console (UI)**, **AWS CLI** and **Terra
 | **Amazon ECS on Fargate** | ECS orchestrates containers on serverless compute, with no instances ([Lab 3](jb-lab-3.md)) |
 | **Amazon EKS** | Managed Kubernetes, on EC2 or Fargate |
 | **AWS App Runner** | Give it an image or code, and get an HTTPS web service |
-| **AWS Lambda** (container image) | A function packaged as an image of up to 10 GB ([3.11](../3.06-lambda/README.md)) |
+| **AWS Lambda** (container image) | A function packaged as an image of up to 10 GB ([3.11](../3.05-lambda/README.md)) |
 | **AWS Elastic Beanstalk** | A PaaS that can deploy Docker applications |
 | **Amazon Lightsail containers** | Simple, fixed-price container hosting |
 | **AWS Batch** | Batch jobs in containers, on EC2 or Fargate |
@@ -51,7 +51,7 @@ Each lab has a solution in three ways: **Console (UI)**, **AWS CLI** and **Terra
 
 ---
 
-[⬅ Previous: 3.12 DevOps & Microservices](../3.12-microservices/README.md) | [🏠 Home](../README.md) | [Next: 4.01 Network & Application Protection, Compliance ➡](../4.01-network-application-protection-compliance/README.md)
+[⬅ Previous: 3.05 Serverless: AWS Lambda](../3.05-lambda/README.md) | [🏠 Home](../README.md) | [Next: 3.07 Advanced VPC ➡](../3.07-advanced-vpc/README.md)
 
 ---
 ## Contact

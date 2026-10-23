@@ -14,7 +14,7 @@
 
 ---
 
-[⬅ Previous: 3.06 Serverless: AWS Lambda](../3.06-lambda/README.md) | [🏠 Home](../README.md) | [Next: 3.08 Load Balancing & Auto Scaling ➡](../3.08-load-balancing-auto-scaling/README.md)
+[⬅ Previous: 3.06 Containers: ECR, ECS & Fargate](../3.06-containers/README.md) | [🏠 Home](../README.md) | [Next: 3.08 Load Balancing & Auto Scaling ➡](../3.08-load-balancing-auto-scaling/README.md)
 
 ---
 ## Contact

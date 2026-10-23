@@ -29,7 +29,7 @@ The two front doors of an application on AWS: **Amazon CloudFront** delivers con
 ## Planned Labs
 
 - CloudFront with OAC in front of the S3 static website from [3.03 Amazon S3](../3.03-s3/README.md)
-- An HTTP API in front of a Lambda function from [3.06 Serverless: AWS Lambda](../3.06-lambda/README.md)
+- An HTTP API in front of a Lambda function from [3.05 Serverless: AWS Lambda](../3.05-lambda/README.md)
 
 ---
 

@@ -9,11 +9,11 @@ Before running several services on ECS, it helps to see why applications are spl
 - Monolith vs. microservices
 - Service boundaries and dependencies between components
 - Service-to-service communication: synchronous (REST) vs. asynchronous (messaging)
-- Packaging each service as a container: the bridge to [3.13 Containers](../3.13-containers/README.md)
+- Packaging each service as a container (see [3.06 Containers](../3.06-containers/README.md))
 
 ---
 
-[⬅ Previous: 3.11 Project: Simple Website on Lambda](../simple-website-lambda/) | [🏠 Home](../README.md) | [Next: 3.13 Containers: ECR, ECS & Fargate ➡](../3.13-containers/README.md)
+[⬅ Previous: 3.11 Project: Simple Website on Lambda](../simple-website-lambda/) | [🏠 Home](../README.md) | [Next: 3.13 Databases ➡](../3.13-databases/README.md)
 
 ---
 

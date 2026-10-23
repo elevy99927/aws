@@ -8,7 +8,7 @@ The course is organized into four modules, from cloud basics to running producti
 
 1. **Cloud Concepts**: what the cloud is, its service and deployment models, and the shared responsibility model.
 2. **Foundations: Identity & Network**: the global infrastructure, identity and access management, secrets, and your own VPC.
-3. **Services**, in two parts. **3A – Build a system**: compute, storage, S3, databases, monitoring and serverless. **3B – Production**: advanced networking, load balancing and auto scaling, DNS, content delivery and APIs, microservices and containers.
+3. **Services**, in two parts. **3A – Build a system**: compute, storage, S3, monitoring, serverless and containers. **3B – Production**: advanced networking, load balancing and auto scaling, DNS, content delivery and APIs, microservices and databases.
 4. **Security, Cost & Architecture**: network and application protection, pricing, account and cost management, well-architected design, and support.
 
 Each module contains a short README that lists its topics. Hands-on labs will use **Terraform** for Infrastructure as Code. Practice quizzes will be available soon on a companion website.
@@ -41,16 +41,16 @@ Do every lab in your own AWS account. The examples use **`us-east-1`**, S3 bucke
 | 3A – Services: Build a System | 3.01 | [Compute: Amazon EC2](3.01-ec2/README.md) |
 |  | 3.02 | [Storage: EBS & EFS](3.02-storage/README.md) |
 |  | 3.03 | [Amazon S3](3.03-s3/README.md) |
-|  | 3.04 | [Databases](3.04-databases/README.md) |
-|  | 3.05 | [Monitoring & Auditing](3.05-monitoring/README.md) |
-|  | 3.06 | [Serverless: AWS Lambda](3.06-lambda/README.md) |
+|  | 3.04 | [Monitoring & Auditing](3.04-monitoring/README.md) |
+|  | 3.05 | [Serverless: AWS Lambda](3.05-lambda/README.md) |
+|  | 3.06 | [Containers: ECR, ECS & Fargate](3.06-containers/README.md) |
 | 3B – Services: Production | 3.07 | [Advanced VPC](3.07-advanced-vpc/README.md) |
 |  | 3.08 | [Load Balancing & Auto Scaling](3.08-load-balancing-auto-scaling/README.md) |
 |  | 3.09 | [Amazon Route 53](3.09-route53/README.md) |
 |  | 3.10 | [CloudFront & API Gateway](3.10-cloudfront-api-gateway/README.md) *(coming soon)* |
 |  | 3.11 | [Project: Simple Website on Lambda](simple-website-lambda/) |
 |  | 3.12 | [DevOps & Microservices](3.12-microservices/README.md) *(coming soon)* |
-|  | 3.13 | [Containers: ECR, ECS & Fargate](3.13-containers/README.md) |
+|  | 3.13 | [Databases](3.13-databases/README.md) |
 | 4 – Security, Cost & Architecture | 4.01 | [Network & Application Protection, Compliance](4.01-network-application-protection-compliance/README.md) |
 |  | 4.02 | [EC2 Pricing Models](4.02-ec2-pricing-models/README.md) |
 |  | 4.03 | [Account & Cost Management](4.03-accounts-and-cost-management/README.md) |

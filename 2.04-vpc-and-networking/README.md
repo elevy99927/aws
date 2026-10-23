@@ -4,7 +4,7 @@
 
 | # | Lab | Steps |
 |---|-----|-------|
-| 1 | **Build a VPC with Public Subnets** – a VPC, two public subnets in two Availability Zones, an internet gateway and a route table, step by step in the Console. The network for the labs that follow ([Containers](../3.13-containers/README.md)) | [Lab 1](jb-lab-1.md) |
+| 1 | **Build a VPC with Public Subnets** – a VPC, two public subnets in two Availability Zones, an internet gateway and a route table, step by step in the Console. The network for the labs that follow ([Containers](../3.06-containers/README.md)) | [Lab 1](lab-1.md) |
 | 2 | **Explore the Default VPC** – what AWS creates for you in every Region: default subnets, Internet Gateway and route table | [Lab 2](#-lab-2-basic-explore-the-default-vpc) |
 | 3 | **Create a VPC with the "VPC and more" Wizard** – public and private subnets in two Availability Zones, in a few clicks | [Lab 3](#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard) |
 | 4 | **Build a VPC Piece by Piece with the CLI** (advanced) – the same building blocks as Lab 1, with the AWS CLI | [Lab 4](#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) |

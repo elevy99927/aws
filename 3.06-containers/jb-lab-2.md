@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 2: ECS Service Load Balancing
+# 3.06 Containers – Lab 2: ECS Service Load Balancing
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 > 📚 Based on the course slides *ECS – Connecting everything*: service load balancing, ALB features, ground rules, dynamic port forwarding, and the follow-through *Connecting ALB*.
 
@@ -116,7 +116,7 @@ In [Lab 1](jb-lab-1.md), `hostPort: 8080` allowed only **one** task per instance
 
 ---
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 

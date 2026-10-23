@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 4: Amazon ECR
+# 3.06 Containers – Lab 4: Amazon ECR
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 > 📚 ECR appears on the agenda of the course slides (*ECS clusters – getting things done with almighty ECS*). This page covers it hands-on, including the "ECS IAM" agenda item: how a task gets permission to pull your image.
 
@@ -119,7 +119,7 @@ An image is built for a specific CPU architecture. If you build on an **Apple Si
 
 ---
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 ---
 

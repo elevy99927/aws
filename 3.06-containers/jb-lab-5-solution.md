@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 5 Solution
+# 3.06 Containers – Lab 5 Solution
 
-[⬅ Lab 5](jb-lab-5.md) | [⬅ Back to 3.13 Containers](README.md)
+[⬅ Lab 5](jb-lab-5.md) | [⬅ Back to 3.06 Containers](README.md)
 
 > Tested in `us-east-1` on `web-svc` from Lab 4. Under load, the service scaled **1 → 4 tasks** about 5 minutes after the load started. After the load stopped, it scaled back **4 → 3 → 2 → 1** over the next 28 minutes.
 
@@ -203,7 +203,7 @@ aws iam delete-role --role-name ecsTaskExecutionRole
 
 ---
 
-[⬅ Lab 5](jb-lab-5.md) | [⬅ Back to 3.13 Containers](README.md)
+[⬅ Lab 5](jb-lab-5.md) | [⬅ Back to 3.06 Containers](README.md)
 
 ---
 

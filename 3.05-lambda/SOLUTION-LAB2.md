@@ -1,8 +1,8 @@
-# 3.06 Serverless: AWS Lambda – Lab 2 Solution
+# 3.05 Serverless: AWS Lambda – Lab 2 Solution
 
-[⬅ Lab 2](LAB2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](LAB2.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
 
-> Tested with AWS CLI v2 in `us-east-1` with the **Python 3.14** runtime. Run the commands **from the module folder** (`3.06-lambda/`) in one terminal session.
+> Tested with AWS CLI v2 in `us-east-1` with the **Python 3.14** runtime. Run the commands **from the module folder** (`3.05-lambda/`) in one terminal session.
 
 ---
 
@@ -205,4 +205,4 @@ rm -f invoice.txt "my report.txt" scanner.zip lambda-trust.json scanner-s3-polic
 
 ---
 
-[⬅ Lab 2](LAB2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
+[⬅ Lab 2](LAB2.md) | [⬅ Back to 3.05 AWS Lambda](README.md)

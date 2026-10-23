@@ -1,12 +1,12 @@
-# 3.13 Containers – Lab 1: ECS on EC2 – Cluster, Task Definition and Service
+# 3.06 Containers – Lab 1: ECS on EC2 – Cluster, Task Definition and Service
 
-[⬅ Back to 3.13 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > 📚 Based on the course slides *ECS – What it's all about*: clusters overview, ECS task definitions, ECS service, and the first follow-through (*Let's create an ECS cluster, a task and a service*).
 
 **▶ Video walkthrough** (7 min):
 
-[![Video: 3.13 Containers – Lab 1: ECS on EC2](https://img.youtube.com/vi/GOCXYJQ15L8/maxresdefault.jpg)](https://youtu.be/GOCXYJQ15L8)
+[![Video: 3.06 Containers – Lab 1: ECS on EC2](https://img.youtube.com/vi/GOCXYJQ15L8/maxresdefault.jpg)](https://youtu.be/GOCXYJQ15L8)
 
 ---
 
@@ -98,7 +98,7 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
 
-> **Before you start:** do the [Networking lab](../2.04-vpc-and-networking/jb-lab-1.md). All the 3.13 labs run in the network it builds, **`ecs-vpc`**: wherever a step says "the default VPC", use `ecs-vpc`.
+> **Before you start:** do the [Networking lab](../2.04-vpc-and-networking/lab-1.md). All 3.06 ContainersL run in the network it builds, **`ecs-vpc`**: wherever a step says "the default VPC", use `ecs-vpc`.
 
 ### Tasks
 
@@ -157,7 +157,7 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 ---
 
-[⬅ Back to 3.13 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Back to 3.06 Containers](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

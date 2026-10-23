@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 4 Solution
+# 3.06 Containers – Lab 4 Solution
 
-[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 > Tested in `us-east-1` with Docker Desktop on an Apple Silicon Mac, on the `ecs-fargate` cluster and the ALB from Lab 3. The image is 26.3 MB, and the v1 → v2 rollout took **300 seconds**.
 
@@ -223,7 +223,7 @@ aws ecr delete-repository --repository-name web --force     # --force deletes th
 
 ---
 
-[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
 ---
 

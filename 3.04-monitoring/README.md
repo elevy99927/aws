@@ -1,4 +1,4 @@
-# 3.05 Monitoring & Auditing
+# 3.04 Monitoring & Auditing
 
 ## Topics
 
@@ -12,7 +12,7 @@
 
 ---
 
-[⬅ Previous: 3.04 Databases](../3.04-databases/README.md) | [🏠 Home](../README.md) | [Next: 3.06 Serverless: AWS Lambda ➡](../3.06-lambda/README.md)
+[⬅ Previous: 3.03 Amazon S3](../3.03-s3/README.md) | [🏠 Home](../README.md) | [Next: 3.05 Serverless: AWS Lambda ➡](../3.05-lambda/README.md)
 
 ---
 ## Contact

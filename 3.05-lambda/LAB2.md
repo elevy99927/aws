@@ -1,6 +1,6 @@
-# 3.06 Serverless: AWS Lambda – LAB 2
+# 3.05 Serverless: AWS Lambda – LAB 2
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 Solution ➡](SOLUTION-LAB2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 Solution ➡](SOLUTION-LAB2.md)
 
 ---
 
@@ -127,4 +127,4 @@ def lambda_handler(event, context):
 
 ---
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 Solution ➡](SOLUTION-LAB2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 Solution ➡](SOLUTION-LAB2.md)

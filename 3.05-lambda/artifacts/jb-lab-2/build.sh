@@ -1,6 +1,6 @@
 #!/bin/bash
 # Builds function.zip: the handler + Pillow compiled for Lambda (Linux x86_64, Python 3.14).
-# Run from this folder: cd 3.06-lambda/artifacts/jb-lab-2 && bash build.sh
+# Run from this folder: cd 3.05-lambda/artifacts/jb-lab-2 && bash build.sh
 set -e
 cd "$(dirname "$0")"
 rm -rf build function.zip

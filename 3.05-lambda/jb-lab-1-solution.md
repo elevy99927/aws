@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 1 Solution
+# 3.05 AWS Lambda – Lab 1 Solution
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > Tested in `us-east-1` with Python 3.14, 128 MB (the default) and a 3-second timeout (the default).
 
@@ -208,7 +208,7 @@ aws iam delete-role --role-name lab-1-role
 
 ---
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

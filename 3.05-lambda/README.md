@@ -1,4 +1,4 @@
-# 3.06 Serverless: AWS Lambda
+# 3.05 Serverless: AWS Lambda
 
 ## Topics
 
@@ -84,7 +84,7 @@ Typical uses:
 | Maximum size | 50 MB zipped, 250 MB unzipped (including layers) | 10 GB |
 | Best for | Small to medium functions, learning, most event processing | Large dependencies (ML models, native libraries), teams that already ship containers |
 
-> **In this module we use ZIP code.** It lets you focus on what a Lambda *is*: handler, event, role and logs. Container images are covered conceptually in [3.13 Containers](../3.13-containers/README.md).
+> **In this module we use ZIP code.** It lets you focus on what a Lambda *is*: handler, event, role and logs. Container images are covered conceptually in [3.06 Containers](../3.06-containers/README.md).
 
 ### By invocation type
 
@@ -147,7 +147,7 @@ A **GB-second** is memory (in GB) × run time (in seconds). A 128 MB function ru
 
 ## 6. Lambda vs. EC2 vs. Containers
 
-| | **AWS Lambda** | **Amazon EC2** ([3.03](../3.01-ec2/README.md)) | **ECS/Fargate** ([3.06](../3.13-containers/README.md)) |
+| | **AWS Lambda** | **Amazon EC2** ([3.01](../3.01-ec2/README.md)) | **ECS/Fargate** ([3.06](../3.06-containers/README.md)) |
 |---|---|---|---|
 | You manage | Code only | OS, patches, scaling, capacity | Container images and task definitions |
 | Scaling | Automatic, per request | Auto Scaling Groups ([3.10](../3.08-load-balancing-auto-scaling/README.md)) | Service auto scaling |
@@ -264,7 +264,7 @@ Lab 2 has its own page: **[LAB2.md](LAB2.md)**
 
 ---
 
-[⬅ Previous: 3.05 Monitoring & Auditing](../3.05-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 3.07 Advanced VPC ➡](../3.07-advanced-vpc/README.md)
+[⬅ Previous: 3.04 Monitoring & Auditing](../3.04-monitoring/README.md) | [🏠 Home](../README.md) | [Next: 3.06 Containers: ECR, ECS & Fargate ➡](../3.06-containers/README.md)
 
 ---
 

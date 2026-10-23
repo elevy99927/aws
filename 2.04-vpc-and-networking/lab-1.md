@@ -1,12 +1,13 @@
 # 2.04 VPC and Networking – Lab 1: Build a VPC with Public Subnets
 
-[⬅ Back to 2.04 VPC and Networking](README.md) | [Next: Containers – Lab 1 ➡](../3.13-containers/jb-lab-1.md) | [Advanced Networking ➡](../3.07-advanced-vpc/README.md)
+[⬅ Back to 2.04 VPC and Networking](README.md) | [Next: Containers – Lab 1 ➡](../3.06-containers/jb-lab-1.md) | [Advanced Networking ➡](../3.07-advanced-vpc/README.md)
 
 **▶ Video walkthrough** (6 min):
 
 [![Video: 2.04 Lab 1 – Build a VPC with Public Subnets](https://img.youtube.com/vi/SleiMAS1Tb4/maxresdefault.jpg)](https://youtu.be/SleiMAS1Tb4)
 
-In this lab you build a small network in AWS by hand, one piece at a time: a **VPC**, two **public subnets** in two **Availability Zones**, an **internet gateway** and a **route table**. The labs that follow run in this network, starting with the [Containers labs](../3.13-containers/jb-lab-1.md).
+In this lab you build a small network in AWS by hand, one piece at a time: a **VPC**, two **public subnets** in two **Availability Zones**, an **internet gateway** and a **route table**. 
+
 
 **Why build it yourself?** AWS creates a *default VPC* in every Region of a new account, and it's ready to use. Building your own shows what each piece does and why it's there, and it gives the next labs a network you know exactly.
 
@@ -186,7 +187,7 @@ Open `ecs-vpc` → **Resource map**. You should see the whole chain: the VPC →
 
 Two ways to continue:
 
-1. **[Containers – Lab 1: ECS on EC2](../3.13-containers/jb-lab-1.md):** build an ECS cluster on EC2 instances inside this network.
+1. **[Containers – Lab 1: ECS on EC2](../3.06-containers/jb-lab-1.md):** build an ECS cluster on EC2 instances inside this network.
 2. **[Advanced Networking](../3.07-advanced-vpc/README.md):** private and isolated subnets, NAT gateways, VPC endpoints, VPC peering and Transit Gateway, and IP address planning.
 
 ---

@@ -292,7 +292,7 @@ Step-by-step solutions:
 
 ---
 
-[⬅ Previous: 3.02 Storage: EBS & EFS](../3.02-storage/README.md) | [🏠 Home](../README.md) | [Next: 3.04 Databases ➡](../3.04-databases/README.md)
+[⬅ Previous: 3.02 Storage: EBS & EFS](../3.02-storage/README.md) | [🏠 Home](../README.md) | [Next: 3.04 Monitoring & Auditing ➡](../3.04-monitoring/README.md)
 
 ---
 

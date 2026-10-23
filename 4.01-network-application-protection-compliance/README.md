@@ -15,7 +15,7 @@
 
 ---
 
-[⬅ Previous: 3.13 Containers: ECR, ECS & Fargate](../3.13-containers/README.md) | [🏠 Home](../README.md) | [Next: 4.02 EC2 Pricing Models ➡](../4.02-ec2-pricing-models/README.md)
+[⬅ Previous: 3.13 Databases](../3.13-databases/README.md) | [🏠 Home](../README.md) | [Next: 4.02 EC2 Pricing Models ➡](../4.02-ec2-pricing-models/README.md)
 
 ---
 ## Contact

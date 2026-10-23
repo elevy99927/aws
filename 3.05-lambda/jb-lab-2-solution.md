@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 2 Solution
+# 3.05 AWS Lambda – Lab 2 Solution
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 > Tested in `us-east-1` with Python 3.14 and Pillow 12.2.0. The thumbnail was in the destination bucket **about 4 seconds** after the upload.
 
@@ -232,7 +232,7 @@ aws iam delete-role --role-name lab-2-role
 
 ---
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 

@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 2: Image Upload → Thumbnail
+# 3.05 AWS Lambda – Lab 2: Image Upload → Thumbnail
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 > 📚 Based on the course slides *AWS Lambda – Example*: an app for image uploading, where each uploaded image must be resized before it's stored. The upload is the **event source** that triggers the Lambda function.
 
@@ -96,7 +96,7 @@
 
 ---
 
-[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 1](jb-lab-1.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 

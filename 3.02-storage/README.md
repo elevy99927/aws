@@ -6,7 +6,7 @@
 - Amazon EBS – block storage for EC2, volume types, snapshots, single-AZ
 - EC2 Instance Store – ephemeral storage
 - Amazon EFS – shared NFS file system, multi-AZ; Amazon FSx overview
-- EBS vs. EFS vs. S3 – comparison (S3 is covered in depth in [3.05](../3.03-s3/README.md))
+- EBS vs. EFS vs. S3 – comparison (S3 is covered in depth in [3.03](../3.03-s3/README.md))
 - AWS Storage Gateway, AWS Snow Family, AWS Backup
 - Terraform: the same resources as code
 

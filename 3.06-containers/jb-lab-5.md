@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 5: ECS Service Auto Scaling
+# 3.06 Containers – Lab 5: ECS Service Auto Scaling
 
-[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.13 Containers](README.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
 
 > 📚 ECS Auto Scaling appears on the agenda of the course slides (*ECS clusters – getting things done with almighty ECS*). This page covers it hands-on.
 
@@ -104,7 +104,7 @@ Target tracking creates two CloudWatch alarms. **AlarmHigh** scales out after ab
 
 ---
 
-[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.13 Containers](README.md)
+[⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.06 Containers](README.md)
 
 ---
 

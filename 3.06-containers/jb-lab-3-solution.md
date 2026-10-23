@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 3 Solution
+# 3.06 Containers – Lab 3 Solution
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 > Tested in `us-east-1` with the ALB `ecs-alb` from Lab 2. The service was healthy behind the ALB **81 seconds** after it was created.
 
@@ -209,7 +209,7 @@ aws ec2 delete-security-group --group-id $ALB_SG
 
 ---
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 ---
 

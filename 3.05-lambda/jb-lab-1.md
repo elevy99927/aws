@@ -1,6 +1,6 @@
-# 3.06 AWS Lambda – Lab 1: Lambda Runs Functions
+# 3.05 AWS Lambda – Lab 1: Lambda Runs Functions
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 > 📚 Based on the course slides *AWS Lambda – What it's all about*: "So what is it?", "Lambda runs functions" and "How does it work?" (event source → function).
 
@@ -102,7 +102,7 @@ def lambda_handler(event, context):
 
 ---
 
-[⬅ Back to 3.06 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
+[⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 2 ➡](jb-lab-2.md)
 
 ---
 

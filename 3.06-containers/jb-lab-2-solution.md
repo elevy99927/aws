@@ -1,6 +1,6 @@
-# 3.13 Containers – Lab 2 Solution
+# 3.06 Containers – Lab 2 Solution
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 > Tested in `us-east-1` on the `ecs-ec2` cluster from Lab 1 (2 × t3.small).
 
@@ -185,7 +185,7 @@ aws elbv2 delete-target-group --target-group-arn $STORE_TG
 
 ---
 
-[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
+[⬅ Lab 2](jb-lab-2.md) | [⬅ Back to 3.06 Containers](README.md) | [Lab 3 ➡](jb-lab-3.md)
 
 ---
 
