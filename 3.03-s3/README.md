@@ -189,8 +189,6 @@ aws s3 presign s3://my-team-bucket/report.pdf --expires-in 300    # valid for 5 
 
 **Tools:** AWS CLI and Console. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `us-east-1`.
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**, and bucket names must start with **`jblabs-`**.
-
 ### Tasks
 
 **Part A: Create the S3 bucket**
@@ -221,8 +219,6 @@ aws s3 help
 
 **Part D (Advanced, HARD!): Limit access to the bucket**
 
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 10. Allow access only from your default VPC.
 11. Allow access only with TLS 1.2 or higher.
 12. Remove the bucket policy (and the VPC endpoint, if you created one) before Lab 2.
@@ -239,8 +235,6 @@ aws s3 help
 **Goal:** Upload an HTML page to the bucket from Lab 1 and open it in a browser. In the basic parts the bucket stays **private**, and you share the page with a **pre-signed URL**. In the advanced parts you make the bucket public and turn it into a static website.
 
 **Tools:** Console + AWS CLI. The example page is in this repo: [`artifacts/index.html`](artifacts/index.html).
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`** and use your **`jblabs-`** bucket from Lab 1. Bucket policies are not allowed in the classroom account, which is why making the bucket public is an advanced part.
 
 ### Tasks
 
@@ -265,16 +259,12 @@ aws s3 help
 
 **Part D (Advanced): Make the bucket public**
 
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 8. In the **Console**, open your bucket and go to the **Permissions** tab.
 9. Under **Block public access (bucket settings)**, choose **Edit**, clear **Block all public access**, save and confirm.
 10. Under **Bucket policy**, choose **Edit** and add the **public read** policy from [Example 2](#example-2-public-read-access-for-a-website). Replace the bucket name with your own.
 11. Open the plain **Object URL** from Part B again. You should now see **"Hello from Amazon S3!"** without a signature.
 
 **Part E (Advanced): Static website hosting**
-
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
 
 12. On the **Properties** tab, enable **Static website hosting** with `index.html` as the index document.
 13. Open the **bucket website endpoint** at the bottom of the Properties tab, and compare it with the Object URL.
@@ -307,8 +297,6 @@ Step-by-step solutions:
 ---
 
 ## Terraform Code
-
-> ⚠️ The Terraform code also builds the **advanced** parts (public access and a bucket policy), so it may not work in every AWS account because of SCPs or other restrictions, for example in a classroom account. We recommend running it in your own private AWS account.
 
 The [`terraform/`](terraform/) folder builds the full result of both labs as code: the bucket, versioning, public access settings, the bucket policy, static website hosting and the `index.html` upload.
 

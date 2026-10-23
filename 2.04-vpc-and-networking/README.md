@@ -5,6 +5,9 @@
 | # | Lab | Steps |
 |---|-----|-------|
 | 1 | **Build a VPC with Public Subnets** – a VPC, two public subnets in two Availability Zones, an internet gateway and a route table, step by step in the Console. The network for the labs that follow ([Containers](../3.13-containers/README.md)) | [Lab 1](jb-lab-1.md) |
+| 2 | **Explore the Default VPC** – what AWS creates for you in every Region: default subnets, Internet Gateway and route table | [Lab 2](#-lab-2-basic-explore-the-default-vpc) |
+| 3 | **Create a VPC with the "VPC and more" Wizard** – public and private subnets in two Availability Zones, in a few clicks | [Lab 3](#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard) |
+| 4 | **Build a VPC Piece by Piece with the CLI** (advanced) – the same building blocks as Lab 1, with the AWS CLI | [Lab 4](#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) |
 
 Next: [Advanced Networking](../3.07-advanced-vpc/README.md) – private subnets, NAT gateways, VPC endpoints, peering and IP address planning.
 
@@ -19,7 +22,7 @@ Next: [Advanced Networking](../3.07-advanced-vpc/README.md) – private subnets,
 - [Subnets – each subnet lives in **one Availability Zone**](#4-subnets-route-tables-and-the-internet-gateway)
 - [Public vs. private subnets](#what-makes-a-subnet-public)
 - [Internet Gateway (IGW) and route tables](#4-subnets-route-tables-and-the-internet-gateway)
-- [Creating a basic VPC with the *VPC and more* wizard](#-lab-2-basic-create-a-vpc-with-the-vpc-and-more-wizard)
+- [Creating a basic VPC with the *VPC and more* wizard](#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard)
 - [Security Groups vs. Network ACLs](#5-security-groups-vs-network-acls)
 
 ---
@@ -141,13 +144,11 @@ You'll build Security Groups hands-on in [3.01 EC2](../3.01-ec2/README.md).
 
 ---
 
-## 🧪 LAB 1 (Basic): Explore the Default VPC
+## 🧪 LAB 2 (Basic): Explore the Default VPC
 
 **Goal:** Understand what AWS creates for you in every Region.
 
 **Tools:** Console + AWS CLI. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `us-east-1`.
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**.
 
 ### Tasks
 
@@ -168,9 +169,7 @@ You'll build Security Groups hands-on in [3.01 EC2](../3.01-ec2/README.md).
 
 ---
 
-## 🧪 LAB 2 (Basic): Create a VPC with the "VPC and more" Wizard
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**.
+## 🧪 LAB 3 (Basic): Create a VPC with the "VPC and more" Wizard
 
 **Goal:** Create a production-style VPC with public and private subnets in two AZs, in a few clicks.
 
@@ -199,9 +198,7 @@ You'll build Security Groups hands-on in [3.01 EC2](../3.01-ec2/README.md).
 
 ---
 
-## 🧪 LAB 3 (Advanced): Build a VPC Piece by Piece with the CLI
-
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
+## 🧪 LAB 4 (Advanced): Build a VPC Piece by Piece with the CLI
 
 **Goal:** Understand every building block by creating a VPC manually. You'll create a VPC, a public and a private subnet, an Internet Gateway and a public route table.
 
@@ -241,7 +238,7 @@ Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
 
 ## Terraform Code
 
-The [`terraform/`](terraform/) folder builds the same VPC as Lab 3 as code. The Terraform part of the course will cover it in depth. To try it now:
+The [`terraform/`](terraform/) folder builds the same VPC as Lab 4 as code. The Terraform part of the course will cover it in depth. To try it now:
 
 ```bash
 cd terraform

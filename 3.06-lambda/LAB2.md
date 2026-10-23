@@ -6,10 +6,6 @@
 
 ## 🧪 LAB 2 (Advanced): S3 Upload → Lambda "Scanner" → Clean Bucket
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
-> 🏫 **Classroom account:** Lambda and CloudWatch Logs are blocked in the classroom account, so this lab can't run there.
-
 > 💰 **Cost:** effectively **$0**. Lambda stays inside the Free Tier, and a few small S3 objects cost fractions of a cent. Delete the buckets at the end anyway.
 
 **Goal:** Build an **event-driven pipeline**. When a file is uploaded to an `upload` bucket, S3 sends an **event** that **triggers** a Lambda function. The function "scans" the file (it only prints `scanning ...`) and copies it to a `clean` bucket.

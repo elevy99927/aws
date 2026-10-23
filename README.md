@@ -17,8 +17,10 @@ The course covers cloud fundamentals that overlap with entry-level AWS certifica
 
 ### Basic and Advanced labs
 
-- **Basic labs** (and Parts A–C of a basic lab) are designed to work in a **restricted classroom AWS account**: work only in **`us-east-1`**, name S3 buckets **`jblabs-…`**, and name IAM users **`lab-…`**.
-- **Advanced labs** (and advanced parts of basic labs) are marked with ⚠️. They may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, so we recommend doing them in your own private AWS account.
+Do every lab in your own AWS account. The examples use **`us-east-1`**, S3 buckets named **`jblabs-…`** and IAM users named **`lab-…`**.
+
+- **Basic labs** (and Parts A–C of a basic lab) cover the core of each topic.
+- **Advanced labs** (and advanced parts of basic labs) go deeper. They are marked **(Advanced)** in their heading.
 
 > **Disclaimer:** This is an independent course. It is **not** an official AWS course, and it is not affiliated with, endorsed by or sponsored by Amazon Web Services (AWS) or any AWS certification program. AWS and all related names are trademarks of Amazon.com, Inc. or its affiliates. This course does not contain any actual exam content.
 

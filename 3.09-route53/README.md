@@ -55,8 +55,6 @@
 
 ## 🧪 LAB 1 (Advanced): Route 53 Private Hosted Zone
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 > 💰 **Cost alert:** this lab keeps the **ALB** and **ASG** from 3.08 Lab 2 running and adds a **hosted zone**. Up to 2 hours ≈ **$0.15**. The hosted zone is free if you delete it within 12 hours, otherwise it costs $0.50. Clean up **everything** at the end.
 
 **Goal:** Give the load balancer a friendly **internal** name, `www.app.internal`, that works only inside the VPC.

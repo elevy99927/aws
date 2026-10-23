@@ -8,8 +8,6 @@
 
 ## LAB 1 (Advanced): Route 53 Private Hosted Zone
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 > 💰 Up to 2 hours ≈ **$0.15**. The hosted zone is free if you delete it within 12 hours. If left running, it costs ≈ **$48/month**.
 
 **Jump to:**

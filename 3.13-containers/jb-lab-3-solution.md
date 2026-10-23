@@ -49,10 +49,10 @@ There's **no host port** field: with `awsvpc`, each task has its own IP address,
 **7.** Call `/fargate` a few times:
 
 ```
-Name: fargate Hostname: ip-172-31-17-224.ec2.internal IP: 172.31.17.224
-Name: fargate Hostname: ip-172-31-17-224.ec2.internal IP: 172.31.17.224
-Name: fargate Hostname: ip-172-31-95-96.ec2.internal IP: 172.31.95.96
-Name: fargate Hostname: ip-172-31-17-224.ec2.internal IP: 172.31.17.224
+Name: fargate Hostname: 8395cc3418064f139355c8897d818b13-3131618372 IP: 10.0.1.46
+Name: fargate Hostname: 8395cc3418064f139355c8897d818b13-3131618372 IP: 10.0.1.46
+Name: fargate Hostname: 7e1d2aa1a44741c7855157a984770a4c-3131618372 IP: 10.0.2.141
+Name: fargate Hostname: 7e1d2aa1a44741c7855157a984770a4c-3131618372 IP: 10.0.2.141
 ```
 
 Compare this with Lab 2. There, `IP:` was `172.17.0.x` (the Docker bridge on the instance). Here, **the task's IP is a real VPC address**, because each task has its own network interface.
@@ -62,8 +62,8 @@ Compare this with Lab 2. There, `IP:` was `172.17.0.x` (the Docker bridge on the
 ![fargate-tg – IP targets](images/lab3-02-ip-targets.jpg)
 
 ```
-172.31.17.224   80   us-east-1b   healthy
-172.31.95.96    80   us-east-1a   healthy
+10.0.2.141   80   us-east-1b   healthy
+10.0.1.46    80   us-east-1a   healthy
 ```
 
 **9.** **Infrastructure → Container instances: 0.** The tasks run, but there are no servers for you to see or manage. In the task list, the **Container instance** column is empty (`-`).
@@ -71,24 +71,24 @@ Compare this with Lab 2. There, `IP:` was `172.17.0.x` (the Docker bridge on the
 **10.** **EC2 → Network interfaces**: one ENI per task, with the task's private IP. Its *Requester ID* / description shows that ECS created it (an `attachment/...` ARN):
 
 ```
-eni-0b7e459a...   172.31.95.96    interface   arn:aws:ecs:us-east-1:...:attachment/b4f465da-...
-eni-0aefabae...   172.31.17.224   interface   arn:aws:ecs:us-east-1:...:attachment/ef7178f4-...
+eni-0b7e459a...   10.0.1.46    interface   arn:aws:ecs:us-east-1:...:attachment/b4f465da-...
+eni-0aefabae...   10.0.2.141   interface   arn:aws:ecs:us-east-1:...:attachment/ef7178f4-...
 ```
 
 ### Part F: Scale without servers
 
-**11.** **Update service → Desired tasks: 4**. All 4 tasks were *Running* and **healthy in the target group 40 seconds** later:
+**11.** **Update service → Desired tasks: 4**. All 4 tasks were *Running* and **healthy in the target group about 50 seconds** later:
 
 ```
-172.31.95.96    us-east-1a   healthy
-172.31.17.224   us-east-1b   healthy
-172.31.25.154   us-east-1b   healthy
-172.31.92.207   us-east-1a   healthy
+10.0.1.46    us-east-1a   healthy
+10.0.2.141   us-east-1b   healthy
+10.0.2.35    us-east-1b   healthy
+10.0.1.253   us-east-1a   healthy
 ```
 
 There was no capacity to add: no instances, no ASG, and no "unable to place a task" error like in Lab 1.
 
-**12.** **Tasks → select one → Stop**. The task goes to `Deactivating` (desired status *Stopped*), its target drains, and the service starts a replacement. The 4 running tasks below include the replacement, started a minute ago:
+**12.** **Tasks → select one → Stop**. The task goes to `Deactivating` (desired status *Stopped*), its target drains, and the service starts a replacement. The 4 running tasks below include the replacement, started 25 seconds ago:
 
 ![whoami-fargate-svc – 4 running tasks and 1 deactivating](images/lab3-01-fargate-tasks.jpg)
 

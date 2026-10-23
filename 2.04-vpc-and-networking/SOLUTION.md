@@ -6,7 +6,7 @@
 
 > 📍 **Region note:** run the labs in **`us-east-1`**. The screenshots and sample outputs on this page were captured in **`eu-west-1`** (Europe, Ireland). In `us-east-1` the Availability Zones are named `us-east-1a`–`us-east-1f`, the default VPC has **six** default subnets, and all IDs are different. The structure and the results are the same.
 
-## LAB 1 (Basic): Explore the Default VPC
+## LAB 2 (Basic): Explore the Default VPC
 
 ### Console
 
@@ -72,7 +72,7 @@ A Default VPC already exists for this account in this region.
 
 ---
 
-## LAB 2 (Basic): Create a VPC with the "VPC and more" Wizard
+## LAB 3 (Basic): Create a VPC with the "VPC and more" Wizard
 
 1. **VPC → Your VPCs → Create VPC → VPC and more**.
 2. Set **Name tag auto-generation** to `lab` and keep `10.0.0.0/16`, **2 AZs**, **2 public** and **2 private** subnets. The **Preview** on the right updates live:
@@ -101,9 +101,7 @@ A Default VPC already exists for this account in this region.
 
 ---
 
-## LAB 3 (Advanced): Build a VPC Piece by Piece with the CLI
-
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
+## LAB 4 (Advanced): Build a VPC Piece by Piece with the CLI
 
 > Tested with AWS CLI v2 (the sample output is from `eu-west-1`). Run everything in one terminal session, because later steps use the shell variables.
 
@@ -193,7 +191,7 @@ aws ec2 delete-vpc --vpc-id $VPC_ID
 
 ## Terraform
 
-The same VPC as Lab 3, as code: [`terraform/main.tf`](terraform/main.tf). Tested with Terraform 1.15 and AWS provider 6.x.
+The same VPC as Lab 4, as code: [`terraform/main.tf`](terraform/main.tf). Tested with Terraform 1.15 and AWS provider 6.x.
 
 ```bash
 cd terraform

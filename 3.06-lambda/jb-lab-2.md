@@ -29,8 +29,6 @@
 
 **Tools:** Console + AWS CLI + `pip` (Python 3) or AWS CloudShell. Region: `us-east-1`.
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**. Bucket names must start with **`jblabs-`**, and the execution role is **`lab-jb2-role`**.
-
 **Files:** [`artifacts/jb-lab-2/`](artifacts/jb-lab-2/)
 
 | File | What it is |

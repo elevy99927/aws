@@ -8,8 +8,6 @@
 
 ## LAB 2 (Advanced): S3 Upload → Lambda "Scanner" → Clean Bucket
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 **Jump to:**
 - [Part A: Two buckets](#part-a-two-buckets)
 - [Part B: Execution role (least privilege)](#part-b-execution-role-least-privilege)

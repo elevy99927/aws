@@ -152,8 +152,6 @@ Everything in these labs running together costs about **$48/month**, which is **
 
 ## 🧪 LAB 1 (Advanced): ALB in Front of Two Instances
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 > 💰 **Cost alert:** this lab runs an **ALB** and **2 × t3.micro**. Up to 2 hours ≈ **$0.15**. If left running, it costs **≈ $48/month**. Clean up at the end, or continue directly to Lab 2.
 
 **Goal:** Put an Application Load Balancer in front of two web servers, see requests spread across them, and see the ALB route around a failed server.
@@ -214,8 +212,6 @@ docker run -d --restart always --name echo -p 80:5678 \
 ---
 
 ## 🧪 LAB 2 (Advanced): Auto Scaling Behind the ALB
-
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
 
 > 💰 **Cost alert:** this lab runs an **ALB** and **1–4 × t3.micro**. Up to 2 hours ≈ **$0.15**. If left running, it costs **≈ $48/month**. A forgotten ASG **recreates** any instance you terminate, so clean up in the right order.
 
@@ -292,8 +288,6 @@ docker run -d --restart always --name echo -p 80:5678 \
 ---
 
 ## Terraform Code
-
-> ⚠️ The Terraform code builds the **advanced** labs, so it may not work in every AWS account because of SCPs or other restrictions, for example in a classroom account. We recommend running it in your own private AWS account.
 
 > Terraform is covered later in the course. The code is here **for reference**, so you can compare it with what you built by hand.
 

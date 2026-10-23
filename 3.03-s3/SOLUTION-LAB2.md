@@ -4,7 +4,7 @@
 
 > Tested with AWS CLI v2 in `us-east-1`. Continue in the same terminal session as Lab 1, because the steps use the `$BUCKET` variable. In a new session, set it again: `BUCKET=<your-bucket-name>`.
 
-> 🏫 In the classroom account, your bucket name must start with **`jblabs-`**. Some screenshots and sample outputs on this page show an older lab bucket name, `s3-lab-student-…`. The steps and results are the same.
+> Your bucket name starts with **`jblabs-`**. Some screenshots and sample outputs on this page show an older lab bucket name, `s3-lab-student-…`. The steps and results are the same.
 
 ---
 
@@ -85,8 +85,6 @@ After 5 minutes the same URL returns an error:
 
 ### Part D (Advanced): Make the bucket public
 
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 1. Open the bucket's **Permissions** tab. Under **Block public access (bucket settings)**, choose **Edit**.
 2. Clear **Block all public access**. All four sub-settings are cleared with it.
 
@@ -147,8 +145,6 @@ aws s3api put-bucket-policy --bucket $BUCKET --policy file://public-read.json
 
 ### Part E (Advanced): Static website hosting
 
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 On the **Properties** tab, under **Static website hosting**, choose **Edit**. Select **Enable**, keep **Host a static website**, set the **Index document** to `index.html` and save:
 
 ![Edit static website hosting](images/09-static-website-hosting-edit.jpg)
@@ -201,8 +197,6 @@ aws s3 rb s3://$BUCKET
 ---
 
 ## Terraform
-
-> ⚠️ The Terraform code builds the **advanced** labs, so it may not work in every AWS account because of SCPs or other restrictions, for example in a classroom account. We recommend running it in your own private AWS account.
 
 
 The result of both labs as code: [`terraform/main.tf`](terraform/main.tf). Tested with Terraform 1.15 and AWS provider 6.x in `us-east-1`.

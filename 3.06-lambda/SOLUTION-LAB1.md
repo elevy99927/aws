@@ -8,8 +8,6 @@
 
 ## LAB 1 (Advanced): Your First Lambda Function
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
 **Jump to:**
 - [Part A: Create the function](#part-a-create-the-function)
 - [Part B: Deploy the code](#part-b-deploy-the-code)

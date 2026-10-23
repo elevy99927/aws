@@ -2,7 +2,7 @@
 
 [⬅ Lab 4](jb-lab-4.md) | [⬅ Back to 3.13 Containers](README.md) | [Lab 5 ➡](jb-lab-5.md)
 
-> Tested in `us-east-1` with Docker Desktop on an Apple Silicon Mac, on the `ecs-fargate` cluster and the ALB from Lab 3. The image is 28.8 MB, and the v1 → v2 rollout took **188 seconds**.
+> Tested in `us-east-1` with Docker Desktop on an Apple Silicon Mac, on the `ecs-fargate` cluster and the ALB from Lab 3. The image is 26.3 MB, and the v1 → v2 rollout took **300 seconds**.
 
 **Jump to:** [Solution 1: Console](#solution-1-console-ui) · [Solution 2: AWS CLI](#solution-2-aws-cli) · [Answers](#answers) · [Solution 3: Terraform](#solution-3-terraform)
 
@@ -43,14 +43,14 @@ docker push $REGISTRY/web:v1
 ```
 Login Succeeded
 ...
-v1: digest: sha256:41ab46e805d17a822621c2517f9fe2bf0be069d9a13f6d1b6409c8b88a176eba size: 2261
+v1: digest: sha256:3ca1d3d7ff21f0c27c270e084080ae8197a5bedfe3c17fad7957a691cac18a0a size: 2261
 ```
 
-**6.** In the repository, the image shows its **tag** (`v1`), **digest** (`sha256:41ab46e8…`) and **size** (28.82 MB). This screenshot was taken later, after v2 was also pushed in Part E:
+**6.** In the repository, the image shows its **tag** (`v1`), **digest** (`sha256:3ca1d3d7…`) and **size** (26.34 MB). This screenshot was taken later, after v2 was also pushed in Part E:
 
 ![web – images v1 and v2](images/lab4-01-repo-images.jpg)
 
-Open the image → **Scanning and vulnerabilities**. *Scan on push* ran the **basic scan** about a minute after the push. It found **4 High and 4 Medium** CVEs, all in the **base image's OS packages** (expat, zlib, libx11), not in our page:
+Open the image → **Scanning and vulnerabilities**. *Scan on push* ran the **basic scan** about a minute after the push. In this run it found **no vulnerabilities** (0 in every severity), because the `nginx:alpine` base image was up to date. An earlier run of the same lab, on an older base image, found **4 High and 4 Medium** CVEs, all in the **base image's OS packages** (expat, zlib, libx11), not in our page:
 
 ![web:v1 – scan findings](images/lab4-02-scan-findings.jpg)
 
@@ -77,16 +77,18 @@ docker push $REGISTRY/web:v2
 **13.** While the deployment runs, refreshing `/web/` shows **v1 and v2 mixed**. The test polled every few seconds:
 
 ```
-0s    v1      ← only v1 tasks
-61s   v2      ← the first v2 task passed the health check
-70s   v1
-79s   v2
+2s    v1      ← only v1 tasks
+52s   v2      ← the first v2 task passed the health check
+57s   v1
+72s   v2
 ...   (v1 and v2 alternate)
-135s  v2      ← from here on, only v2
-deployment finished after 188s   (21 responses v1, 20 responses v2)
+238s  v2      ← from here on, only v2
+deployment finished after 300s   (33 responses v1, 32 responses v2)
 ```
 
-ECS's **rolling update** first starts new tasks (up to 200% of the desired count), waits for them to be **healthy** in the target group, then **drains** and stops the old ones. That's why the deployment continued after 135 seconds: the old tasks were still draining. The **Deployments** tab shows the timeline:
+The rollout finished after 300 seconds. v2 first answered at 52 s, and then v1 and v2 alternated.
+
+ECS's **rolling update** first starts new tasks (up to 200% of the desired count), waits for them to be **healthy** in the target group, then **drains** and stops the old ones. That's why the deployment continued after 238 seconds: the old tasks were still draining. In this run, one new v2 task also failed its first image pull (`CannotPullContainerError`, seconds after the push), so ECS stopped it and started a replacement, which made the rollout slower. The **Deployments** tab shows the timeline, including that failure:
 
 ![web-svc – rolling deployment to web:2](images/lab4-04-rolling-deployment.jpg)
 
@@ -126,10 +128,10 @@ aws ecr describe-image-scan-findings --repository-name web --image-id imageTag=v
 ```
 
 ```
-v1   sha256:41ab46e805d1...   28815901
+v1   sha256:3ca1d3d7ff21...   26343604
 {
     "status": "COMPLETE",
-    "counts": { "HIGH": 4, "MEDIUM": 4 }
+    "counts": {}
 }
 ```
 
@@ -215,7 +217,7 @@ aws ecr delete-repository --repository-name web --force     # --force deletes th
 ## Answers
 
 - **The role that pulled the private image:** the **task execution role** (`ecsTaskExecutionRole`) with the AWS managed policy **`AmazonECSTaskExecutionRolePolicy`**. It allows `ecr:GetAuthorizationToken`, `ecr:BatchGetImage` and `ecr:GetDownloadUrlForLayer` (and writing to CloudWatch Logs). The ECS agent uses this role, not your application.
-- **Tag vs. digest:** a **tag** (`v1`) is a name that can be **moved** to another image (the repository is *mutable*). A **digest** (`sha256:41ab46e8…`) is the **hash of the content**, so it always points to exactly the same image. Deploying by digest (`web@sha256:…`) guarantees that every task runs the same bits, even if someone pushes a new `v1`. Alternatively, set the repository's tags to **immutable**.
+- **Tag vs. digest:** a **tag** (`v1`) is a name that can be **moved** to another image (the repository is *mutable*). A **digest** (`sha256:3ca1d3d7…`) is the **hash of the content**, so it always points to exactly the same image. Deploying by digest (`web@sha256:…`) guarantees that every task runs the same bits, even if someone pushes a new `v1`. Alternatively, set the repository's tags to **immutable**.
 - **Building on an ARM Mac without `--platform linux/amd64`:** the image is built for **arm64**, but the task definition runs on **X86_64**. The task stops right away with `exec format error` (*CannotStartContainerError*). The other option is to set the task definition's `cpuArchitecture` to **ARM64**, since Fargate supports Graviton too.
 - **v1 and v2 during the rollout:** a **rolling update** runs both versions side by side. New tasks join the target group as soon as they're healthy, and the old tasks keep serving until they're drained. The ALB load-balances across all healthy targets, so each request can land on either version.
 

@@ -2,7 +2,7 @@
 
 [⬅ Lab 5](jb-lab-5.md) | [⬅ Back to 3.13 Containers](README.md)
 
-> Tested in `us-east-1` on `web-svc` from Lab 4. Under load, the service scaled **1 → 4 tasks** about 5½ minutes after the load started. After the load stopped, it scaled back **4 → 3 → 2 → 1** over the next 28 minutes.
+> Tested in `us-east-1` on `web-svc` from Lab 4. Under load, the service scaled **1 → 4 tasks** about 5 minutes after the load started. After the load stopped, it scaled back **4 → 3 → 2 → 1** over the next 28 minutes.
 
 **Jump to:** [Solution 1: Console](#solution-1-console-ui) · [Solution 2: AWS CLI](#solution-2-aws-cli) · [Answers](#answers) · [Solution 3: Terraform](#solution-3-terraform)
 
@@ -29,7 +29,7 @@
 
 ### Part B: Scale in without traffic
 
-**4.** Only **3½ minutes** after the policy was created, the service went from **2 to 1** task. Its **Events** tab shows:
+**4.** Only **38 seconds** after the policy was created, the service went from **2 to 1** task. Its **Events** tab shows:
 
 ```
 Message: Successfully set desired count to 1. Change successfully fulfilled by ecs.
@@ -47,37 +47,37 @@ ab -k -c 10 -t 480 -n 10000000 http://<alb-dns>/web/
 ```
 
 ```
-Complete requests:      31849
+Complete requests:      31951
 Failed requests:        0
-Requests per second:    66.35 [#/sec] (mean)
+Requests per second:    66.56 [#/sec] (mean)
 ```
 
 **6.** The timeline (UTC). Times are from the CLI loop in Solution 2:
 
 ```
-15:14:07  load start (~3,980 requests per target per minute)   desired 1 / running 1
-15:19:39  AlarmHigh → ALARM, "Setting desired count to 4."
-15:20:13                                      desired 4 / running 2
-15:20:29                                      desired 4 / running 4
-15:22:08  load end
+06:43:34  load start (~4,000 requests per target per minute)   desired 1 / running 1
+06:48:30  AlarmHigh → ALARM, "Setting desired count to 4."
+06:49:02                                      desired 4 / running 2
+06:49:19                                      desired 4 / running 4
+06:51:34  load end
 ```
 
-- **AlarmHigh** fired **5½ minutes** after the load started. The ALB publishes metrics once a minute with a delay of a few minutes, and the alarm needs **3** datapoints above 100.
-- The policy jumped **straight from 1 to 4**. At ~3,980 requests per target and a target of 100, it calculated far more than 4 tasks, so it set the **maximum**.
+- **AlarmHigh** fired about **5 minutes** after the load started. The ALB publishes metrics once a minute with a delay of a few minutes, and the alarm needs **3** datapoints above 100.
+- The policy jumped **straight from 1 to 4**. At ~4,000 requests per target and a target of 100, it calculated far more than 4 tasks, so it set the **maximum**.
 - All 4 tasks were running about **50 seconds** later. On Fargate there's no instance to wait for.
 
-The AlarmHigh graph shows the spike, and the **In alarm** period (red) from 15:19 to 15:26:
+The AlarmHigh graph shows the spike, and the **In alarm** period (red) from 06:48 to 06:55. With 4 tasks, the same load dropped to about 1,000 requests per target:
 
 ![AlarmHigh – requests per target above 100](images/lab5-02-alarm-high.jpg)
 
 ### Part D: Scale in after the load
 
-**7.** After the load stopped (15:22), the service stayed at 4 tasks for **22 minutes**, then scaled in **one task at a time**:
+**7.** After the load stopped (06:51), the service stayed at 4 tasks for **21 minutes**, then scaled in **one task at a time**:
 
 ```
-15:44:00  Setting desired count to 3.
-15:47:00  Setting desired count to 2.
-15:50:00  Setting desired count to 1.
+07:13:06  Setting desired count to 3.
+07:16:06  Setting desired count to 2.
+07:19:06  Setting desired count to 1.
 ```
 
 Back to **1 task**, the minimum. Each step waits for the 15-minute AlarmLow window and the 120-second scale-in cooldown, and every removed task is **drained** from the target group first.
@@ -128,8 +128,8 @@ aws application-autoscaling put-scaling-policy --service-namespace ecs \
 
 ```
 [
-    "TargetTracking-service/ecs-fargate/web-svc-AlarmHigh-20c4a2e5-...",
-    "TargetTracking-service/ecs-fargate/web-svc-AlarmLow-6e4d9a60-..."
+    "TargetTracking-service/ecs-fargate/web-svc-AlarmHigh-38342a82-...",
+    "TargetTracking-service/ecs-fargate/web-svc-AlarmLow-5e1b39df-..."
 ]
 ```
 
@@ -153,11 +153,11 @@ aws application-autoscaling describe-scaling-activities --service-namespace ecs 
 ```
 
 ```
-2026-10-20T15:50:00  Setting desired count to 1.
-2026-10-20T15:47:00  Setting desired count to 2.
-2026-10-20T15:44:00  Setting desired count to 3.
-2026-10-20T15:19:39  Setting desired count to 4.
-2026-10-20T15:14:00  Setting desired count to 1.
+2026-10-23T07:19:06  Setting desired count to 1.
+2026-10-23T07:16:06  Setting desired count to 2.
+2026-10-23T07:13:06  Setting desired count to 3.
+2026-10-23T06:48:31  Setting desired count to 4.
+2026-10-23T06:43:06  Setting desired count to 1.
 ```
 
 **Part E: clean up the whole chapter** (as run after this test):
@@ -198,7 +198,7 @@ aws iam delete-role --role-name ecsTaskExecutionRole
 
 - **Service auto scaling vs. cluster capacity scaling:** service auto scaling changes the **number of tasks** (Application Auto Scaling sets the service's desired count). Cluster capacity scaling changes the **number of EC2 instances** the tasks run on (a capacity provider with managed scaling drives the ASG). On EC2 you need both. **Fargate made cluster capacity scaling unnecessary**: in Part C, 3 new tasks were running within 50 seconds without any instance.
 - **Why it scaled in to 1 before the load:** with no traffic, requests per target were **0**, below the scale-in threshold (90% of the target), so the policy reduced the service to its **minimum**. The desired count of 2 that you set is only a starting point. Once a policy exists, the policy decides.
-- **Fast scale-out, slow scale-in:** too few tasks hurts users right away (slow responses, errors), and too many only costs a little. So AlarmHigh needs only **3** minutes above the target, and AlarmLow needs **15** minutes below it. Scale-in also goes **one step at a time** with a cooldown, so a short pause in traffic doesn't remove capacity that's needed a minute later (*flapping*). In this test: out after 5½ minutes, in after 22–28 minutes.
+- **Fast scale-out, slow scale-in:** too few tasks hurts users right away (slow responses, errors), and too many only costs a little. So AlarmHigh needs only **3** minutes above the target, and AlarmLow needs **15** minutes below it. Scale-in also goes **one step at a time** with a cooldown, so a short pause in traffic doesn't remove capacity that's needed a minute later (*flapping*). In this test: out after about 5 minutes, in after 21–28 minutes.
 - **A CPU-heavy service:** use **`ECSServiceAverageCPUUtilization`** with a target of about **50–70%**. For image processing, CPU tracks the real load better than the number of requests, because one request can take a lot of work. Queue-based workers often scale on **queue depth** (for example SQS `ApproximateNumberOfMessagesVisible`) with a custom metric.
 
 ---

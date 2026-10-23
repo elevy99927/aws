@@ -1,6 +1,6 @@
 # 3.06 AWS Lambda – jb-lab-3: Limits and Pricing
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-4 ➡](jb-lab-4.md)
+[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 > 📚 Based on the course slides *Limitations of AWS Lambda* and *Pricing in AWS Lambda*. The slides are from 2020, and some of their numbers have changed since. In this lab you **measure** the current behavior yourself.
 
@@ -11,8 +11,6 @@
 **Goal:** Measure how **memory** affects **speed** and **cost**, hit the **timeout** limit on purpose, and calculate what a function costs per month.
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
-
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**. Name the function **`jb-lab-3-benchmark`** and its execution role **`lab-jb3-role`**.
 
 **Code:** [`artifacts/jb-lab-3/lambda_function.py`](artifacts/jb-lab-3/lambda_function.py). It does CPU work (repeated SHA-256 hashing) and can also **wait** without using CPU, like a slow API call:
 
@@ -99,7 +97,7 @@ Create 2 tests Events:
 
 ---
 
-[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md) | [jb-lab-4 ➡](jb-lab-4.md)
+[⬅ jb-lab-2](jb-lab-2.md) | [⬅ Back to 3.06 AWS Lambda](README.md)
 
 ---
 

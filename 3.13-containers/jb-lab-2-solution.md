@@ -82,10 +82,10 @@ X-Forwarded-Proto: http
 ![admin-tg – dynamic host ports](images/lab2-01-dynamic-ports-targets.jpg)
 
 ```
-i-068fd3af5bed2744a   32768   healthy
-i-068fd3af5bed2744a   32770   healthy
-i-0d54c013a83b02d79   32769   healthy
-i-0d54c013a83b02d79   32770   healthy
+i-0a1b2c3d4e5f60001   32769   healthy
+i-0a1b2c3d4e5f60001   32770   healthy
+i-0a1b2c3d4e5f60002   32768   healthy
+i-0a1b2c3d4e5f60002   32770   healthy
 ```
 
 Each instance now runs **3 tasks** (2 admin + 1 store). With 0.5 GB per task, they use 1,536 of the 1,913 MiB that a t3.small gives ECS, so **377 MiB** are still free on each instance.

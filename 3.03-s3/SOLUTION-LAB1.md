@@ -4,7 +4,7 @@
 
 > Tested with AWS CLI v2 in `us-east-1`. Run the commands in one terminal session, because later steps use the shell variables.
 
-> 🏫 In the classroom account, your bucket name must start with **`jblabs-`**. Some screenshots and sample outputs on this page show an older lab bucket name, `s3-lab-student-…`. The steps and results are the same.
+> Your bucket name starts with **`jblabs-`**. Some screenshots and sample outputs on this page show an older lab bucket name, `s3-lab-student-…`. The steps and results are the same.
 
 ---
 
@@ -141,8 +141,6 @@ version 2
 The same key, `notes.txt`, returns `version 1` when you ask for the **old version ID**, and `version 2` (the current version) without one.
 
 ### Part D (Advanced, HARD!): Limit access to the bucket
-
-> ⚠️ **Advanced part:** this part may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
 
 Both restrictions use a **bucket policy with `"Effect": "Deny"`**. An explicit deny overrides any allow, including the admin's own IAM permissions.
 

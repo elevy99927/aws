@@ -174,10 +174,6 @@ A **GB-second** is memory (in GB) × run time (in seconds). A 128 MB function ru
 
 ## 🧪 LAB 1 (Advanced): Your First Lambda Function
 
-> ⚠️ **Advanced lab:** this lab may not work in every AWS account because of SCPs (Service Control Policies) or other restrictions, for example in a classroom account. We recommend doing it in your own private AWS account.
-
-> 🏫 **Classroom account:** Lambda and CloudWatch Logs are blocked in the classroom account, so this lab can't run there.
-
 > 💰 **Cost:** effectively **$0**, because everything stays inside the Lambda Free Tier.
 
 **Goal:** Create a Python function in the Console, run it with a test event, read its logs in CloudWatch, and change its behavior with an environment variable, without touching the code.
@@ -273,8 +269,6 @@ Lab 2 has its own page: **[LAB2.md](LAB2.md)**
 ---
 
 ## Terraform Code
-
-> ⚠️ The Terraform code builds the **advanced** labs, so it may not work in every AWS account because of SCPs or other restrictions, for example in a classroom account. We recommend running it in your own private AWS account.
 
 > Terraform is covered later in the course. The code is here **for reference**.
 

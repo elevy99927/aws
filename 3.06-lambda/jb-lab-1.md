@@ -12,8 +12,6 @@
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
 
-> 🏫 **Classroom account rules:** work only in **`us-east-1`**. Name the function **`jb-lab-1`** and its execution role **`lab-jb1-role`**.
-
 **Code:** [`artifacts/jb-lab-1/lambda_function.py`](artifacts/jb-lab-1/lambda_function.py)
 
 ```python
