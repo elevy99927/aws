@@ -41,7 +41,7 @@ Each lab has a solution in three ways: **Console (UI)**, **AWS CLI** and **Terra
 | **Amazon ECS on Fargate** | ECS orchestrates containers on serverless compute, with no instances ([Lab 3](jb-lab-3.md)) |
 | **Amazon EKS** | Managed Kubernetes, on EC2 or Fargate |
 | **AWS App Runner** | Give it an image or code, and get an HTTPS web service |
-| **AWS Lambda** (container image) | A function packaged as an image of up to 10 GB ([3.11](../3.05-lambda/README.md)) |
+| **AWS Lambda** (container image) | A function packaged as an image of up to 10 GB ([3.05](../3.05-lambda/README.md)) |
 | **AWS Elastic Beanstalk** | A PaaS that can deploy Docker applications |
 | **Amazon Lightsail containers** | Simple, fixed-price container hosting |
 | **AWS Batch** | Batch jobs in containers, on EC2 or Fargate |
