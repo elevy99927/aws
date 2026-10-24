@@ -1,6 +1,6 @@
 # 2.04 VPC and Networking – Lab Solutions
 
-[⬅ Back to 2.04 VPC and Networking](README.md)
+[⬅ Labs 2–4](labs-2-4.md) | [⬅ Back to 2.04 VPC and Networking](README.md)
 
 ---
 

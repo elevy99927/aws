@@ -1,10 +1,10 @@
 # 2.04 VPC and Networking – Lab 1: Build a VPC with Public Subnets
 
-[⬅ Back to 2.04 VPC and Networking](README.md) | [Next: Containers – Lab 1 ➡](../3.06-containers/jb-lab-1.md) | [Advanced Networking ➡](../3.07-advanced-vpc/README.md)
+[⬅ Back to 2.04 VPC and Networking](README.md) | [Labs 2–4 ➡](labs-2-4.md) | [Solutions ➡](SOLUTION.md)
 
-**▶ Video walkthrough** (6 min):
+**▶ Video walkthrough** (10 min):
 
-[![Video: 2.04 Lab 1 – Build a VPC with Public Subnets](https://img.youtube.com/vi/SleiMAS1Tb4/maxresdefault.jpg)](https://youtu.be/SleiMAS1Tb4)
+[![Video: AWS Basic Networking – Build a VPC with Public Subnets](https://img.youtube.com/vi/Br_yFkTGWAY/maxresdefault.jpg)](https://youtu.be/Br_yFkTGWAY)
 
 In this lab you build a small network in AWS by hand, one piece at a time: a **VPC**, two **public subnets** in two **Availability Zones**, an **internet gateway** and a **route table**. 
 
@@ -13,11 +13,11 @@ In this lab you build a small network in AWS by hand, one piece at a time: a **V
 
 Region: **`us-east-1`** (N. Virginia). The lab has **five steps**: four to build the network, and one to check it.
 
-```
- 1. VPC  ──►  2. Subnets  ──►  3. Internet gateway  ──►  4. Route table  ──►  5. Check
- ecs-vpc      ecs-public-1a    ecs-igw                   ecs-public-rt            resource map
-              ecs-public-1b                              0.0.0.0/0 → ecs-igw
-```
+![What you build: ecs-vpc 10.0.0.0/16 with two public subnets in us-east-1a and us-east-1b, the internet gateway ecs-igw, and the route table ecs-public-rt associated with both subnets](images/lab1-ecs-vpc.jpg)
+
+The numbers are the five steps: **1** VPC → **2** subnets → **3** internet gateway → **4** route table → **5** check the resource map.
+
+<sub>Diagram source: [images/lab1-ecs-vpc.drawio](images/lab1-ecs-vpc.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
 > 💰 **Cost:** the VPC, subnets, internet gateway and route tables have **no hourly charge**. You pay for what runs in and through the network: EC2 instances, load balancers, data transfer, and **public IPv4 addresses**, which are billed per hour while they're assigned. A NAT gateway would also cost money, but this lab doesn't use one.
 
@@ -183,9 +183,20 @@ Open `ecs-vpc` → **Resource map**. You should see the whole chain: the VPC →
 
 ---
 
+## Solution
+
+This page is the solution: every step above is a Console walkthrough, with a screenshot of each click. [SOLUTION.md](SOLUTION.md) has the solutions for Labs 2–4. [Lab 4](labs-2-4.md#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) builds the same pieces with the AWS CLI.
+
+---
+
 ## What's next?
 
-Two ways to continue:
+- **More practice in this chapter: [Labs 2–4](labs-2-4.md):**
+  - [Lab 2: Explore the default VPC](labs-2-4.md#-lab-2-basic-explore-the-default-vpc)
+  - [Lab 3: Create a VPC with the *VPC and more* wizard](labs-2-4.md#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard)
+  - [Lab 4: Build a VPC piece by piece with the CLI](labs-2-4.md#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli)
+
+Or continue to another chapter:
 
 1. **[Containers – Lab 1: ECS on EC2](../3.06-containers/jb-lab-1.md):** build an ECS cluster on EC2 instances inside this network.
 2. **[Advanced Networking](../3.07-advanced-vpc/README.md):** private and isolated subnets, NAT gateways, VPC endpoints, VPC peering and Transit Gateway, and IP address planning.

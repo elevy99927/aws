@@ -268,9 +268,9 @@ The CLI builds the same thing piece by piece: an instance role, an empty cluster
 ```bash
 export AWS_PAGER="" AWS_REGION=us-east-1
 MY_IP=$(curl -s https://checkip.amazonaws.com)
-VPC_ID=$(aws ec2 describe-vpcs --filters Name=is-default,Values=true --query 'Vpcs[0].VpcId' --output text)
-SUBNET_A=$(aws ec2 describe-subnets --filters Name=default-for-az,Values=true Name=availability-zone,Values=us-east-1a --query 'Subnets[0].SubnetId' --output text)
-SUBNET_B=$(aws ec2 describe-subnets --filters Name=default-for-az,Values=true Name=availability-zone,Values=us-east-1b --query 'Subnets[0].SubnetId' --output text)
+VPC_ID=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=ecs-vpc --query 'Vpcs[0].VpcId' --output text)
+SUBNET_A=$(aws ec2 describe-subnets --filters Name=tag:Name,Values=ecs-public-1a --query 'Subnets[0].SubnetId' --output text)
+SUBNET_B=$(aws ec2 describe-subnets --filters Name=tag:Name,Values=ecs-public-1b --query 'Subnets[0].SubnetId' --output text)
 
 # Part A: security group
 INST_SG=$(aws ec2 create-security-group --group-name ecs-instances-sg \

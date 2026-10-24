@@ -98,20 +98,20 @@ The slides show an older Console screen, with *Networking only (Fargate)*, *EC2 
 
 **Tools:** Console + AWS CLI. Region: `us-east-1`.
 
-> **Before you start:** do the [Networking lab](../2.04-vpc-and-networking/lab-1.md). All 3.06 ContainersL run in the network it builds, **`ecs-vpc`**: wherever a step says "the default VPC", use `ecs-vpc`.
+> **Before you start:** do the [Networking lab](../2.04-vpc-and-networking/lab-1.md). All the Containers labs run in the network it builds, **`ecs-vpc`**.
 
 ### Tasks
 
 **Part A: Security group**
 
-1. Create a security group `ecs-instances-sg` in the default VPC that allows **TCP 8080 from your IP** (*My IP*).
+1. Create a security group `ecs-instances-sg` in **`ecs-vpc`** that allows **TCP 8080 from your IP** (*My IP*).
 
 **Part B: Cluster with EC2 instances**
 
 2. In **ECS → Clusters → Create cluster**, name it **`ecs-ec2`** and choose **Fargate and Self-managed instances**:
    - Create a new Auto Scaling Group, OS **Amazon Linux 2023**, instance type **t3.small**.
    - Desired capacity: **min 2, max 2**. No SSH key pair.
-   - Network: the **default VPC**, its public subnets, security group **`ecs-instances-sg`**, auto-assign public IP **on**.
+   - Network: **`ecs-vpc`**, its public subnets `ecs-public-1a` and `ecs-public-1b`, security group **`ecs-instances-sg`**, auto-assign public IP **on**.
    - Click `Create`
 3. Wait until **Infrastructure** shows **2 container instances**. Open one. What are its *Agent version* and *Docker version*?
 

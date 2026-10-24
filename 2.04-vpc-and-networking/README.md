@@ -5,9 +5,9 @@
 | # | Lab | Steps |
 |---|-----|-------|
 | 1 | **Build a VPC with Public Subnets** – a VPC, two public subnets in two Availability Zones, an internet gateway and a route table, step by step in the Console. The network for the labs that follow ([Containers](../3.06-containers/README.md)) | [Lab 1](lab-1.md) |
-| 2 | **Explore the Default VPC** – what AWS creates for you in every Region: default subnets, Internet Gateway and route table | [Lab 2](#-lab-2-basic-explore-the-default-vpc) |
-| 3 | **Create a VPC with the "VPC and more" Wizard** – public and private subnets in two Availability Zones, in a few clicks | [Lab 3](#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard) |
-| 4 | **Build a VPC Piece by Piece with the CLI** (advanced) – the same building blocks as Lab 1, with the AWS CLI | [Lab 4](#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) |
+| 2 | **Explore the Default VPC** – what AWS creates for you in every Region: default subnets, Internet Gateway and route table | [Lab 2](labs-2-4.md#-lab-2-basic-explore-the-default-vpc) |
+| 3 | **Create a VPC with the "VPC and more" Wizard** – public and private subnets in two Availability Zones, in a few clicks | [Lab 3](labs-2-4.md#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard) |
+| 4 | **Build a VPC Piece by Piece with the CLI** (advanced) – the same building blocks as Lab 1, with the AWS CLI | [Lab 4](labs-2-4.md#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) |
 
 Next: [Advanced Networking](../3.07-advanced-vpc/README.md) – private subnets, NAT gateways, VPC endpoints, peering and IP address planning.
 
@@ -22,7 +22,7 @@ Next: [Advanced Networking](../3.07-advanced-vpc/README.md) – private subnets,
 - [Subnets – each subnet lives in **one Availability Zone**](#4-subnets-route-tables-and-the-internet-gateway)
 - [Public vs. private subnets](#what-makes-a-subnet-public)
 - [Internet Gateway (IGW) and route tables](#4-subnets-route-tables-and-the-internet-gateway)
-- [Creating a basic VPC with the *VPC and more* wizard](#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard)
+- [Creating a basic VPC with the *VPC and more* wizard](labs-2-4.md#-lab-3-basic-create-a-vpc-with-the-vpc-and-more-wizard)
 - [Security Groups vs. Network ACLs](#5-security-groups-vs-network-acls)
 
 ---
@@ -36,26 +36,9 @@ An **Amazon Virtual Private Cloud (VPC)** is your own logically isolated network
 - Resources such as EC2 instances, RDS databases and load balancers are launched **into subnets**.
 - Creating a VPC, subnets, route tables and an Internet Gateway is **free**. NAT Gateways, VPC endpoints, Transit Gateway and public IPv4 addresses cost money.
 
-```
-Region: us-east-1
-┌────────────────────────── VPC 10.0.0.0/16 ──────────────────────────┐
-│                                                                     │
-│   AZ us-east-1a                      AZ us-east-1b                  │
-│   ┌──────────────────────────┐       ┌──────────────────────────┐   │
-│   │ Public   10.0.1.0/24     │       │ Public   10.0.2.0/24     │   │
-│   │   [EC2 web]              │       │   [EC2 web]              │   │
-│   └──────────────────────────┘       └──────────────────────────┘   │
-│   ┌──────────────────────────┐       ┌──────────────────────────┐   │
-│   │ Private  10.0.11.0/24    │       │ Private  10.0.12.0/24    │   │
-│   │   [RDS primary]          │       │   [RDS standby]          │   │
-│   └──────────────────────────┘       └──────────────────────────┘   │
-│                                                                     │
-└──────────────────────────────────┬──────────────────────────────────┘
-                                   │
-                         Internet Gateway (IGW)
-                                   │
-                               Internet
-```
+![A VPC 10.0.0.0/16 in us-east-1: in each of two Availability Zones, a public subnet with an EC2 web server and a private subnet with an RDS database; an Internet Gateway connects the VPC to the internet](images/vpc-overview.jpg)
+
+<sub>Diagram source: [images/vpc-overview.drawio](images/vpc-overview.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
 ---
 
@@ -144,91 +127,12 @@ You'll build Security Groups hands-on in [3.01 EC2](../3.01-ec2/README.md).
 
 ---
 
-## 🧪 LAB 2 (Basic): Explore the Default VPC
+## 🧪 Labs
 
-**Goal:** Understand what AWS creates for you in every Region.
+1. **Start here: [Lab 1: Build a VPC with Public Subnets](lab-1.md)** (with a video). Build `ecs-vpc` step by step in the Console. The Containers labs run in this network.
+2. **Then: [Labs 2–4](labs-2-4.md):** explore the default VPC, create a VPC with the *VPC and more* wizard, and build a VPC with the CLI.
 
-**Tools:** Console + AWS CLI. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `us-east-1`.
-
-### Tasks
-
-1. Open the **VPC** console and choose **Your VPCs**. Find the VPC where **Default VPC = Yes**. What is its CIDR?
-2. Select it and open the **Resource map** tab. How many subnets are there? How many route tables? Is there an Internet Gateway?
-3. Choose **Subnets** and filter by the default VPC:
-   - Which AZ is each subnet in?
-   - What is the size (prefix) of each subnet?
-   - Is **Auto-assign public IPv4 address** enabled?
-4. Open the **main route table**. Which route makes the default subnets public?
-5. Repeat steps 1–4 with the AWS CLI.
-
-### Questions
-
-- Why is every default subnet public?
-- How many usable IPs does a default subnet have?
-- What happens if you run `aws ec2 create-default-vpc` in a Region that already has a default VPC?
-
----
-
-## 🧪 LAB 3 (Basic): Create a VPC with the "VPC and more" Wizard
-
-**Goal:** Create a production-style VPC with public and private subnets in two AZs, in a few clicks.
-
-**Tools:** Console.
-
-### Tasks
-
-1. In the **VPC** console, choose **Create VPC → VPC and more**.
-2. Configure:
-   - **Name tag auto-generation:** `lab`
-   - **IPv4 CIDR block:** `10.0.0.0/16`
-   - **Number of Availability Zones:** `2`
-   - **Number of public subnets:** `2`
-   - **Number of private subnets:** `2`
-   - **NAT gateways:** `None` (to avoid charges)
-   - **VPC endpoints:** `None`
-3. Look at the **Preview** on the right side **before** you create it. Which subnet is associated with which route table?
-4. Choose **Create VPC** and wait for all the steps to finish.
-5. Open the new VPC's **Resource map**. Compare the public and private route tables.
-6. **Clean up:** select the VPC, then choose **Actions → Delete VPC**. This also deletes its subnets, route tables and IGW.
-
-### Questions
-
-- What is the difference between the public and the private route tables?
-- Could an instance in a private subnet download updates from the internet? What would you add?
-
----
-
-## 🧪 LAB 4 (Advanced): Build a VPC Piece by Piece with the CLI
-
-**Goal:** Understand every building block by creating a VPC manually. You'll create a VPC, a public and a private subnet, an Internet Gateway and a public route table.
-
-**Tools:** AWS CLI.
-
-### Tasks
-
-1. Create a VPC `lab-cli-vpc` with CIDR `10.10.0.0/16`.
-2. Create two subnets:
-   - `lab-public-a`: `10.10.1.0/24` in the **first** AZ
-   - `lab-private-b`: `10.10.11.0/24` in the **second** AZ
-3. Enable **auto-assign public IPv4** on `lab-public-a`.
-4. Create an **Internet Gateway** `lab-igw` and **attach** it to the VPC.
-5. Create a route table `lab-public-rt`. Add the route `0.0.0.0/0 → IGW` and **associate** it with `lab-public-a` only.
-6. Verify the setup:
-   - The route table of `lab-public-a` has a route to the IGW.
-   - `lab-private-b` uses the **main** route table, which has only the `local` route.
-7. Open the VPC's **Resource map** in the Console and compare it with what you built.
-8. **Clean up** in the correct order. Detach and delete the IGW, then delete the subnets, the route table and the VPC.
-
-### Questions
-
-- Why does `lab-private-b` stay private even though it is in the same VPC as the IGW?
-- Why must you detach the IGW before you can delete the VPC?
-
----
-
-## Solutions
-
-Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
+Solutions for Labs 2–4: **[SOLUTION.md](SOLUTION.md)**
 
 ---
 
@@ -238,7 +142,7 @@ Step-by-step solutions for all labs: **[SOLUTION.md](SOLUTION.md)**
 
 ## Terraform Code
 
-The [`terraform/`](terraform/) folder builds the same VPC as Lab 4 as code. The Terraform part of the course will cover it in depth. To try it now:
+The [`terraform/`](terraform/) folder builds the same VPC as [Lab 4](labs-2-4.md#-lab-4-advanced-build-a-vpc-piece-by-piece-with-the-cli) as code. The Terraform part of the course will cover it in depth. To try it now:
 
 ```bash
 cd terraform
