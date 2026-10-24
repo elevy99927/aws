@@ -10,12 +10,9 @@
 
 **Goal:** Build an **event-driven pipeline**. When a file is uploaded to an `upload` bucket, S3 sends an **event** that **triggers** a Lambda function. The function "scans" the file (it only prints `scanning ...`) and copies it to a `clean` bucket.
 
-```
-  aws s3 cp file.txt          S3 event: ObjectCreated            copy_object
- ───────────────────► [ upload bucket ] ──────────────────► λ lab-scanner ──────────────► [ clean bucket ]
-                                                                  │
-                                                                  └─ print("scanning ...") ─► CloudWatch Logs
-```
+![Lab 2 pipeline: you upload a file to the upload bucket, the S3 event invokes lab-scanner, which copies the file to the clean bucket and writes its scan lines to CloudWatch Logs](images/lab2-pipeline.jpg)
+
+<sub>Diagram source: [images/lab2-pipeline.drawio](images/lab2-pipeline.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
 
 **Prerequisites:**
 - [LAB 1](README.md#-lab-1-advanced-your-first-lambda-function): creating and testing a Lambda function.
@@ -87,21 +84,21 @@ def lambda_handler(event, context):
 
 **Part C: The function**
 
-4. Create a function `lab-scanner`: **Python 3.14**, execution role **Use an existing role → `lab-scanner-role`**.
+4. In **Lambda → Create function** (*Author from scratch*), name it `lab-scanner` with runtime **Python 3.14**. Under **Additional settings**, turn on **Custom execution role** and choose **`lab-scanner-role`**.
 5. Deploy the scanner code above.
 6. Add an environment variable `CLEAN_BUCKET` = the name of **your clean bucket**.
-7. In **Configuration → General configuration**, set the **timeout** to **30 seconds**. The default of 3 seconds is too short for a cold start plus an S3 copy.
+7. In **Configuration → General configuration**, set the **timeout** to **30 seconds**. The default is 3 seconds; 30 seconds leaves room for a slow S3 request.
 
 **Part D: The trigger**
 
 8. In the function overview, choose **Add trigger → S3**:
    - Bucket: **your upload bucket**
    - Event types: **All object create events**
-   - Check the **Recursive invocation** acknowledgment if the Console requires it. Our output goes to a different bucket, so there's no loop.
+   - Check the **Recursive invocation** acknowledgment. The Console requires it for every S3 trigger, even though our output goes to a different bucket and there's no loop.
 
 **Part E: Test**
 
-9. Upload two files to the **upload** bucket. One of them should have a **space** in its name and be inside a "folder":
+9. Upload two files to the **upload** bucket. One of them should have a **space** in its name and be inside a "folder". Run the commands in your terminal, or in **CloudShell** (the terminal built into the Console, at the bottom left):
    ```bash
    echo "invoice 2026"   > invoice.txt
    echo "monthly report" > "my report.txt"
