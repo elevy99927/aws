@@ -10,7 +10,7 @@
         <mxCell id="region" value="Region: us-east-1" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_region;strokeColor=#00A4A6;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#147EBA;dashed=1;" vertex="1" parent="1">
           <mxGeometry x="160" y="20" width="1140" height="690" as="geometry" />
         </mxCell>
-        <mxCell id="vpc" value="Default VPC (public subnets)" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc2;strokeColor=#8C4FFF;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#8C4FFF;dashed=0;" vertex="1" parent="1">
+        <mxCell id="vpc" value="VPC: ecs-vpc (public subnets)" style="points=[];outlineConnect=0;gradientColor=none;html=1;whiteSpace=wrap;fontSize=12;fontStyle=0;container=0;pointerEvents=0;collapsible=0;recursiveResize=0;shape=mxgraph.aws4.group;grIcon=mxgraph.aws4.group_vpc2;strokeColor=#8C4FFF;fillColor=none;verticalAlign=top;align=left;spacingLeft=30;fontColor=#8C4FFF;dashed=0;" vertex="1" parent="1">
           <mxGeometry x="180" y="60" width="710" height="630" as="geometry" />
         </mxCell>
         <mxCell id="cluster" value="ECS Cluster: ecs-ec2" style="rounded=1;arcSize=2;whiteSpace=wrap;html=1;fillColor=#FFF6ED;strokeColor=#ED7100;strokeWidth=2;verticalAlign=top;align=left;spacingLeft=44;spacingTop=6;fontColor=#ED7100;fontStyle=1;fontSize=14;" vertex="1" parent="1">
