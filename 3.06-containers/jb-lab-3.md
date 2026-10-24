@@ -25,6 +25,15 @@
 
 > Between the two there's a third option, **ECS Managed Instances**: EC2 instances that ECS launches, patches and scales for you, for workloads that need instance-level choices (such as GPUs) without the maintenance.
 
+### Where Do the Containers Actually Run?
+
+"No instances in your account" doesn't mean there are no servers. Fargate tasks run on **EC2 servers in an AWS-owned account**, in the Availability Zone of the subnet you chose.
+
+- **Isolation:** each task runs in its own lightweight virtual machine. It doesn't share a kernel, CPU, memory or network interface with any other task, including other customers' tasks.
+- **Firecracker:** the technology behind these lightweight VMs. [Firecracker](https://github.com/firecracker-microvm/firecracker) is an open-source virtual machine monitor that AWS built for Lambda and Fargate (announced in 2018). It starts a **microVM** in about 125 ms with less than 5 MB of memory overhead, so one bare-metal server can run thousands of isolated tasks.
+- **Networking:** ECS creates the task's ENI in **your** subnet and attaches it to the microVM. That's why the task has a private IP in your VPC and is protected by your security group, even though the server isn't in your account.
+- **What it means for you:** there's no host to SSH into (use **ECS Exec** to get into a container), and every new task starts on a fresh microVM and pulls its image again.
+
 ## 3. Fargate Essentials
 
 | Topic | Details |
