@@ -6,6 +6,7 @@
 |---|-----|-------|
 | 1 | **Launch Your First EC2 Instance** – the *Launch an instance* page, step by step: AMI, instance type and the Free Tier, a key pair, network settings and storage | [Lab 1](lab-1.md) · [Solution](lab-1-solution.md) · [▶ Video](https://youtu.be/guJMkW6rb7g) |
 | 2 | **Connect with SSH, Run a Container, and Clean Up** – SSH with your key, open port 80, install Docker, run `elevy99927/color:blue`, browse to it, then stop and terminate the instance | [Lab 2](lab-2.md) · [Solution](lab-2-solution.md) · [▶ Video](https://youtu.be/paAiY6g03wQ) |
+| 3 | **EC2 or Containers? From Virtual Machines to Firecracker MicroVMs** (theory) – VMs, containers and microVMs, KVM, Firecracker's architecture, VirtIO, the boot, and how AWS Lambda uses it | [Read](EC2-or-Containers.md) · [▶ Video](https://youtu.be/Ak88MbuAxKg) |
 
 Before you start: the network from [2.04 VPC and Networking – Lab 1](../2.04-vpc-and-networking/lab-1.md) (`ecs-vpc`), or a default VPC.
 

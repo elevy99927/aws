@@ -2,6 +2,10 @@
 
 [⬅ Back to 3.01 EC2](README.md) | [Firecracker lab ➡](firecracker-lab-walkthrough.md)
 
+**▶ Video** (15 min):
+
+[![Video: EC2 – EC2 or containers? From virtual machines to Firecracker microVMs](https://img.youtube.com/vi/Ak88MbuAxKg/maxresdefault.jpg)](https://youtu.be/Ak88MbuAxKg)
+
 You already know two ways to run an application in the cloud: on a **virtual machine** (an EC2 instance) and in a **container** (ECS, Fargate). This page explains why AWS built a third option, the **microVM**, and how **Firecracker**, the open-source technology behind it, works.
 
 It's theory only: no commands and no installations. The story goes: the world we have → the problem → the requirements → the solution → the architecture → how it boots. In the [Firecracker lab](firecracker-lab-walkthrough.md) you build a microVM yourself.
@@ -234,7 +238,7 @@ QEMU and Firecracker can use the **same KVM**. The difference is in the VMM: how
 - A **Linux host** with the **KVM** module.
 - One **Firecracker process** per microVM: one process, one microVM.
 - Inside the process, three kinds of threads:
-  - the **API thread** serves Firecracker's HTTP API on a Unix socket (configure, start, stop). It's never on the guest's fast path;
+  - the **API thread** serves Firecracker's HTTP API on a Unix socket: configure the microVM, start it, pause and resume it, and take snapshots. It's never on the guest's fast path;
   - the **VMM thread** runs the machine model and the device models: virtio-net, virtio-block, vsock, the serial console, the metadata service (MMDS) and I/O rate limiters;
   - one **vCPU thread** per guest CPU runs KVM's `KVM_RUN` loop, which executes the guest's code.
 - Inside the microVM: the **guest kernel**, its root filesystem, init and the application.
