@@ -27,12 +27,12 @@
 
 ### Where Do the Containers Actually Run?
 
-"No instances in your account" doesn't mean there are no servers. Fargate tasks run on **EC2 servers in an AWS-owned account**, in the Availability Zone of the subnet you chose.
+"No instances in your account" doesn't mean there are no servers. Fargate tasks run on servers that **AWS manages, outside your account**, in the Availability Zone of the subnet you chose.
 
-- **Isolation:** each task runs in its own lightweight virtual machine. It doesn't share a kernel, CPU, memory or network interface with any other task, including other customers' tasks.
-- **Firecracker:** the technology behind these lightweight VMs. [Firecracker](https://github.com/firecracker-microvm/firecracker) is an open-source virtual machine monitor that AWS built for Lambda and Fargate (announced in 2018). It starts a **microVM** in about 125 ms with less than 5 MB of memory overhead, so one bare-metal server can run thousands of isolated tasks.
-- **Networking:** ECS creates the task's ENI in **your** subnet and attaches it to the microVM. That's why the task has a private IP in your VPC and is protected by your security group, even though the server isn't in your account.
-- **What it means for you:** there's no host to SSH into (use **ECS Exec** to get into a container), and every new task starts on a fresh microVM and pulls its image again.
+- **Isolation:** Fargate runs each task in its own **isolated virtual environment**. A task doesn't share its network interface, ephemeral storage, CPU or memory with other tasks ([AWS docs](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-security-considerations.html)). The containers *inside* one task do share them.
+- **How it's built:** AWS doesn't publish the technology behind Fargate's isolation today. A 2020 AWS post described Fargate tasks running in [Firecracker](https://github.com/firecracker-microvm/firecracker) microVMs, but AWS has since added a note that its Firecracker references *"are no longer accurate"* ([source](https://aws.amazon.com/blogs/containers/under-the-hood-fargate-data-plane/)). To learn how microVMs and Firecracker work, see [EC2 or Containers?](../3.01-ec2/EC2-or-Containers.md).
+- **Networking:** ECS creates the task's ENI in **your** subnet and attaches it to the task's environment. That's why the task has a private IP in your VPC and is protected by your security group, even though the server isn't in your account.
+- **What it means for you:** there's no host to SSH into, for you or for AWS operators (use **ECS Exec** to get into a container), and every new task starts in a fresh environment and pulls its image again.
 
 ## 3. Fargate Essentials
 
