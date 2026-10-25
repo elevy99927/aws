@@ -12,6 +12,8 @@
 
 **Tools:** Console + AWS CLI. Complete [00 Getting Started](../00-getting-started/README.md) first. The examples use `us-east-1`.
 
+> **No default VPC in your Region?** Then explore the VPC you built in [Lab 1](lab-1.md) (`ecs-vpc`) instead: it has the same building blocks. Lab 1 already built a VPC by hand; this lab looks at the same pieces from a different angle. To bring the default VPC back: **Actions → Create default VPC**, or `aws ec2 create-default-vpc` (free).
+
 ### Tasks
 
 1. Open the **VPC** console and choose **Your VPCs**. Find the VPC where **Default VPC = Yes**. What is its CIDR?

@@ -4,7 +4,7 @@
 
 ---
 
-> 📍 **Region note:** run the labs in **`us-east-1`**. The screenshots and sample outputs on this page were captured in **`eu-west-1`** (Europe, Ireland). In `us-east-1` the Availability Zones are named `us-east-1a`–`us-east-1f`, the default VPC has **six** default subnets, and all IDs are different. The structure and the results are the same.
+> Tested in **`us-east-1`** on 2026-10-24. The two default-VPC screenshots in Lab 2 were captured earlier in `eu-west-1`, where the default VPC has three default subnets instead of six.
 
 ## LAB 2 (Basic): Explore the Default VPC
 
@@ -13,7 +13,7 @@
 1. **VPC → Your VPCs**: the VPC with **Default VPC = Yes** has the CIDR `172.31.0.0/16`.
 2. On the **Resource map** tab, you see one subnet per AZ, the main route table and the Internet Gateway (under *Network Connections*):
 
-![Default VPC – resource map](images/01-default-vpc-resource-map.jpg)
+![Default VPC – resource map (eu-west-1)](images/01-default-vpc-resource-map.jpg)
 
 > Your account may show extra subnets or route tables that someone added to the default VPC. In the screenshot, `custom-private` is such an addition.
 
@@ -59,6 +59,69 @@ Sample output (captured in eu-west-1):
 |  0.0.0.0/0     |  igw-0c65...    |
 ```
 
+### No default VPC in your Region?
+
+If the Region has no default VPC (it was deleted, or the account is new to the Region and was set up without one), **Default VPC = Yes** doesn't appear anywhere, and `describe-vpcs --filters Name=is-default,Values=true` returns `[]`. Do the same exploration on **`ecs-vpc`**, the VPC you built in [Lab 1](lab-1.md). Its pieces are the same; only the values differ: your CIDR `10.0.0.0/16`, `/24` subnets, and your own route table.
+
+![The Lab 1 VPC: Default VPC = No, IPv4 CIDR 10.0.0.0/16; Actions → Create default VPC](images/lab2-01-ecs-vps-details.jpg)
+
+> To bring a default VPC back: **Actions → Create default VPC** (with no VPC selected), or `aws ec2 create-default-vpc`. It's free. In these screenshots the Lab 1 VPC is named `ecs-vps`.
+
+![Resource map: two subnets, the public route table and the internet gateway](images/lab2-02-ecs-vps-resource-map.jpg)
+
+![Subnet details: 251 available IPv4 addresses, Default subnet No, auto-assign public IPv4 Yes](images/lab2-03-subnets.jpg)
+
+![Route table: 0.0.0.0/0 → igw and 10.0.0.0/16 → local](images/lab2-04-route-table.jpg)
+
+The same checks with the CLI, using the Lab 1 VPC. Find it by its name (change `ecs-vpc` if you named it differently, and check that `$VPC` isn't `None` before you continue). In the Lab 1 VPC, the only non-main route table is the public one, so the third command reads its routes:
+
+```bash
+export AWS_PAGER="" AWS_REGION=us-east-1
+VPC=$(aws ec2 describe-vpcs --filters Name=tag:Name,Values=ecs-vpc \
+  --query 'Vpcs[0].VpcId' --output text)
+echo $VPC   # must be vpc-…, not None
+
+aws ec2 describe-vpcs --vpc-ids $VPC --query 'Vpcs[0].[VpcId,CidrBlock,IsDefault]' --output table
+aws ec2 describe-subnets --filters Name=vpc-id,Values=$VPC \
+  --query 'Subnets[].[AvailabilityZone,CidrBlock,AvailableIpAddressCount,MapPublicIpOnLaunch]' --output table
+aws ec2 describe-route-tables --filters Name=vpc-id,Values=$VPC Name=association.main,Values=false \
+  --query 'RouteTables[0].Routes[].[DestinationCidrBlock,GatewayId]' --output table
+aws ec2 describe-internet-gateways --filters Name=attachment.vpc-id,Values=$VPC \
+  --query 'InternetGateways[].[InternetGatewayId,Attachments[0].State]' --output table
+aws ec2 describe-vpcs --filters Name=is-default,Values=true --query Vpcs   # [] = no default VPC
+```
+
+Output from `us-east-1` (the VPC is named `ecs-vps` in this account):
+
+```
+---------------------------
+|      DescribeVpcs       |
++-------------------------+
+|  vpc-0a1b2c3d4e5f60001  |
+|  10.0.0.0/16            |
+|  False                  |
++-------------------------+
+----------------------------------------------
+|               DescribeSubnets              |
++-------------+---------------+------+-------+
+|  us-east-1b |  10.0.2.0/24  |  251 |  True |
+|  us-east-1a |  10.0.1.0/24  |  251 |  True |
++-------------+---------------+------+-------+
+------------------------------------------
+|           DescribeRouteTables          |
++--------------+-------------------------+
+|  10.0.0.0/16 |  local                  |
+|  0.0.0.0/0   |  igw-0a1b2c3d4e5f60001  |
++--------------+-------------------------+
+----------------------------------------
+|       DescribeInternetGateways       |
++------------------------+-------------+
+|  igw-0a1b2c3d4e5f60001 |  available  |
++------------------------+-------------+
+$ aws ec2 describe-vpcs --filters Name=is-default,Values=true --query Vpcs
+[]
+```
+
 ### Answers
 
 - **Why every default subnet is public:** the main route table has `0.0.0.0/0 → IGW`, and auto-assign public IPv4 is enabled.
@@ -74,25 +137,49 @@ A Default VPC already exists for this account in this region.
 
 ## LAB 3 (Basic): Create a VPC with the "VPC and more" Wizard
 
-1. **VPC → Your VPCs → Create VPC → VPC and more**.
-2. Set **Name tag auto-generation** to `lab` and keep `10.0.0.0/16`, **2 AZs**, **2 public** and **2 private** subnets. The **Preview** on the right updates live:
+1. **VPC → Your VPCs → Create VPC.**
 
-![Wizard – settings and preview](images/03-wizard-settings.jpg)
+   ![Your VPCs – Create VPC](images/lab3-01-create-vpc.jpg)
 
-3. Set **NAT gateways** to **None** and **VPC endpoints** to **None**. The wizard selects *S3 Gateway* by default. Keep the DNS options enabled:
+2. Choose **VPC and more**, set **Name tag auto-generation** to `lab`, and keep `10.0.0.0/16`. The **Preview** on the right updates live: `lab-vpc`, four subnets and three route tables.
 
-![Wizard – NAT gateways and endpoints](images/04-wizard-nat-endpoints.jpg)
+   ![VPC and more – name tag lab – 10.0.0.0/16 – Preview](images/lab3-02-vpc-and-more.jpg)
 
-4. Choose **Create VPC**. The workflow page lists every resource the wizard creates: VPC, subnets, IGW, route tables, routes and associations.
-5. Choose **View VPC → Resource map**:
+3. Keep **2** Availability Zones, **2** public and **2** private subnets, and **NAT gateways: None** (a NAT gateway is paid; the wizard now also offers a *Regional* NAT gateway). The wizard creates three route tables, in addition to the main route table that every VPC gets.
 
-![Wizard VPC – resource map](images/05-wizard-vpc-resource-map.jpg)
+   ![2 AZs, 2 public and 2 private subnets, NAT gateways None](images/lab3-03-azs-subnets-nat.jpg)
 
-- `lab-rtb-public` is associated with **both public subnets** and routes to `lab-igw`.
-- `lab-rtb-private1-…` and `lab-rtb-private2-…` each serve one private subnet and have **only the `local` route**.
-- The unnamed route table (`rtb-…`) is the VPC's **main** route table. No subnet is explicitly associated with it.
+4. Set **VPC endpoints** to **None** (the wizard selects *S3 Gateway* by default), keep both **DNS options**, and choose **Create VPC**.
 
-6. **Clean up:** select `lab-vpc`, then choose **Actions → Delete VPC**, type `delete` and confirm.
+   ![VPC endpoints None, DNS options, Create VPC](images/lab3-04-endpoints-dns-create.jpg)
+
+5. The workflow lists every resource the wizard creates: the VPC, four subnets, the internet gateway and its attachment, three route tables, the route and the associations.
+
+   ![Create VPC workflow – Success](images/lab3-05-workflow-success.jpg)
+
+6. **View VPC → Resource map.** Hover over `lab-rtb-public`: it serves **both public subnets** and routes to `lab-igw`.
+
+   ![Resource map – lab-rtb-public with both public subnets and lab-igw](images/lab3-06-resource-map-public.jpg)
+
+7. Hover over `lab-rtb-private1-us-east-1a`: it serves **one private subnet** and has no connection to the internet gateway. The unnamed route table (`rtb-…`) is the VPC's **main** route table; no subnet is explicitly associated with it.
+
+   ![Resource map – lab-rtb-private1 with one private subnet only](images/lab3-07-resource-map-private.jpg)
+
+8. Compare the routes in **Route tables**. The public route table has `0.0.0.0/0 → igw-…`:
+
+   ![lab-rtb-public – 0.0.0.0/0 → igw and 10.0.0.0/16 → local](images/lab3-08-public-rt-routes.jpg)
+
+   The private one has only `10.0.0.0/16 → local`:
+
+   ![lab-rtb-private1 – 10.0.0.0/16 → local only](images/lab3-09-private-rt-routes.jpg)
+
+9. **Clean up:** select `lab-vpc`, then choose **Actions → Delete VPC**.
+
+   ![Actions – Delete VPC](images/lab3-10-delete-vpc.jpg)
+
+10. The dialog lists the **8 resources** that are deleted with the VPC (subnets, route tables, the internet gateway). Type `delete` and choose **Delete**. This works for the network pieces in this lab; instances or NAT gateways would have to be deleted first.
+
+    ![Delete VPC – 8 resources will also be deleted – type delete](images/lab3-11-delete-vpc-confirm.jpg)
 
 ### Answers
 
@@ -103,7 +190,7 @@ A Default VPC already exists for this account in this region.
 
 ## LAB 4 (Advanced): Build a VPC Piece by Piece with the CLI
 
-> Tested with AWS CLI v2 (the sample output is from `eu-west-1`). Run everything in one terminal session, because later steps use the shell variables.
+> Tested with AWS CLI v2 in `us-east-1` (about 17 seconds). Run everything in one terminal session, because later steps use the shell variables.
 
 ```bash
 export AWS_PAGER="" AWS_REGION=us-east-1
@@ -157,21 +244,38 @@ aws ec2 describe-route-tables --filters Name=vpc-id,Values=$VPC_ID \
 ```
 
 ```
-|  lab-private-b |  eu-west-1b |  10.10.11.0/24  |  False |
-|  lab-public-a  |  eu-west-1a |  10.10.1.0/24   |  True  |
-
-| Main  |     Name       |  Routes                                        |
-|  True |  None          |  10.10.0.0/16-> local                          |
-|  False|  lab-public-rt |  10.10.0.0/16-> local, 0.0.0.0/0-> igw-0e...   |
+-----------------------------------------------------------
+|                     DescribeSubnets                     |
++----------------+-------------+-----------------+--------+
+|  lab-public-a  |  us-east-1a |  10.10.1.0/24   |  True  |
+|  lab-private-b |  us-east-1b |  10.10.11.0/24  |  False |
++----------------+-------------+-----------------+--------+
+---------------------------------------------------------------------------------------
+|                                 DescribeRouteTables                                 |
++-------+----------------+------------------------------------------------------------+
+| Main  |     Name       |                          Routes                            |
++-------+----------------+------------------------------------------------------------+
+|  True |  None          |  10.10.0.0/16-> local                                      |
+|  False|  lab-public-rt |  10.10.0.0/16-> local, 0.0.0.0/0-> igw-0a1b2c3d4e5f60001   |
++-------+----------------+------------------------------------------------------------+
 ```
 
 **7. Resource map:**
 
-![CLI VPC – resource map](images/06-cli-vpc-resource-map.jpg)
+![lab-cli-vpc resource map – lab-public-rt with lab-public-a and lab-igw](images/lab4-01-resource-map-public.jpg)
 
-`lab-private-b` isn't associated with any route table explicitly, so it uses the **main** route table (`rtb-…`), which has only the `local` route.
+`lab-private-b` isn't associated with any route table explicitly, so it uses the **main** route table (`rtb-…`), which has only the `local` route:
 
-**8. Clean up (order matters):**
+![lab-cli-vpc resource map – the main route table serves lab-private-b](images/lab4-02-resource-map-main.jpg)
+
+**8. Clean up (order matters).** Deleting the VPC first fails, because the subnets, the route table and the attached internet gateway still depend on it:
+
+```
+$ aws ec2 delete-vpc --vpc-id $VPC_ID
+aws: [ERROR]: An error occurred (DependencyViolation) when calling the DeleteVpc operation: The vpc 'vpc-0a1b2c3d4e5f60001' has dependencies and cannot be deleted.
+```
+
+Delete the dependencies first, then the VPC:
 
 ```bash
 aws ec2 detach-internet-gateway --internet-gateway-id $IGW_ID --vpc-id $VPC_ID
@@ -185,7 +289,7 @@ aws ec2 delete-vpc --vpc-id $VPC_ID
 ### Answers
 
 - **Why `lab-private-b` stays private:** being in the same VPC as the IGW isn't enough. A subnet is public only if **its own route table** has a route to the IGW, and `lab-private-b` uses the main route table, which has no such route.
-- **Why the IGW must be detached first:** AWS doesn't delete a VPC that still has dependencies, such as an attached IGW, subnets, non-main route tables or network interfaces. The CLI fails with `DependencyViolation`. The Console's **Delete VPC** removes these dependencies for you.
+- **Why the IGW must be detached first:** AWS doesn't delete a VPC that still has dependencies, such as an attached IGW, subnets, non-main route tables or network interfaces. The CLI fails with `DependencyViolation`. For the network pieces of these labs, the Console's **Delete VPC** removes the dependencies for you. Instances, NAT gateways and interface endpoints must be deleted first.
 
 ---
 
