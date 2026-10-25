@@ -8,7 +8,7 @@ It's theory only: no commands and no installations. The story goes: the world we
 
 ![Three stacks side by side. Virtual machines: each VM has its own app, libraries and system services, its own guest kernel and full virtual hardware (BIOS/UEFI, bootloader, many devices) on a hypervisor. Containers: apps with their libraries share one host kernel through namespaces and cgroups. MicroVMs: each microVM has an app, a minimal rootfs and init, its own small guest kernel and a few VirtIO devices, run by one Firecracker process on a Linux host with KVM.](images/vm-container-microvm.jpg)
 
-<sub>Diagram source: [images/vm-container-microvm.drawio](images/vm-container-microvm.drawio) (open it in [draw.io](https://app.diagrams.net) to edit)</sub>
+<sub>Diagram source: [images/vm-container-microvm.drawio](images/vm-container-microvm.drawio) </sub>
 
 **Contents**
 
@@ -40,7 +40,8 @@ Firecracker wasn't created because VMs or containers are bad. It answers a **com
 
 <sub>Diagram source: [images/virtualization-before-after.drawio](images/virtualization-before-after.drawio)</sub>
 
-**Where EC2 fits:** every EC2 instance you launched in [Lab 1](lab-1.md) is a virtual machine. Modern instance types are built on the **AWS Nitro System**: the **Nitro Hypervisor**, a lightweight hypervisor that manages CPU and memory, plus dedicated Nitro cards for networking and storage. EC2 also offers older Xen-based types and **bare-metal** instances, which give you the physical server with no hypervisor at all.
+>**Where EC2 fits:** 
+<BR>Every EC2 instance you launched in [Lab 1](lab-1.md) is a virtual machine. Modern instance types are built on the **AWS Nitro System**: the **Nitro Hypervisor**, a lightweight hypervisor that manages CPU and memory, plus dedicated Nitro cards for networking and storage. EC2 also offers older Xen-based types and **bare-metal** instances, which give you the physical server with no hypervisor at all.
 
 ### 3. Virtual machines: the benefits
 
@@ -70,7 +71,7 @@ Virtualization solved real problems: resource utilization, flexibility and isola
 - **cgroups** limit what a container *uses* (CPU, memory).
 - There's no OS to boot, so an application process starts in moments.
 - **Container images** package the app with its libraries, which makes it easy to ship and run anywhere.
-
+> More about containers in the [docker tutorial](https://github.com/elevy99927/docker)
 ---
 
 ## Part B – The new problem: serverless and isolation
@@ -81,8 +82,7 @@ Virtualization solved real problems: resource utilization, flexibility and isola
 - A **kernel vulnerability** can therefore affect every container on that host.
 - A **container escape** can give an attacker access outside the container.
 - Namespace isolation is not the same as a hypervisor boundary.
-- **seccomp**, **AppArmor** and **SELinux** reduce the risk, by limiting system calls and file access.
-- **Sandboxed container runtimes** go further, in different ways: **gVisor** puts an application kernel in user space between the container and the host kernel, and **Kata Containers** runs each container inside a lightweight VM (and can use Firecracker as that VM). Not every sandboxed container is a microVM.
+
 
 ![Containers: three customers' containers share one host kernel; a kernel bug or container escape from customer A's container reaches the kernel and from there the other containers. VMs and microVMs: each customer's app has its own guest kernel; a compromise stops at the hypervisor, the virtualization boundary.](images/isolation-boundaries.jpg)
 
@@ -157,7 +157,7 @@ The key change is a smaller **virtual machine model**.
 
 ### 12. Introducing Firecracker
 
-- Developed at **AWS**, and open source (Apache 2.0) since 2018.
+- Developed at **AWS**, and open source (Apache 2.0) since 2018: [github.com/firecracker-microvm/firecracker](https://github.com/firecracker-microvm/firecracker).
 - Written in **Rust**, a memory-safe language.
 - It's a **VMM**, a *virtual machine monitor*: the program that creates and runs VMs, on top of **Linux KVM**.
 - Built to run lightweight, isolated microVMs for **multi-tenant** and **serverless** workloads.
@@ -196,7 +196,7 @@ Compared with a general-purpose VM:
 
 ### 15. What is KVM?
 
-- **KVM** (*Kernel-based Virtual Machine*) is the virtualization component inside the **Linux kernel**.
+- **KVM** (*Kernel-based Virtual Machine*) is the virtualization component inside the **Linux kernel**. Official downloads: [linux-kvm.org/page/Downloads](https://linux-kvm.org/page/Downloads).
 - It uses the CPU's virtualization features to run **virtual CPUs (vCPUs)**, so guest instructions execute directly on the hardware.
 - It handles **VM exits**.
 - It's the foundation for building VMs, but on its own it doesn't provide a full device model. A user-space VMM, such as QEMU or Firecracker, does that.
