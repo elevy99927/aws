@@ -1,6 +1,6 @@
 # 3.05 AWS Lambda – Lab 3 Solution
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 > Tested in `us-east-1` with Python 3.14 on x86_64. Your numbers will differ a little, but the ratios will be similar.
 
@@ -173,7 +173,7 @@ aws iam delete-role --role-name lab-3-role
 
 ---
 
-[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md)
+[⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Lab 4 ➡](jb-lab-4.md)
 
 ---
 

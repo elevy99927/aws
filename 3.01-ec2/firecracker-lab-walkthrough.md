@@ -2,7 +2,11 @@
 
 [⬅ EC2 or Containers?](EC2-or-Containers.md) | [⬅ Back to 3.01 EC2](README.md)
 
-In this walkthrough you build a **microVM** by hand with **Firecracker**, the open-source VMM behind AWS Lambda. You start it on an EC2 instance, give it a Linux kernel and a tiny root filesystem, configure and start it through Firecracker's API, and reach a web server running inside it. No Docker, and no full operating system inside the guest.
+**▶ Video walkthrough** (16 min):
+
+[![Video: EC2 – Firecracker lab: run your own microVM](https://img.youtube.com/vi/hjsSbW37ib0/maxresdefault.jpg)](https://youtu.be/hjsSbW37ib0)
+
+In this walkthrough you build a **microVM** by hand with **Firecracker**, the open-source VMM behind AWS Lambda. You start it on an EC2 instance, give it a Linux kernel and a tiny root filesystem, configure and start it through Firecracker's API, and reach a web server running inside it. No Docker: the guest is a minimal Linux system, a kernel and BusyBox.
 
 The theory is in [EC2 or Containers?](EC2-or-Containers.md) and its video. Region: **`us-east-1`**.
 
@@ -29,7 +33,7 @@ The theory is in [EC2 or Containers?](EC2-or-Containers.md) and its video. Regio
 | Where | What runs there |
 |---|---|
 | **The AWS Console** | Step 1: launch the host |
-| **Your computer** | Only the `ssh` command that connects to the host |
+| **Your computer** | The key file (`chmod 400`, step 1) and the `ssh` command that connects to the host |
 | **The host** (`fc-lab`, over SSH) | Everything else, from step 2 on, in the folder **`~/fc`** |
 | **Terminal 1** on the host | Steps 6–7: Firecracker itself, and the microVM's serial console |
 | **Terminal 2** on the host | Steps 6–7: the API calls and `curl` |
@@ -245,7 +249,7 @@ rootfs/www
 
 **Run on:** the host (any folder).
 
-The guest's virtual network card (virtio-net) is connected to a **TAP device**: a virtual network interface on the host. The host gets `172.16.0.1`, the guest `172.16.0.2`, in a tiny `/30` subnet. No NAT here: the guest only talks to the host.
+The guest's virtual network card (virtio-net) is connected to a **TAP device**: a virtual network interface on the host. The host gets `172.16.0.1`, the guest `172.16.0.2`, in a tiny `/30` subnet. No NAT and no default route here: the guest only talks to the host.
 
 ```bash
 sudo ip tuntap add dev tap0 mode tap user ubuntu      # owned by ubuntu, so Firecracker can run without sudo
@@ -358,7 +362,7 @@ Running
    2190 58352 ./firecracker --api-sock /tmp/firecracker.socket
 ```
 
-The guest kernel is **6.18.54**, while the host runs **7.0.0-1014-aws**: two different kernels on the same machine. The Firecracker process used about **58 MB** of resident memory, although the guest has 256 MiB: the host only allocates memory when the guest touches it.
+The guest kernel is **6.18.54**, while the host runs **7.0.0-1014-aws**: two different kernels on the same machine. The Firecracker process used about **57 MiB** of resident memory (RSS, which `ps` shows in KiB), including the guest pages it touched, although the guest has 256 MiB: guest memory is backed on demand.
 
 ### Pause and resume (advanced exercise)
 
@@ -432,13 +436,24 @@ HTTP 204
 <h1>Hello from Firecracker</h1><p>Guest kernel: 6.18.54+</p>
 ```
 
+The snapshot doesn't contain the disk: the restored microVM uses the same `rootfs.ext4` and `tap0`, so keep them.
+
 In this run, from `snapshot/load` to the HTTP answer took **45 ms**, compared with about 1.1 s for a cold boot. This is the idea behind **Lambda SnapStart**: restore an initialized environment instead of booting a new one.
 
 ### Advanced: make it boot faster
 
 **Run on:** terminals 1 and 2, as in step 6.
 
-Measure how long it takes from `InstanceStart` to the first HTTP answer, then add `quiet` to the boot arguments (less console output), and then also `i8042.noaux i8042.nomux i8042.nopnp i8042.dumbkbd` (skip probing the keyboard controller, as Firecracker's own boot-time tests do). Stop Firecracker and start a fresh process before each run.
+Measure how long it takes from `InstanceStart` to the first HTTP answer, then add `quiet` to the boot arguments (less console output), and then also `i8042.noaux i8042.nomux i8042.nopnp i8042.dumbkbd` (skip probing the keyboard controller, as Firecracker's own boot-time tests do).
+
+For each run: stop Firecracker, start a fresh process in terminal 1, and send the four configuration calls from step 6 again, with the new `boot_args`. Then start and measure in terminal 2 (this loop tries `curl` up to 100 times):
+
+```bash
+t0=$(date +%s%N)
+api PUT actions '{"action_type": "InstanceStart"}'
+for i in $(seq 1 100); do curl -s -m 1 http://172.16.0.2/ >/dev/null && break; sleep 0.05; done
+echo "$(( ($(date +%s%N) - t0) / 1000000 )) ms to the first HTTP answer"
+```
 
 Measured in this run (`m7i-flex.large`, nested virtualization):
 

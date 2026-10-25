@@ -4,7 +4,7 @@
 
 **▶ Video** (15 min):
 
-[![Video: EC2 – EC2 or containers? From virtual machines to Firecracker microVMs](https://img.youtube.com/vi/Ak88MbuAxKg/maxresdefault.jpg)](https://youtu.be/Ak88MbuAxKg)
+[![Video: EC2 – EC2 or containers? From virtual machines to Firecracker microVMs](https://img.youtube.com/vi/fPMxxSC3wiM/maxresdefault.jpg)](https://youtu.be/fPMxxSC3wiM)
 
 You already know two ways to run an application in the cloud: on a **virtual machine** (an EC2 instance) and in a **container** (ECS, Fargate). This page explains why AWS built a third option, the **microVM**, and how **Firecracker**, the open-source technology behind it, works.
 
