@@ -2,9 +2,9 @@
 
 [⬅ EC2 or Containers?](EC2-or-Containers.md) | [⬅ Back to 3.01 EC2](README.md)
 
-**▶ Video walkthrough** (16 min):
+**▶ Video walkthrough** (15 min):
 
-[![Video: EC2 – Firecracker lab: run your own microVM](https://img.youtube.com/vi/hjsSbW37ib0/maxresdefault.jpg)](https://youtu.be/hjsSbW37ib0)
+[![Video: EC2 – Firecracker lab: run your own microVM](https://img.youtube.com/vi/65BVRBkMyGU/maxresdefault.jpg)](https://youtu.be/65BVRBkMyGU)
 
 In this walkthrough you build a **microVM** by hand with **Firecracker**, the open-source VMM behind AWS Lambda. You start it on an EC2 instance, give it a Linux kernel and a tiny root filesystem, configure and start it through Firecracker's API, and reach a web server running inside it. No Docker: the guest is a minimal Linux system, a kernel and BusyBox.
 
@@ -200,7 +200,7 @@ CONFIG_EXT4_FS=y
 ```bash
 cd ~/fc
 mkdir -p rootfs/bin rootfs/dev rootfs/proc rootfs/sys rootfs/www
-cp /bin/busybox rootfs/bin/busybox
+cp /bin/busybox rootfs/bin/busybox     # BusyBox installed in step 2 (busybox-static)
 ln -s busybox rootfs/bin/sh
 
 cat > rootfs/init <<'EOF'
