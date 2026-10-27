@@ -2,11 +2,6 @@
 
 [⬅ Lab 3](jb-lab-3.md) | [⬅ Back to 3.05 AWS Lambda](README.md) | [Walkthrough ➡](jb-lab-4-walkthrough.md)
 
-**▶ Video walkthrough** (9 min):
-
-[![Video: Lambda – An S3 upload triggers a Node.js function](https://img.youtube.com/vi/q6A6g63uLgQ/maxresdefault.jpg)](https://youtu.be/q6A6g63uLgQ)
-
-> 📚 Based on the course hands-on *AWS Lambda DIY*. Updated for your own AWS account: you create your own bucket instead of using a shared class bucket, with Node.js 24.x and today's Console.
 
 ---
 

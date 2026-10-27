@@ -4,12 +4,13 @@
 
 A 4-week, hands-on introduction to the AWS Cloud. The course covers the foundational knowledge needed by anyone starting out with AWS, whether in technical, sales, management or finance roles. You don't need any prior cloud experience.
 
-The course is organized into four modules, from cloud basics to running production workloads:
+The course is organized into five modules, from cloud basics to running production workloads:
 
 1. **Cloud Concepts**: what the cloud is, its service and deployment models, and the shared responsibility model.
 2. **Foundations: Identity & Network**: the global infrastructure, identity and access management, secrets, and your own VPC.
 3. **Services**, in two parts. **3A – Build a system**: compute, storage, S3, monitoring, serverless and containers. **3B – Production**: advanced networking, load balancing and auto scaling, DNS, content delivery and APIs, microservices and databases.
 4. **Security, Cost & Architecture**: network and application protection, pricing, account and cost management, well-architected design, and support.
+5. **Terraform**: Infrastructure as Code, starting with installing Terraform.
 
 Each module contains a short README that lists its topics. Hands-on labs will use **Terraform** for Infrastructure as Code. Practice quizzes will be available soon on a companion website.
 
@@ -56,6 +57,7 @@ Do every lab in your own AWS account. The examples use **`us-east-1`**, S3 bucke
 |  | 4.03 | [Account & Cost Management](4.03-accounts-and-cost-management/README.md) |
 |  | 4.04 | [Architecting in the Cloud](4.04-well-architected-cloud/README.md) |
 |  | 4.05 | [Support Plans & Course Review](4.05-support-plans-and-review/README.md) |
+| 5 – Terraform | 5.01 | [Install Terraform](5.01-install-terraform/README.md) |
 
 ---
 
