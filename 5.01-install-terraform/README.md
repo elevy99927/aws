@@ -1,12 +1,20 @@
 # 5.01 Install Terraform
 
+**▶ Video walkthrough** (4 min):
+
+[![Video: Terraform – Install Terraform on macOS, Windows and Linux](https://img.youtube.com/vi/Dd8pARzyJqE/maxresdefault.jpg)](https://youtu.be/Dd8pARzyJqE)
+
 Terraform describes your infrastructure as code: you write the AWS resources you want in `.tf` files, and Terraform creates, changes and deletes them for you. This chapter installs it. The next chapters use it to build AWS resources.
 
 The commands below come from HashiCorp's official page, [Install Terraform](https://developer.hashicorp.com/terraform/install). Check it for other systems and for the latest version (1.17.0 at the time of writing).
 
 ## Install (choose your system)
 
+Follow only the part for your own system.
+
 **macOS (Homebrew)**
+
+With [Homebrew](https://brew.sh) already installed:
 
 ```bash
 brew tap hashicorp/tap
@@ -19,7 +27,7 @@ To update later: `brew upgrade hashicorp/tap/terraform`.
 
 1. Download the zip for your computer from the [install page](https://developer.hashicorp.com/terraform/install): **AMD64** for most PCs, **ARM64** for Arm laptops.
 2. Unzip it. It contains a single file, `terraform.exe`. Move it to a folder such as `C:\terraform`.
-3. Add the folder to your `PATH`: **Start → Edit the system environment variables → Environment Variables → Path → Edit → New**, enter `C:\terraform`, and choose **OK**.
+3. Add the folder to your `PATH`: in the Start menu, open **Edit environment variables for your account**. Under **User variables**, select **Path → Edit → New**, enter `C:\terraform`, and choose **OK**.
 4. Open a **new** terminal (PowerShell or Command Prompt), so it reads the new `PATH`.
 
 **Linux: Ubuntu / Debian**
@@ -29,6 +37,8 @@ wget -O - https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/sh
 echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(grep -oP '(?<=UBUNTU_CODENAME=).*' /etc/os-release || lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
 sudo apt update && sudo apt install terraform
 ```
+
+If apt also installs other packages, such as `git`, it asks *Do you want to continue? [Y/n]*. Type **Y**.
 
 **Linux: Amazon Linux (EC2 and AWS CloudShell)**
 
@@ -55,7 +65,7 @@ The version and platform depend on your computer (`linux_amd64`, `windows_amd64`
 
 ---
 
-[⬅ Previous: 4.05 Support Plans & Course Review](../4.05-support-plans-and-review/README.md) | [🏠 Home](../README.md)
+[⬅ Previous: 4.05 Support Plans & Course Review](../4.05-support-plans-and-review/README.md) | [🏠 Home](../README.md) | [Next: 5.02 Terraform Basic Commands ➡](../5.02-terraform-basic-commands/README.md)
 
 ---
 ## Contact
