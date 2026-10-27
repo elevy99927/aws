@@ -12,7 +12,7 @@
 
 ---
 
-[⬅ Previous: 4.04 Architecting in the Cloud](../4.04-well-architected-cloud/README.md) | [🏠 Home](../README.md) | [Next: 5.01 Install Terraform ➡](../5.01-install-terraform/README.md)
+[⬅ Previous: 4.04 Architecting in the Cloud](../4.04-well-architected-cloud/README.md) | [🏠 Home](../README.md) | [Next: 5.01 Install Terraform ➡](../5-terraform/5.01-install-terraform/README.md)
 
 ---
 ## Contact

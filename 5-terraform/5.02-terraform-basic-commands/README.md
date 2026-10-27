@@ -10,7 +10,7 @@ Before you start: [5.01 Install Terraform](../5.01-install-terraform/README.md).
 
 ---
 
-[⬅ Previous: 5.01 Install Terraform](../5.01-install-terraform/README.md) | [🏠 Home](../README.md)
+[⬅ Previous: 5.01 Install Terraform](../5.01-install-terraform/README.md) | [🏠 Home](../../README.md)
 
 ---
 ## Contact
