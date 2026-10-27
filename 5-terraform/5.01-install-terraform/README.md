@@ -65,7 +65,7 @@ The version and platform depend on your computer (`linux_amd64`, `windows_amd64`
 
 ---
 
-[⬅ Previous: 4.05 Support Plans & Course Review](../4.05-support-plans-and-review/README.md) | [🏠 Home](../README.md) | [Next: 5.02 Terraform Basic Commands ➡](../5.02-terraform-basic-commands/README.md)
+[⬅ Previous: 4.05 Support Plans & Course Review](../../4.05-support-plans-and-review/README.md) | [🏠 Home](../../README.md) | [Next: 5.02 Terraform Basic Commands ➡](../5.02-terraform-basic-commands/README.md)
 
 ---
 ## Contact

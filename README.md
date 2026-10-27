@@ -57,8 +57,8 @@ Do every lab in your own AWS account. The examples use **`us-east-1`**, S3 bucke
 |  | 4.03 | [Account & Cost Management](4.03-accounts-and-cost-management/README.md) |
 |  | 4.04 | [Architecting in the Cloud](4.04-well-architected-cloud/README.md) |
 |  | 4.05 | [Support Plans & Course Review](4.05-support-plans-and-review/README.md) |
-| 5 – Terraform | 5.01 | [Install Terraform](5.01-install-terraform/README.md) |
-|  | 5.02 | [Terraform Basic Commands](5.02-terraform-basic-commands/README.md) |
+| 5 – Terraform | 5.01 | [Install Terraform](5-terraform/5.01-install-terraform/README.md) |
+|  | 5.02 | [Terraform Basic Commands](5-terraform/5.02-terraform-basic-commands/README.md) |
 
 ---
 
