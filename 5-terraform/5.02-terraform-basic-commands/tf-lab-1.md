@@ -1,6 +1,6 @@
 # 5.02 Terraform Basic Commands – Lab 1: Built-in Functions in `terraform console`
 
-[⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-1-solution.md)
+[⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-1-solution.md) | [Lab 2 ➡](tf-lab-2.md)
 
 `terraform console` is an interactive prompt: you type a Terraform expression, and it prints the result. In this lab you use it to try Terraform's built-in functions, the same functions you will later use inside `.tf` files.
 
