@@ -30,8 +30,8 @@ How to write the values:
 | # | Task | Function |
 |---|------|----------|
 | 1 | Print the maximum of 19, 1 and 7. | [`max`](https://developer.hashicorp.com/terraform/language/functions/max) |
-| 2 | Encode `abcdefg` in Base64. | [`base64encode`](https://developer.hashicorp.com/terraform/language/functions/base64encode) |
-| 3 | Build a Region name: join `us`, `east` and `1` with dashes. | [`join`](https://developer.hashicorp.com/terraform/language/functions/join) |
+| 2 | Build a Region name: join `us`, `east` and `1` with dashes. | [`join`](https://developer.hashicorp.com/terraform/language/functions/join) |
+| 3 | Encode `abcdefg` in Base64. | [`base64encode`](https://developer.hashicorp.com/terraform/language/functions/base64encode) |
 | 4 | Sort the instance types `t3.small`, `m7i-flex.large` and `t3.micro` alphabetically. | [`sort`](https://developer.hashicorp.com/terraform/language/functions/sort) |
 | 5 | In a map of Region codes to names (`us-east-1` = `N. Virginia`, `eu-west-1` = `Ireland`), find the name of `eu-west-1`. If the code isn't in the map, return `unknown`. | [`lookup`](https://developer.hashicorp.com/terraform/language/functions/lookup) |
 | 6 | Split the VPC range `10.0.0.0/16` into `/24` subnets, and print the third one. | [`cidrsubnet`](https://developer.hashicorp.com/terraform/language/functions/cidrsubnet) |
