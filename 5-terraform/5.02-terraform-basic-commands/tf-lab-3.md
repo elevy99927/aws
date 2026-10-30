@@ -6,10 +6,10 @@ In Lab 2, the instance went into a default VPC made by hand, which you deleted a
 
 | Resource | Settings |
 |---|---|
-| VPC | `10.0.0.0/16`, the name `tf-lab-3-vpc` |
-| Subnet | `10.0.1.0/24` in `us-east-1a`, inside the VPC, the name `tf-lab-3-subnet` |
-| EC2 instance 1 | `t2.micro`, in the subnet, the name `tf-lab-3-web-1` |
-| EC2 instance 2 | `t3.micro`, in the subnet, the name `tf-lab-3-web-2` |
+| VPC | `10.0.0.0/16`, the name `training-vpc` |
+| Subnet | `10.0.1.0/24` in `us-east-1a`, inside the VPC, the name `training-subnet-1a` |
+| EC2 instance 1 | `t2.micro`, in the subnet, the name `my-tf-web-1` |
+| EC2 instance 2 | `t3.micro`, in the subnet, the name `my-tf-web-2` |
 | S3 bucket | `s3-lab-<yourname>`, for example `s3-lab-dana` |
 
 Region: **`us-east-1`**.
@@ -24,21 +24,38 @@ You don't need a default VPC for this lab: the instances go into your own VPC.
 
 ## Steps
 
-1. **Create a new folder** called `tf-lab-3`, and copy `vars.tf` and `provider.tf` from Lab 2 into it.
-2. **The VPC.** In a new file, `vpc.tf`, add an [`aws_vpc`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) resource with the range `10.0.0.0/16` and the tag `Name = "tf-lab-3-vpc"`. Start from the **Example Usage** on its page.
-3. **The subnet.** In `vpc.tf`, add an [`aws_subnet`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) resource in `us-east-1a`, with the range `10.0.1.0/24` and the tag `Name = "tf-lab-3-subnet"`. Connect it to your VPC: set its `vpc_id` to your VPC's ID, as in the Example Usage, instead of typing an ID.
-4. **The two EC2 instances.** In `instance.tf`, add two [`aws_instance`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) resources, a `t2.micro` and a `t3.micro`, with the AMI from the `AMIS` map, as in Lab 2. Put both in your subnet with `subnet_id`, and give them the names from the table.
-5. **The S3 bucket.** In `s3.tf`, add an [`aws_s3_bucket`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) resource with the name `s3-lab-<yourname>`. Bucket names are global across all AWS accounts, so use your own name, in lowercase.
-6. **Run `terraform init`**, because this is a new folder, and then **`terraform plan`**. Read the plan: how many resources will it create, and which values does it show as `(known after apply)`?
-7. **Run `terraform apply`**, and type `yes`. Watch the order in which Terraform creates the resources.
+1. **Create a new folder** called `tf-lab-3`.
+   - Copy `vars.tf` and `provider.tf` from Lab 2 into it.
+2. **The VPC.** In a new file, `vpc.tf`, add an [`aws_vpc`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) resource:
+   - set the range `10.0.0.0/16` and the tag `Name = "training-vpc"`;
+   - start from the **Example Usage** on its page.
+3. **The subnet.** In `vpc.tf`, add an [`aws_subnet`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) resource in `us-east-1a`:
+   - set the range `10.0.1.0/24` and the tag `Name = "training-subnet-1a"`;
+   - connect it to your VPC: set its `vpc_id` to your VPC's ID, as in the Example Usage.
+4. **The two EC2 instances.** In `instance.tf`, add two [`aws_instance`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/instance) resources:
+   - a `t2.micro` and a `t3.micro`, with the AMI from the `AMIS` map, as in Lab 2;
+   - put both in your subnet with `subnet_id`;
+   - name them `my-tf-web-1` and `my-tf-web-2`.
+5. **The S3 bucket.** In `s3.tf`, add an [`aws_s3_bucket`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) resource:
+   - name it `s3-lab-<yourname>`, in lowercase;
+   - bucket names are global across all AWS accounts, so use your own name.
+6. **Run `terraform init`**, because this is a new folder, and then **`terraform plan`**. Read the plan:
+   - how many resources will it create?
+   - which values does it show as `(known after apply)`?
+7. **Run `terraform apply`**, and type `yes`.
+   - Watch the order in which Terraform creates the resources.
 8. **Open the AWS Console** in `us-east-1`, and find what you created:
-   - **VPC → Your VPCs:** `tf-lab-3-vpc`, and under **Subnets**, `tf-lab-3-subnet`;
-   - **EC2 → Instances:** `tf-lab-3-web-1` and `tf-lab-3-web-2`, in `tf-lab-3-subnet`;
+   - **VPC → Your VPCs:** `training-vpc`, and under **Subnets**, `training-subnet-1a`;
+   - **EC2 → Instances:** `my-tf-web-1` and `my-tf-web-2`, in `training-subnet-1a`;
    - **S3 → Buckets:** `s3-lab-<yourname>`.
-9. **A problem to think about:** how would you connect to these instances? Look at their details in the Console: do they have a public IP address? A key pair? What else is missing?
+9. **A problem to think about:** how would you connect to these instances? Look at their details in the Console:
+   - do they have a public IP address?
+   - a key pair?
+   - what else is missing?
 10. **Choose:**
     - **Delete everything:** run `terraform destroy`, and type `yes`.
-    - **Keep it for the next lab,** where we use Terraform **outputs** to print the information we need about these resources. The two instances keep costing money until you destroy them.
+    - **Keep it for the next lab,** where we use Terraform **outputs** to print the information we need about these resources.
+    - The two instances keep costing money until you destroy them.
 
 ## Questions
 
