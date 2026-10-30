@@ -1,10 +1,10 @@
 # 5.02 Terraform Basic Commands – Lab 2: Create an EC2 Instance with Terraform
 
-[⬅ Lab 1](tf-lab-1.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-2-solution/README.md)
+[⬅ Lab 1](tf-lab-1.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-2-solution/README.md) | [Lab 3 ➡](tf-lab-3.md)
 
-**▶ Video walkthrough** (9 min):
+**▶ Video walkthrough** (10 min):
 
-[![Video: Terraform – Create your first EC2 instance with Terraform](https://img.youtube.com/vi/Yse_Sl8g8_A/maxresdefault.jpg)](https://youtu.be/Yse_Sl8g8_A)
+[![Video: Terraform – Create your first EC2 instance with Terraform](https://img.youtube.com/vi/P-M8K8cQGtU/maxresdefault.jpg)](https://youtu.be/P-M8K8cQGtU)
 
 In this lab you create an EC2 instance with Terraform, and compare a change that updates the existing instance with one that replaces it. Then you see what `terraform destroy` deletes, and what it doesn't.
 
@@ -36,7 +36,7 @@ To check which option is yours:
 aws ec2 describe-vpcs --region us-east-1 --filters Name=is-default,Values=true --query 'Vpcs[].VpcId' --output text
 ```
 
-A `vpc-…` ID means you have one. Empty output means you don't. You can also skip the check: if `terraform apply` (step 7) fails because there's no default VPC, create it then, and run `apply` again. A default VPC costs nothing.
+A `vpc-…` ID means you have one. Empty output means you don't. You can also skip the check: if `terraform apply` (step 7) fails because there's no default VPC, create it then, and run `apply` again. If you create it in this lab, you delete it at the end (step 14): from Lab 3 on, Terraform creates the VPC.
 
 ## Steps
 
@@ -73,7 +73,9 @@ A `vpc-…` ID means you have one. Empty output means you don't. You can also sk
 11. **Create an instance by hand**, in the Console: **EC2 → Launch instance**, the name `i'm still alive`, Amazon Linux 2023, `t2.micro`, and **Proceed without a key pair**. In **Network settings**, keep the default VPC and clear **Allow SSH traffic from**: you won't connect to this instance. Choose **Launch instance**.
 12. **Run `terraform destroy`**, and read the output before you type `yes`: `Plan: 0 to add, 0 to change, 1 to destroy.` Which instance is on the list?
 13. **Open the Console** again. `tf-example` is terminated, and `i'm still alive` is still running.
-14. **Clean up:** select `i'm still alive`, and choose **Instance state → Terminate (delete) instance**. Keep the default VPC for the next labs: it costs nothing.
+14. **Clean up:** select `i'm still alive`, and choose **Instance state → Terminate (delete) instance**. Wait until it's terminated. Then:
+
+    **Delete the default VPC, if you created it in step 7:** in the Console, open **VPC → Your VPCs**, select the default VPC (its range is `172.31.0.0/16`), and choose **Actions → Delete VPC**. The dialog lists what's deleted with it: its subnets and its internet gateway. Check **I acknowledge that I want to delete my default VPC**, type `delete default vpc`, and choose **Delete**. If your account had a default VPC before this lab, keep it. From now on, we create the VPC with Terraform.
 
 ## Questions
 
