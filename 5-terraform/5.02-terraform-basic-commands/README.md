@@ -4,8 +4,8 @@
 
 | # | Lab | Steps |
 |---|-----|-------|
-| 1 | **Built-in Functions in `terraform console`** – try Terraform's built-in functions at an interactive prompt: numbers, Base64, text, lists, maps and CIDR ranges. No AWS account and no files needed | [Lab 1](tf-lab-1.md) · [Solution](tf-lab-1-solution.md) |
-| 2 | **Your First EC2 Instance with Terraform** – variables, the AWS provider, an `aws_ami` data source and an `aws_instance` in the default VPC; `init`, `plan`, `apply` and `destroy` | [Lab 2](tf-lab-2.md) · [Solution](tf-lab-2-solution/README.md) |
+| 1 | **Built-in Functions in `terraform console`** – try Terraform's built-in functions at an interactive prompt: numbers, Base64, text, lists, maps and CIDR ranges. No AWS account and no files needed | [Lab 1](tf-lab-1.md) · [Solution](tf-lab-1-solution.md) · [▶ Video](https://youtu.be/1il7nk5QQck) |
+| 2 | **Create an EC2 Instance with Terraform** – `vars.tf` with an AMI map, the AWS provider and an `aws_instance` in the default VPC; `init`, `plan` and `apply`, a change in place and a replacement, and what `destroy` deletes | [Lab 2](tf-lab-2.md) · [Solution](tf-lab-2-solution/README.md) · [▶ Video](https://youtu.be/Yse_Sl8g8_A) |
 
 Before you start: [5.01 Install Terraform](../5.01-install-terraform/README.md).
 

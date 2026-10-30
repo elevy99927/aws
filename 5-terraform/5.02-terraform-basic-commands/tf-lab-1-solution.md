@@ -20,16 +20,7 @@ terraform console
 
 `max` takes the numbers as separate arguments. If they're in a list, expand it with `...`: `max([19, 1, 7]...)` also returns `19`.
 
-## Task 2: `abcdefg` in Base64
-
-```text
-> base64encode("abcdefg")
-"YWJjZGVmZw=="
-```
-
-The `==` at the end is padding. `base64decode("YWJjZGVmZw==")` turns it back into `"abcdefg"`.
-
-## Task 3: Build a Region name
+## Task 2: Build a Region name
 
 ```text
 > join("-", ["us", "east", "1"])
@@ -37,6 +28,15 @@ The `==` at the end is padding. `base64decode("YWJjZGVmZw==")` turns it back int
 ```
 
 `join` takes the separator first, then the list.
+
+## Task 3: `abcdefg` in Base64
+
+```text
+> base64encode("abcdefg")
+"YWJjZGVmZw=="
+```
+
+The `==` at the end is padding. `base64decode("YWJjZGVmZw==")` turns it back into `"abcdefg"`.
 
 ## Task 4: Sort the instance types
 
