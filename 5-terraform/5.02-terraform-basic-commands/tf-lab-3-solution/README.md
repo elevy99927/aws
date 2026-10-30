@@ -10,7 +10,7 @@ The solution is the five files in this folder:
 | [`provider.tf`](provider.tf) | The same as in Lab 2: the AWS provider |
 | [`vpc.tf`](vpc.tf) | The VPC `training-vpc`, and the subnet `training-subnet-1a` inside it |
 | [`instance.tf`](instance.tf) | The two instances, `my-tf-web-1` and `my-tf-web-2`, in the subnet |
-| [`s3.tf`](s3.tf) | The bucket `s3-lab-yourname` |
+| [`s3.tf`](s3.tf) | The bucket `s3-lab-yourname-1234` |
 
 ## Steps 2–3: the VPC and the subnet
 
@@ -49,11 +49,11 @@ resource "aws_instance" "web_1" {
 
 ```hcl
 resource "aws_s3_bucket" "lab" {
-  bucket = "s3-lab-yourname"
+  bucket = "s3-lab-yourname-1234"
 }
 ```
 
-The [Example Usage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) adds tags, which are optional. Bucket names are global across all AWS accounts: if the name is taken, `apply` fails with `BucketAlreadyExists`, so use your own name. The bucket doesn't refer to any other resource.
+The [Example Usage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) adds tags, which are optional. Bucket names are global across all AWS accounts: if the name is taken, `apply` fails with `BucketAlreadyExists`, so use your own name and a random number. The bucket doesn't refer to any other resource.
 
 ## Step 6: init and plan
 
@@ -74,7 +74,7 @@ Terraform has been successfully initialized!
       + instance_type = "t3.micro"
       + subnet_id     = (known after apply)
   # aws_s3_bucket.lab will be created
-      + bucket        = "s3-lab-student"
+      + bucket        = "s3-lab-student-2823"
   # aws_subnet.subnet_1a will be created
       + cidr_block    = "10.0.1.0/24"
       + vpc_id        = (known after apply)
@@ -88,7 +88,7 @@ The plan lists the resources in alphabetical order, not in the order it creates 
 
 ## Step 7: apply
 
-The real run, with the bucket `s3-lab-student`. The IDs are masked:
+The real run, with the bucket `s3-lab-student-2823`. The IDs are masked:
 
 ```text
 aws_vpc.main: Creating...
@@ -96,11 +96,11 @@ aws_s3_bucket.lab: Creating...
 aws_vpc.main: Creation complete after 3s [id=vpc-0a1b2c3d4e5f60001]
 aws_subnet.subnet_1a: Creating...
 aws_subnet.subnet_1a: Creation complete after 1s [id=subnet-0a1b2c3d4e5f60001]
+aws_s3_bucket.lab: Creation complete after 4s [id=s3-lab-student-2823]
 aws_instance.web_2: Creating...
 aws_instance.web_1: Creating...
-aws_s3_bucket.lab: Creation complete after 4s [id=s3-lab-student]
-aws_instance.web_2: Creation complete after 14s [id=i-0a1b2c3d4e5f60001]
-aws_instance.web_1: Creation complete after 15s [id=i-0a1b2c3d4e5f60002]
+aws_instance.web_1: Creation complete after 15s [id=i-0a1b2c3d4e5f60001]
+aws_instance.web_2: Creation complete after 15s [id=i-0a1b2c3d4e5f60002]
 
 Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 ```
@@ -114,7 +114,7 @@ Apply complete! Resources: 5 added, 0 changed, 0 destroyed.
 - **VPC → Your VPCs →** `training-vpc` → **Resource map**: one subnet, `training-subnet-1a` in `us-east-1a`, with the VPC's main route table. **Network Connections (0)**: no internet gateway.
 - **EC2 → Instances:** `my-tf-web-1` (`t2.micro`) and `my-tf-web-2` (`t3.micro`), both in `us-east-1a`, with no **Public IPv4 DNS** and no **Public IPv4 address**.
 - An instance's **Details**: its VPC is `training-vpc` and its subnet is `training-subnet-1a`. It has only a private address in the subnet's range (in this run, `10.0.1.12`).
-- **S3 → Buckets:** `s3-lab-<yourname>` in `us-east-1`.
+- **S3 → Buckets:** `s3-lab-<yourname>-<random number>` in `us-east-1`.
 
 ## Step 9: why we can't connect
 
@@ -140,7 +140,7 @@ aws_vpc.main: Destroying... [id=vpc-0a1b2c3d4e5f60001]
 Destroy complete! Resources: 5 destroyed.
 ```
 
-Destroy goes in the reverse order: the instances and the bucket first, then the subnet, and the VPC last. To keep the resources for the next lab, skip the destroy: the two instances keep costing money until you destroy them.
+Destroy goes in the reverse order: the instances first, then the subnet, and the VPC last. The bucket depends on nothing, so Terraform deletes it right away, together with the instances. To keep the resources for the next lab, skip the destroy: the two instances keep costing money until you destroy them.
 
 ## Answers
 
