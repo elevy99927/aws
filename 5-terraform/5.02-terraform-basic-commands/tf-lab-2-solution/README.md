@@ -75,6 +75,8 @@ terraform destroy     # Plan: 0 to add, 0 to change, 1 to destroy.   type yes
 
 The plan lists only `aws_instance.example`, and after `yes` Terraform reports `Destroy complete! Resources: 1 destroyed.` In the Console, `tf-example` is terminated, and `i'm still alive` is still running. Terminate it by hand.
 
+**Delete the default VPC, if you created it in step 7:** in the Console, open **VPC → Your VPCs**, select the default VPC (its range is `172.31.0.0/16`), and choose **Actions → Delete VPC**. The dialog lists what's deleted with it: its subnets and its internet gateway. Check **I acknowledge that I want to delete my default VPC**, type `delete default vpc`, and choose **Delete**. If your account had a default VPC before this lab, keep it. From now on, we create the VPC with Terraform.
+
 ## Answers
 
 1. **Type vs. AMI:** some attributes can change on an existing resource, and Terraform updates it in place (`~`, `1 to change`). Others can't, like an instance's AMI, so Terraform replaces the resource (`-/+`, `1 to add` and `1 to destroy`). The resource's documentation, and the plan itself, say which attributes force a replacement.
