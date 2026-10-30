@@ -2,6 +2,8 @@
 
 [⬅ Lab 2](tf-lab-2.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-3-solution/README.md)
 
+[![Video: Terraform – Connecting the dots](https://img.youtube.com/vi/ftapMnWxOw4/maxresdefault.jpg)](https://youtu.be/ftapMnWxOw4)
+
 In Lab 2, the instance went into a default VPC made by hand, which you deleted at the end. From now on, Terraform creates the network as code. In this lab you build a small infrastructure with Terraform: your own VPC, a subnet inside it, two EC2 instances in that subnet, and an S3 bucket. You connect the resources to each other, and see how Terraform works out the order to create them.
 
 | Resource | Settings |
@@ -10,7 +12,7 @@ In Lab 2, the instance went into a default VPC made by hand, which you deleted a
 | Subnet | `10.0.1.0/24` in `us-east-1a`, inside the VPC, the name `training-subnet-1a` |
 | EC2 instance 1 | `t2.micro`, in the subnet, the name `my-tf-web-1` |
 | EC2 instance 2 | `t3.micro`, in the subnet, the name `my-tf-web-2` |
-| S3 bucket | `s3-lab-<yourname>`, for example `s3-lab-dana` |
+| S3 bucket | `s3-lab-<yourname>-<random number>`, for example `s3-lab-dana-4821` |
 
 Region: **`us-east-1`**.
 
@@ -37,8 +39,8 @@ You don't need a default VPC for this lab: the instances go into your own VPC.
    - put both in your subnet with `subnet_id`;
    - name them `my-tf-web-1` and `my-tf-web-2`.
 5. **The S3 bucket.** In `s3.tf`, add an [`aws_s3_bucket`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) resource:
-   - name it `s3-lab-<yourname>`, in lowercase;
-   - bucket names are global across all AWS accounts, so use your own name.
+   - name it `s3-lab-<yourname>-<random number>`, in lowercase, for example `s3-lab-dana-4821`;
+   - bucket names are global across all AWS accounts: the random number keeps your name from clashing with someone else's.
 6. **Run `terraform init`**, because this is a new folder, and then **`terraform plan`**. Read the plan:
    - how many resources will it create?
    - which values does it show as `(known after apply)`?
@@ -47,7 +49,7 @@ You don't need a default VPC for this lab: the instances go into your own VPC.
 8. **Open the AWS Console** in `us-east-1`, and find what you created:
    - **VPC → Your VPCs:** `training-vpc`, and under **Subnets**, `training-subnet-1a`;
    - **EC2 → Instances:** `my-tf-web-1` and `my-tf-web-2`, in `training-subnet-1a`;
-   - **S3 → Buckets:** `s3-lab-<yourname>`.
+   - **S3 → Buckets:** `s3-lab-<yourname>-<random number>`.
 9. **A problem to think about:** how would you connect to these instances? Look at their details in the Console:
    - do they have a public IP address?
    - a key pair?
