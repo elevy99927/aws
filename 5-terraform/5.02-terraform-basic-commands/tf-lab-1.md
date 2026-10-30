@@ -2,6 +2,10 @@
 
 [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-1-solution.md) | [Lab 2 ➡](tf-lab-2.md)
 
+**▶ Video walkthrough** (5 min):
+
+[![Video: Terraform – Functions: why we use them, and terraform console](https://img.youtube.com/vi/1il7nk5QQck/maxresdefault.jpg)](https://youtu.be/1il7nk5QQck)
+
 `terraform console` is an interactive prompt: you type a Terraform expression, and it prints the result. In this lab you use it to try Terraform's built-in functions, the same functions you will later use inside `.tf` files.
 
 You don't need an AWS account, and you don't create anything, so the lab costs nothing.
