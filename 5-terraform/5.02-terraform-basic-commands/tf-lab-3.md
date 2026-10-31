@@ -1,8 +1,8 @@
 # 5.02 Terraform Basic Commands – Lab 3: A VPC, a Subnet, Two EC2 Instances and an S3 Bucket
 
-[⬅ Lab 2](tf-lab-2.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-3-solution/README.md)
+[⬅ Lab 2](tf-lab-2.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-3-solution/README.md) | [Lab 4 ➡](tf-lab-4.md)
 
-[![Video: Terraform – Connecting the dots](https://img.youtube.com/vi/ftapMnWxOw4/maxresdefault.jpg)](https://youtu.be/ftapMnWxOw4)
+[![Video: Terraform – Connecting the dots](https://img.youtube.com/vi/EIau_UQC79M/maxresdefault.jpg)](https://youtu.be/EIau_UQC79M)
 
 In Lab 2, the instance went into a default VPC made by hand, which you deleted at the end. From now on, Terraform creates the network as code. In this lab you build a small infrastructure with Terraform: your own VPC, a subnet inside it, two EC2 instances in that subnet, and an S3 bucket. You connect the resources to each other, and see how Terraform works out the order to create them.
 
