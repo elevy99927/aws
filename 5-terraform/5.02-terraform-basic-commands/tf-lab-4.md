@@ -2,7 +2,7 @@
 
 [⬅ Lab 3](tf-lab-3.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-4-solution/README.md)
 
-[![Video: Terraform – Outputs and provisioners](https://img.youtube.com/vi/NPedJ0Rr3Q4/maxresdefault.jpg)](https://youtu.be/NPedJ0Rr3Q4)
+[![Video: Terraform – Outputs and provisioners](https://img.youtube.com/vi/YUaLD6m2EBI/maxresdefault.jpg)](https://youtu.be/YUaLD6m2EBI)
 
 At the end of Lab 3, you couldn't reach the instances, and you had to open the Console to find their IP addresses. In this lab you give the instances a way in from the internet, ask Terraform for their IP addresses with **outputs**, save the addresses to a file with a **provisioner**, and connect to the instances with SSH from your computer.
 
