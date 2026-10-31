@@ -6,7 +6,8 @@
 |---|-----|-------|
 | 1 | **Built-in Functions in `terraform console`** – try Terraform's built-in functions at an interactive prompt: numbers, Base64, text, lists, maps and CIDR ranges. No AWS account and no files needed | [Lab 1](tf-lab-1.md) · [Solution](tf-lab-1-solution.md) · [▶ Video](https://youtu.be/1il7nk5QQck) |
 | 2 | **Create an EC2 Instance with Terraform** – `vars.tf` with an AMI map, the AWS provider and an `aws_instance` in the default VPC; `init`, `plan` and `apply`, a change in place and a replacement, and what `destroy` deletes | [Lab 2](tf-lab-2.md) · [Solution](tf-lab-2-solution/README.md) · [▶ Video](https://youtu.be/P-M8K8cQGtU) |
-| 3 | **A VPC, a Subnet, Two EC2 Instances and an S3 Bucket** – your own VPC and subnet, two instances in it and a bucket, connected to each other; the order Terraform creates them in, and what's still missing to reach the instances | [Lab 3](tf-lab-3.md) · [Solution](tf-lab-3-solution/README.md) · [▶ Video](https://youtu.be/ftapMnWxOw4) |
+| 3 | **A VPC, a Subnet, Two EC2 Instances and an S3 Bucket** – your own VPC and subnet, two instances in it and a bucket, connected to each other; the order Terraform creates them in, and what's still missing to reach the instances | [Lab 3](tf-lab-3.md) · [Solution](tf-lab-3-solution/README.md) · [▶ Video](https://youtu.be/EIau_UQC79M) |
+| 4 | **Outputs and Provisioners** – a way in (key pair, public IP, internet gateway, route and security group), `local-exec` that saves the IPs to `LAB-IPS.txt`, outputs, and SSH from your computer | [Lab 4](tf-lab-4.md) · [Solution](tf-lab-4-solution/README.md) · [▶ Video](https://youtu.be/NPedJ0Rr3Q4) |
 
 Before you start: [5.01 Install Terraform](../5.01-install-terraform/README.md).
 
