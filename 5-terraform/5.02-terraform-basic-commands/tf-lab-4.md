@@ -1,6 +1,6 @@
 # 5.02 Terraform Basic Commands – Lab 4: Outputs and Provisioners
 
-[⬅ Lab 3](tf-lab-3.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-4-solution/README.md)
+[⬅ Lab 3](tf-lab-3.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-4-solution/README.md) | [Lab 5 ➡](tf-lab-5.md)
 
 [![Video: Terraform – Outputs and provisioners](https://img.youtube.com/vi/YUaLD6m2EBI/maxresdefault.jpg)](https://youtu.be/YUaLD6m2EBI)
 
