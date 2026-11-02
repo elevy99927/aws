@@ -123,26 +123,7 @@ Plan: 3 to add, 0 to change, 2 to destroy.
 
 User data runs only at the first boot. Without `user_data_replace_on_change`, Terraform would update the user data on the existing instance (AWS stops and starts it), but cloud-init wouldn't run the script again; with it, Terraform replaces the instance, and the new one runs the script.
 
-**When remote-exec fails.** In this run, the first apply failed:
-
-```text
-aws_instance.web_1: Provisioning with 'remote-exec'...
-aws_instance.web_1 (remote-exec): Connecting to remote host via SSH...
-...
-Error: remote-exec provisioner error
-timeout - last error: dial tcp 203.0.113.16:22: i/o timeout
-```
-
-The computer's public IP address wasn't the one in `TF_VAR_MY_IP` (some networks use more than one), so the security group dropped the SSH connection. Terraform marks an instance whose provisioner failed as **tainted**, and the next plan replaces it:
-
-```text
-  # aws_instance.web_1 is tainted, so must be replaced
-  # aws_instance.web_2 is tainted, so must be replaced
-
-Plan: 2 to add, 0 to change, 2 to destroy.
-```
-
-The network had a second public IP address, and SSH used it. After allowing that address too (a temporary inbound rule, added outside Terraform and removed before `terraform destroy`), the next apply worked, with no change to the Terraform rules (`0 changed`):
+**The apply**, with the remote-exec lines:
 
 ```text
 aws_instance.web_1 (remote-exec): Connected!
@@ -150,7 +131,6 @@ aws_instance.web_1 (remote-exec): status: done
 aws_instance.web_1 (remote-exec): active
 aws_instance.web_1 (remote-exec): <h1>Hello from ip-10-0-1-194.ec2.internal</h1><p>Installed by user-data</p>
 ...
-Apply complete! Resources: 2 added, 0 changed, 2 destroyed.
 
 Outputs:
 
@@ -181,7 +161,7 @@ The state in S3 is now an empty state (181 bytes), and versioning keeps the earl
 1. **The state bucket** must exist before `terraform init`, because the backend is configured before Terraform reads any resource. And if the same configuration managed the bucket, `terraform destroy` would try to delete the bucket that stores the state it's using.
 2. **No changes** after the migration, because the state moved, not the resources: Terraform reads the same 12 resources from S3, and they still match the files.
 3. **One changed line** in `install-nginx.sh` changes `user_data`, which forces a replacement of both instances (because of `user_data_replace_on_change = true`). Without that setting, Terraform would update the user data on the existing instances (AWS stops and starts them), but the new script wouldn't run, since cloud-init runs user data only at the first boot.
-4. **Terraform waits for `remote-exec`**, and a failing command (or no SSH connection) fails the apply and taints the instance. **User data** runs inside the instance through cloud-init; Terraform doesn't wait for it and never sees its output, so a broken script doesn't fail the apply. This lab uses `remote-exec` to wait for user data and check its result.
+4. **Terraform waits for `remote-exec`**, and a failing command (or no SSH connection) fails the apply. **User data** runs inside the instance through cloud-init; Terraform doesn't wait for it and never sees its output, so a broken script doesn't fail the apply. This lab uses `remote-exec` to wait for user data and check its result.
 5. **A second person** needs the same files (from Git), the same `backend.tf`, AWS credentials with access to the state bucket, and `terraform init`. Terraform then reads the shared state from S3, and the lock file stops two applies from running at the same time.
 
 ---
