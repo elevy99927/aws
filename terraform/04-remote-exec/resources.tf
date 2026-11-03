@@ -16,9 +16,9 @@ resource "aws_instance" "example" {
   key_name               = aws_key_pair.example.key_name
   vpc_security_group_ids = [aws_security_group.web.id]
 
-  # user-data.sh installs Docker and runs nginx on port 80 at the first boot; a changed script means a new instance.
-  user_data                   = file("${path.module}/user-data.sh")
-  user_data_replace_on_change = true
+  # user-data.sh installs Docker and runs nginx on port 80 at the first boot.
+  user_data                   = file("user-data.sh")
+  user_data_replace_on_change = true # user data runs only at the first boot, so a changed script gets a new instance (default: false, the old instance keeps the old script)
 
   connection {
     type        = "ssh"
