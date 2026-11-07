@@ -2,6 +2,8 @@
 
 [⬅ Lab 4](tf-lab-4.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-5-solution/README.md) | [Lab 6 ➡](tf-lab-6.md)
 
+[![Video: Terraform – Remote state in S3, with a DynamoDB lock](https://img.youtube.com/vi/BsQvI3YA7bs/maxresdefault.jpg)](https://youtu.be/BsQvI3YA7bs)
+
 Until now, the state file, `terraform.tfstate`, lived in your folder. Lose the folder, and Terraform forgets everything it built; work from a second computer, and it doesn't know the resources exist; run two applies at once, and the state can end up corrupted. In this lab you move the state to an S3 bucket, and add a **lock** in a DynamoDB table, so only one command works on the state at a time. Then you watch the lock: a second command is refused while an apply is waiting, and you learn what to do with a lock left behind.
 
 ## Remote state and the lock
@@ -38,8 +40,8 @@ Before you start:
    cp -r tf-lab-4 tf-lab-5
    cd tf-lab-5
    ```
-   - If you destroyed the Lab 4 resources, run `terraform apply` once now, so there is a state to move.
    - Set your IP address again if this is a new terminal: `export TF_VAR_MY_IP="$(curl -s https://checkip.amazonaws.com)/32"`.
+   - If you destroyed the Lab 4 resources, run `terraform apply` once now, so there is a state to move.
 2. **Create the state bucket** with the AWS CLI, with your own name and a random number:
    ```bash
    aws s3api create-bucket --bucket tfstate-<yourname>-<number> --region us-east-1
@@ -47,7 +49,7 @@ Before you start:
    aws s3api get-bucket-versioning --bucket tfstate-<yourname>-<number>
    ```
    - Terraform can't create the bucket that stores its own state: the bucket must exist before `terraform init`.
-   - Versioning keeps every earlier version of the state, so a bad apply can be undone. The last command checks it: `"Status": "Enabled"`.
+   - Versioning keeps every earlier version of the state, so an earlier state file can be restored if something goes wrong. The last command checks it: `"Status": "Enabled"`.
 3. **Create the lock table:**
    ```bash
    aws dynamodb create-table \
@@ -81,7 +83,7 @@ Before you start:
 7. **An apply that waits.** In `instance.tf`, change the `Name` tag of `web_1` to `my-tf-web-1-locked` (a change Terraform makes in place). Run `terraform apply`: it shows `1 to change` and waits at `Enter a value`. **Don't answer yet.** This terminal holds the lock.
 8. **The lock item.** In a second terminal:
    ```bash
-   aws dynamodb scan --table-name tfstate-lock --output table
+   aws dynamodb scan --table-name tfstate-lock
    ```
    - One item has the `LockID` of your state (`<bucket>/tf-lab-5/terraform.tfstate`) and an `Info` with who holds the lock, from which computer, since when, and the operation.
    - A second item ends with `-md5`: a checksum of the state, not a lock. Terraform keeps it to check that the state in S3 is the one it wrote last.

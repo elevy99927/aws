@@ -1,6 +1,6 @@
 # 5.02 Terraform Basic Commands – Lab 6: User Data and remote-exec
 
-[⬅ Lab 5](tf-lab-5.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-6-solution/README.md)
+[⬅ Lab 5](tf-lab-5.md) | [⬅ Back to 5.02 Terraform Basic Commands](README.md) | [Solution ➡](tf-lab-6-solution/README.md) | [Lab 7 ➡](tf-lab-7.md)
 
 The instances exist, you can reach them with SSH, and the state is safe in S3, but the instances do nothing yet. In this lab you give them a job: **user data** installs a web server at their first boot, and a **remote-exec** provisioner connects over SSH to check that it works, before the apply ends.
 

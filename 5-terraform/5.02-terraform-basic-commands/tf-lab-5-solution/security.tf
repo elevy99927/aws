@@ -23,12 +23,3 @@ resource "aws_vpc_security_group_egress_rule" "all" {
   cidr_ipv4         = "0.0.0.0/0"
   ip_protocol       = "-1"
 }
-
-# New in Lab 5: HTTP (port 80) only from your IP address, to see the nginx page.
-resource "aws_vpc_security_group_ingress_rule" "http" {
-  security_group_id = aws_security_group.ssh.id
-  cidr_ipv4         = var.MY_IP
-  from_port         = 80
-  ip_protocol       = "tcp"
-  to_port           = 80
-}
