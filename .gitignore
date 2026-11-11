@@ -12,3 +12,5 @@ limits.md
 errors/
 test-tf/
 .video-upgrade/
+**/ssh/terraform-key
+**/ssh/terraform-key.pub

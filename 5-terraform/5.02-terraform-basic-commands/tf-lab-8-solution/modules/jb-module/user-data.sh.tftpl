@@ -1,0 +1,21 @@
+#!/bin/bash
+# user-data: runs once, as root, at the instance's first boot (Ubuntu).
+# Installs Docker and runs nginx in a container on port 80.
+apt-get update
+apt-get install -y docker.io
+systemctl enable --now docker
+
+
+#prepare the folders
+mkdir -p /usr/share/nginx/html
+cat > /usr/share/nginx/html/index.html <<HTML
+<h1>Hello from ${server_name}</h1>
+<p>Installed by user-data on $(hostname)</p>
+<p>Our bucket: ${bucket}</p>
+HTML
+
+
+
+docker run -d --name nginx --restart unless-stopped -p 80:80 \
+        -v /usr/share/nginx/html:/usr/share/nginx/html:ro \
+        nginx

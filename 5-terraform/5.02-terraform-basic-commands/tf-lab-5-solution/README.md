@@ -2,22 +2,19 @@
 
 [⬅ Lab 5](../tf-lab-5.md) | [⬅ Back to 5.02 Terraform Basic Commands](../README.md)
 
-The solution is the Lab 4 folder plus two new files and three changed ones:
+The solution is the Lab 4 folder plus one new file:
 
 | File | What it holds |
 |---|---|
-| [`backend.tf`](backend.tf) **new** | The S3 backend: the state bucket, the key `tf-lab-5/terraform.tfstate`, `us-east-1`, `use_lockfile = true` |
-| [`install-nginx.sh`](install-nginx.sh) **new** | The user-data script: installs nginx and writes a page with the instance's host name |
-| [`security.tf`](security.tf) | Lab 4's SSH rule, plus `aws_vpc_security_group_ingress_rule.http`: port 80 from `var.MY_IP` |
-| [`instance.tf`](instance.tf) | Both instances get `user_data`, `user_data_replace_on_change = true`, a `connection` block and a `remote-exec` provisioner |
-| [`outputs.tf`](outputs.tf) | Lab 4's IP outputs, plus `web_1_url` and `web_2_url` |
-| [`vars.tf`](vars.tf), [`provider.tf`](provider.tf), [`vpc.tf`](vpc.tf), [`key.tf`](key.tf), [`s3.tf`](s3.tf) | The same as in Lab 4 |
+| [`backend.tf`](backend.tf) **new** | The S3 backend: the state bucket, the key `tf-lab-5/terraform.tfstate`, `us-east-1`, and `dynamodb_table = "tfstate-lock"` |
+| [`instance.tf`](instance.tf) | Lab 4's instances; the `Name` tag of `web_1` is `my-tf-web-1-locked` after step 7 |
+| [`vars.tf`](vars.tf), [`provider.tf`](provider.tf), [`vpc.tf`](vpc.tf), [`security.tf`](security.tf), [`key.tf`](key.tf), [`s3.tf`](s3.tf), [`outputs.tf`](outputs.tf) | The same as in Lab 4 |
 
 Replace `tfstate-yourname-1234` in `backend.tf` with your own bucket name, and `s3-lab-yourname-1234` in `s3.tf` with your Lab 3 name. Your SSH key files, `my-ssh-key` and `my-ssh-key.pub`, come from your Lab 4 folder.
 
-## Part 1: remote state in S3
+The terminal blocks below are from the real run, starting from a folder with the 12 Lab 4 resources and a local state. IDs, IP addresses and the user name are masked.
 
-The real run, starting from a folder with the 12 Lab 4 resources and a local state. IDs and IP addresses are masked.
+## Part 1: remote state in S3
 
 **The state bucket**, created with the AWS CLI, with versioning:
 
@@ -25,7 +22,7 @@ The real run, starting from a folder with the 12 Lab 4 resources and a local sta
 $ aws s3api create-bucket --bucket tfstate-student-2821 --region us-east-1
 {
     "Location": "/tfstate-student-2821",
-    ...
+    "BucketArn": "arn:aws:s3:::tfstate-student-2821"
 }
 $ aws s3api put-bucket-versioning --bucket tfstate-student-2821 --versioning-configuration Status=Enabled
 $ aws s3api get-bucket-versioning --bucket tfstate-student-2821
@@ -34,13 +31,43 @@ $ aws s3api get-bucket-versioning --bucket tfstate-student-2821
 }
 ```
 
-- Terraform can't create this bucket in the same configuration: `terraform init` needs the bucket to exist before Terraform reads any resource, and `terraform destroy` would try to delete the bucket that holds the state it's using.
+**The lock table:**
+
+```text
+$ aws dynamodb create-table \
+    --table-name tfstate-lock \
+    --attribute-definitions AttributeName=LockID,AttributeType=S \
+    --key-schema AttributeName=LockID,KeyType=HASH \
+    --billing-mode PAY_PER_REQUEST
+{
+    "TableDescription": {
+        ...
+        "TableName": "tfstate-lock",
+        "KeySchema": [
+            {
+                "AttributeName": "LockID",
+                "KeyType": "HASH"
+            }
+        ],
+        "TableStatus": "CREATING",
+        ...
+        "BillingModeSummary": {
+            "BillingMode": "PAY_PER_REQUEST"
+        },
+        ...
+    }
+}
+```
+
+- Terraform can't create the bucket or the table in the same configuration: `terraform init` needs them before Terraform reads any resource, and `terraform destroy` would try to delete the bucket that holds the state it's using.
+- The key must be a string named `LockID`: that's the name Terraform writes.
 - A backend block can't use variables (`var.…`): Terraform reads it before variables exist.
 
 **The migration:**
 
 ```text
 $ terraform init -migrate-state
+...
 Initializing the backend...
 Do you want to copy existing state to the new backend?
   Pre-existing state was found while migrating the previous "local" backend to the
@@ -52,137 +79,164 @@ Do you want to copy existing state to the new backend?
 
 Successfully configured the backend "s3"! Terraform will automatically
 use this backend unless the backend configuration changes.
+...
+Terraform has been successfully initialized!
 ```
 
 ```text
 $ terraform plan
+
+Warning: Deprecated Parameter
+
+The parameter "dynamodb_table" is deprecated. Use parameter "use_lockfile"
+instead.
+Acquiring state lock. This may take a few moments...
+...
 No changes. Your infrastructure matches the configuration.
 
 $ aws s3 ls s3://tfstate-student-2821/ --recursive
-2026-11-01 10:00:13      27090 tf-lab-5/terraform.tfstate
+2026-11-03 21:07:21      27911 tf-lab-5/terraform.tfstate
+
+$ wc -c terraform.tfstate*
+       0 terraform.tfstate
+   27911 terraform.tfstate.backup
 ```
 
 - **No changes:** Terraform read the same 12 resources, now from S3.
-- The local `terraform.tfstate` is now **empty** (0 bytes), and `terraform.tfstate.backup` holds the old copy. Once `plan` says No changes, you can delete both.
-- **Sign-in:** the S3 backend uses the AWS CLI's sign-in (`aws login` worked in this run) or the `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` environment variables. It doesn't read the provider's `TF_VAR_AWS_ACCESS_KEY`.
+- The local `terraform.tfstate` is now **empty** (0 bytes), and `terraform.tfstate.backup` holds the old copy. Once `plan` says No changes, and the object is in the bucket, you can delete both.
+- **The warning** appears on every command: since Terraform 1.10 the S3 backend can lock the state itself (`use_lockfile = true`), and `dynamodb_table` is marked deprecated. It still works, and many teams still run the table.
+- **Sign-in:** the S3 backend uses the AWS CLI's sign-in (`aws login`) or the `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` environment variables. It doesn't read the provider's `TF_VAR_AWS_ACCESS_KEY`.
 
-**The lock:** while `terraform apply` ran, a second terminal saw the lock file next to the state:
+In the S3 Console, **tfstate-student-2821 → tf-lab-5/** shows one object, `terraform.tfstate`, 27.3 KB. **Show versions** lists every version written since.
+
+## Part 2: the lock
+
+**An apply that waits** (terminal 1), after changing the `Name` tag of `web_1` to `my-tf-web-1-locked`:
 
 ```text
-$ aws s3 ls s3://tfstate-student-2821/ --recursive
-2026-11-01 10:00:13      27090 tf-lab-5/terraform.tfstate
-2026-11-01 10:01:56        266 tf-lab-5/terraform.tfstate.tflock
+$ terraform apply
+...
+Terraform will perform the following actions:
+
+  # aws_instance.web_1 will be updated in-place
+  ~ resource "aws_instance" "web_1" {
+        id                                   = "i-0a1b2c3d4e5f60010"
+      ~ tags                                 = {
+          ~ "Name" = "my-tf-web-1" -> "my-tf-web-1-locked"
+        }
+        # (39 unchanged attributes hidden)
+    }
+
+Plan: 0 to add, 1 to change, 0 to destroy.
+
+Do you want to perform these actions?
+  Terraform will perform the actions described above.
+  Only 'yes' will be accepted to approve.
+
+  Enter a value:
 ```
 
-A second `apply` at that moment would stop with a lock error instead of changing the state at the same time. The lock file is deleted when the command ends.
+**The lock item** (terminal 2), while the apply waits:
 
-## Part 2: user data and remote-exec
-
-```hcl
-resource "aws_instance" "web_1" {
-  # ... as in Lab 4 ...
-  user_data                   = file("install-nginx.sh")
-  user_data_replace_on_change = true
-
-  connection {
-    type        = "ssh"
-    user        = "ec2-user"
-    private_key = file("my-ssh-key")
-    host        = self.public_ip
-  }
-
-  provisioner "remote-exec" {
-    inline = [
-      "cloud-init status --wait",
-      "systemctl is-active nginx",
-      "curl -s localhost",
-    ]
-  }
-
-  provisioner "local-exec" {
-    command = "echo ${self.tags.Name} ${self.public_ip} >> LAB-IPS.txt"
-  }
+```text
+$ aws dynamodb scan --table-name tfstate-lock
+{
+    "Items": [
+        {
+            "Digest": {
+                "S": "c048fc84b98826620245b53ba6d21f63"
+            },
+            "LockID": {
+                "S": "tfstate-student-2821/tf-lab-5/terraform.tfstate-md5"
+            }
+        },
+        {
+            "LockID": {
+                "S": "tfstate-student-2821/tf-lab-5/terraform.tfstate"
+            },
+            "Info": {
+                "S": "{\"ID\":\"241005cd-c003-94f0-3dc8-c73d91c01cc9\",\"Operation\":\"OperationTypeApply\",\"Info\":\"\",\"Who\":\"student@laptop\",\"Version\":\"1.15.7\",\"Created\":\"2026-11-03T19:07:35.850859Z\",\"Path\":\"tfstate-student-2821/tf-lab-5/terraform.tfstate\"}"
+            }
+        }
+    ],
+    "Count": 2,
+    "ScannedCount": 2,
+    "ConsumedCapacity": null
 }
 ```
 
-- `cloud-init status --wait` blocks until cloud-init has run the user-data script, so the next two commands check a finished install.
-- Provisioners run in the order they're written: `remote-exec` first, then `local-exec`.
+- The lock item's `LockID` is `<bucket>/<key>`. Its `Info` holds the lock's own `ID` (the one `force-unlock` takes), the operation, who holds it (`user@computer`), the Terraform version and the time.
+- The `-md5` item is a checksum of the state, not a lock: Terraform compares it with the state it reads from S3, so it never works from a stale copy. It stays in the table after the lock is released.
 
-**The plan:**
-
-```text
-  # aws_instance.web_1 must be replaced
-      + user_data                            = <<-EOT # forces replacement
-      ~ user_data_replace_on_change          = false -> true
-  # aws_instance.web_2 must be replaced
-  ...
-  # aws_vpc_security_group_ingress_rule.http will be created
-
-Plan: 3 to add, 0 to change, 2 to destroy.
-```
-
-User data runs only at the first boot. Without `user_data_replace_on_change`, Terraform would update the user data on the existing instance (AWS stops and starts it), but cloud-init wouldn't run the script again; with it, Terraform replaces the instance, and the new one runs the script.
-
-**When remote-exec fails.** In this run, the first apply failed:
+**A second command is refused** (terminal 2):
 
 ```text
-aws_instance.web_1: Provisioning with 'remote-exec'...
-aws_instance.web_1 (remote-exec): Connecting to remote host via SSH...
+$ terraform plan
 ...
-Error: remote-exec provisioner error
-timeout - last error: dial tcp 203.0.113.16:22: i/o timeout
+Acquiring state lock. This may take a few moments...
+
+Error: Error acquiring the state lock
+
+Error message: operation error DynamoDB: PutItem, https response error
+StatusCode: 400, RequestID: ...,
+ConditionalCheckFailedException: The conditional request failed
+Lock Info:
+  ID:        241005cd-c003-94f0-3dc8-c73d91c01cc9
+  Path:      tfstate-student-2821/tf-lab-5/terraform.tfstate
+  Operation: OperationTypeApply
+  Who:       student@laptop
+  Version:   1.15.7
+  Created:   2026-11-03 19:07:35.850859 +0000 UTC
+  Info:
+
+Terraform acquires a state lock to protect the state from being written
+by multiple users at the same time. Please resolve the issue above and try
+again. For most commands, you can disable locking with the "-lock=false"
+flag, but this is not recommended.
 ```
 
-The computer's public IP address wasn't the one in `TF_VAR_MY_IP` (some networks use more than one), so the security group dropped the SSH connection. Terraform marks an instance whose provisioner failed as **tainted**, and the next plan replaces it:
+Terraform writes the lock item with a condition "only if no item with this key exists". DynamoDB refuses (`ConditionalCheckFailedException`), and Terraform stops before reading the state.
+
+**Release:** `yes` in terminal 1.
 
 ```text
-  # aws_instance.web_1 is tainted, so must be replaced
-  # aws_instance.web_2 is tainted, so must be replaced
+aws_instance.web_1: Modifying... [id=i-0a1b2c3d4e5f60010]
+aws_instance.web_1: Modifications complete after 3s [id=i-0a1b2c3d4e5f60010]
 
-Plan: 2 to add, 0 to change, 2 to destroy.
+Apply complete! Resources: 0 added, 1 changed, 0 destroyed.
+
+$ aws dynamodb scan --table-name tfstate-lock --query "Items[].LockID.S"
+[
+    "tfstate-student-2821/tf-lab-5/terraform.tfstate-md5"
+]
 ```
 
-The network had a second public IP address, and SSH used it. After allowing that address too (a temporary inbound rule, added outside Terraform and removed before `terraform destroy`), the next apply worked, with no change to the Terraform rules (`0 changed`):
-
-```text
-aws_instance.web_1 (remote-exec): Connected!
-aws_instance.web_1 (remote-exec): status: done
-aws_instance.web_1 (remote-exec): active
-aws_instance.web_1 (remote-exec): <h1>Hello from ip-10-0-1-194.ec2.internal</h1><p>Installed by user-data</p>
-...
-Apply complete! Resources: 2 added, 0 changed, 2 destroyed.
-
-Outputs:
-
-web_1_url = "http://203.0.113.11"
-web_2_url = "http://203.0.113.12"
-```
-
-```text
-$ curl http://203.0.113.11
-<h1>Hello from ip-10-0-1-194.ec2.internal</h1><p>Installed by user-data</p>
-```
+**A lock left behind:** if a run crashes or you press Ctrl+C during an apply, the item can stay, and every command fails with the error above. `terraform force-unlock 241005cd-c003-94f0-3dc8-c73d91c01cc9` (the `ID` from the error) deletes it, after asking for `yes`. Only when nobody is running Terraform on this state.
 
 ## Clean up
 
 ```text
 $ terraform destroy
-Plan: 0 to add, 0 to change, 13 to destroy.
-Destroy complete! Resources: 13 destroyed.
+...
+Plan: 0 to add, 0 to change, 12 to destroy.
+...
+  Enter a value: yes
+...
+Destroy complete! Resources: 12 destroyed.
 
 $ aws s3 ls s3://tfstate-student-2821/ --recursive
-2026-11-01 10:12:31        181 tf-lab-5/terraform.tfstate
+2026-11-03 21:12:39        181 tf-lab-5/terraform.tfstate
 ```
 
-The state in S3 is now an empty state (181 bytes), and versioning keeps the earlier versions. Keep the bucket for the next labs. To delete it later, delete every object version first (the Console's **Empty** button does this), then the bucket.
+The state in S3 is now an empty state (181 bytes), versioning keeps the earlier versions, and the table holds only the `-md5` item. Keep both for the next labs. To delete the bucket later, delete every object version first (the Console's **Empty** button does this), then the bucket; the table goes with `aws dynamodb delete-table --table-name tfstate-lock`.
 
 ## Answers
 
-1. **The state bucket** must exist before `terraform init`, because the backend is configured before Terraform reads any resource. And if the same configuration managed the bucket, `terraform destroy` would try to delete the bucket that stores the state it's using.
+1. **The bucket and the table** must exist before `terraform init`, because the backend is configured before Terraform reads any resource. And if the same configuration managed them, `terraform destroy` would try to delete the bucket that stores the state it's using, and the table that holds its lock.
 2. **No changes** after the migration, because the state moved, not the resources: Terraform reads the same 12 resources from S3, and they still match the files.
-3. **One changed line** in `install-nginx.sh` changes `user_data`, which forces a replacement of both instances (because of `user_data_replace_on_change = true`). Without that setting, Terraform would update the user data on the existing instances (AWS stops and starts them), but the new script wouldn't run, since cloud-init runs user data only at the first boot.
-4. **Terraform waits for `remote-exec`**, and a failing command (or no SSH connection) fails the apply and taints the instance. **User data** runs inside the instance through cloud-init; Terraform doesn't wait for it and never sees its output, so a broken script doesn't fail the apply. This lab uses `remote-exec` to wait for user data and check its result.
-5. **A second person** needs the same files (from Git), the same `backend.tf`, AWS credentials with access to the state bucket, and `terraform init`. Terraform then reads the shared state from S3, and the lock file stops two applies from running at the same time.
+3. **The lock item** is one DynamoDB item whose `LockID` is `<bucket>/<key>`. Its `Info` says who holds the lock (`user@computer`), since when, which operation (`OperationTypeApply`), the Terraform version, and the lock's own `ID`. Terraform deletes it when the command ends, including when the command fails.
+4. **The teammate sees** `Error: Error acquiring the state lock`, with the lock's `ID`, `Who` and `Created`, and their command stops before it reads the state. That's good: two applies writing the same state at once could leave it corrupted or half-applied; now the second one waits for the first to finish, and then plans against the updated state.
+5. **`force-unlock` is safe** when the item is left behind by a run that no longer exists (a crash, Ctrl+C, a lost connection): check `Who` and `Created`, and ask the teammate. **It's dangerous** while that run is still working: it removes the only thing that stops a second apply from writing the state at the same time.
 
 ---
 
