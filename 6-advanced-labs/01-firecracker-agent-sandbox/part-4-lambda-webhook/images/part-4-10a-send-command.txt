@@ -1,0 +1,8 @@
+~ $ aws ssm send-command --document-name fc-run-pr-job --instance-ids $(terraform output -raw instance_id) --comment 'pr-0 by hand' --parameters url=https://github.com/elevy99927/fc-agents-sample.git,sha=c48a39a82205ff3b828d21393aa0e295da54f5e9,pr=0,repo=elevy99927/fc-agents-sample --query 'Command.{CommandId:CommandId,Status:Status,Document:DocumentName}' --output table
+----------------------------------------------------------------------
+|                             SendCommand                            |
++---------------------------------------+-----------------+----------+
+|               CommandId               |    Document     | Status   |
++---------------------------------------+-----------------+----------+
+|  14f406bb-1405-4cd0-9b1f-0c4fb25d7e97 |  fc-run-pr-job  |  Pending |
++---------------------------------------+-----------------+----------+

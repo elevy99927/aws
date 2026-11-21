@@ -1,0 +1,7 @@
+~ $ aws ssm list-commands --query 'Commands[0:2].[Comment,DocumentName,Status]' --output table
+----------------------------------------------
+|                ListCommands                |
++--------------+-----------------+-----------+
+|  pr-1 86869b2|  fc-run-pr-job  |  Success  |
+|  pr-0 by hand|  fc-run-pr-job  |  Success  |
++--------------+-----------------+-----------+

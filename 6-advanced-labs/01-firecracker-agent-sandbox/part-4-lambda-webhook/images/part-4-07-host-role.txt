@@ -1,0 +1,6 @@
+~ $ aws iam list-attached-role-policies --role-name fc-agents-host --output text
+ATTACHEDPOLICIES	arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore	AmazonSSMManagedInstanceCore
+~ $ aws iam get-role-policy --role-name fc-agents-host --policy-name results-and-token --query PolicyDocument.Statement --output json | jq -c '.[] | {Effect, Action, Resource: (.Resource|split(":")|.[-1])}'
+{"Effect":"Allow","Action":"s3:PutObject","Resource":"fc-agents-results-4024a4e117cc04351f0fe0cf68/*"}
+{"Effect":"Allow","Action":"ssm:GetParameter","Resource":"parameter/fc/github-token"}
+{"Effect":"Deny","Action":"ssm:GetParameter*","Resource":"parameter/fc/webhook-secret"}

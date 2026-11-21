@@ -1,0 +1,10 @@
+~ $ aws ssm describe-instance-information \
+    --query 'InstanceInformationList[].{Instance:InstanceId,Ping:PingStatus,Platform:PlatformName,Version:PlatformVersion,Agent:AgentVersion}' \
+    --output table
+------------------------------------------------------------------------
+|                      DescribeInstanceInformation                     |
++------------+-----------------------+---------+-----------+-----------+
+|    Agent   |       Instance        |  Ping   | Platform  |  Version  |
++------------+-----------------------+---------+-----------+-----------+
+|  3.3.4793.0|  i-0a1b2c3d4e5f6a7b8  |  Online |  Ubuntu   |  24.04    |
++------------+-----------------------+---------+-----------+-----------+

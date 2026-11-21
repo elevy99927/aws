@@ -1,0 +1,20 @@
+# Two rules of our own, next to the registry rule sets (p/supply-chain and p/security-audit, downloaded by
+# bake-agents.sh into this folder). Semgrep loads every YAML file in /rules.
+rules:
+  - id: course.npm-install-script
+    languages: [generic]
+    paths:
+      include: ["package.json"]
+    pattern-either:
+      - pattern: '"preinstall"'
+      - pattern: '"postinstall"'
+    message: package.json runs a script at install time. That is where a malicious package does its work; read the script before you run npm install.
+    severity: WARNING
+
+  - id: course.exec-of-decoded-string
+    languages: [python]
+    pattern-either:
+      - pattern: exec(base64.b64decode(...))
+      - pattern: eval(base64.b64decode(...))
+    message: Code decoded from a string and executed. Obfuscation is a red flag in an untrusted repository.
+    severity: ERROR

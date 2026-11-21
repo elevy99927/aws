@@ -1,0 +1,15 @@
+#!/bin/bash
+# jobctl list: one line per job on this host, from jobs/<id>/summary.json (and pr.txt for pull request jobs).
+# ponytail: only "list". Logs, stop and cleanup are plain commands on the lab page; a real CLI comes with the Part 5 daemon.
+cd "$HOME/fc" || exit 1
+[ "${1:-list}" = list ] || { echo "usage: jobctl list"; exit 2; }
+printf '%-16s %-30s %-5s %-8s %s\n' JOB REPO PR SHA VERDICT
+for d in jobs/2*/; do
+  id=$(basename "$d")
+  if [ -s "$d/summary.json" ]; then
+    read -r repo pr _ < "$d/pr.txt" 2>/dev/null || { repo=$(jq -r .repo "$d/summary.json"); pr=-; }
+    printf '%-16s %-30s %-5s %-8s %s\n' "$id" "${repo#https://github.com/}" "$pr" "$(jq -r '.ref[:7]' "$d/summary.json")" "$(jq -r .verdict "$d/summary.json")"
+  elif [ -e "$d/fc.sock" ] && ! flock -n jobs/.lock true; then
+    printf '%-16s %-30s %-5s %-8s %s\n' "$id" - - - running
+  fi   # else: a run the lock turned away left an empty folder (Part 3's run-job.sh); not a job
+done

@@ -1,0 +1,4 @@
+~ $ aws logs tail /aws/lambda/fc-agents-webhook --since 1h --format short | grep '{' | cut -d' ' -f2- | jq -c '{status, result, action, pr, sha}' | sed 's/,"action":null,"pr":null,"sha":null//'
+{"status":200,"result":"pong"}
+{"status":200,"result":"pong"}
+{"status":202,"result":{"command_id":"70fe26ee-e4bd-4cd8-aa31-667aa34c4a58"},"action":"opened","pr":1,"sha":"86869b2"}

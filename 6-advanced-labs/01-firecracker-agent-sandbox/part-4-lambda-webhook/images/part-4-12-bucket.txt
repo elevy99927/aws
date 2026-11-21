@@ -1,0 +1,6 @@
+~ $ aws s3 ls s3://$(terraform output -raw bucket)/elevy99927/fc-agents-sample/pr-0/ --recursive | cut -c20-
+       9784 elevy99927/fc-agents-sample/pr-0/c48a39a82205ff3b828d21393aa0e295da54f5e9/code.json
+       4035 elevy99927/fc-agents-sample/pr-0/c48a39a82205ff3b828d21393aa0e295da54f5e9/compose.log
+      50137 elevy99927/fc-agents-sample/pr-0/c48a39a82205ff3b828d21393aa0e295da54f5e9/deps.json
+        854 elevy99927/fc-agents-sample/pr-0/c48a39a82205ff3b828d21393aa0e295da54f5e9/secrets.json
+        266 elevy99927/fc-agents-sample/pr-0/c48a39a82205ff3b828d21393aa0e295da54f5e9/summary.json

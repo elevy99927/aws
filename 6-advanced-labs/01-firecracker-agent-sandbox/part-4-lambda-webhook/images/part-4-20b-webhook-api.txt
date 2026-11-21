@@ -1,0 +1,4 @@
+~ $ curl -s -X PATCH https://api.github.com/repos/elevy99927-demos/fc-agents-sample/hooks/714962687 -H "Authorization: Bearer $GH_LABS_TOKEN" -d "{\"events\": [\"pull_request\"], \"config\": {\"url\": \"$(terraform output -raw function_url)\", \"content_type\": \"json\", \"secret\": \"$WEBHOOK_SECRET\"}}" | jq -c '{events, content_type: .config.content_type, secret: .config.secret}'
+{"events":["pull_request"],"content_type":"json","secret":"********"}
+~ $ curl -s -X POST https://api.github.com/repos/elevy99927-demos/fc-agents-sample/hooks/714962687/pings -H "Authorization: Bearer $GH_LABS_TOKEN" -w 'ping sent: HTTP %{http_code}\n'
+ping sent: HTTP 204
