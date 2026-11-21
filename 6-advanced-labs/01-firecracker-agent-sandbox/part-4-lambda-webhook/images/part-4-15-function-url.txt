@@ -1,0 +1,7 @@
+~ $ aws lambda get-function-url-config --function-name fc-agents-webhook --query AuthType
+"NONE"
+~ $ aws lambda get-policy --function-name fc-agents-webhook --query Policy --output text | jq -c '.Statement[] | {Action, Principal}'
+{"Action":"lambda:InvokeFunctionUrl","Principal":"*"}
+{"Action":"lambda:InvokeFunction","Principal":"*"}
+~ $ curl -s -X POST $(terraform output -raw function_url) -w '  HTTP %{http_code}\n'
+"missing signature"  HTTP 401

@@ -1,0 +1,6 @@
+~ $ curl -s -X POST https://api.github.com/repos/elevy99927-demos/fc-agents-sample/pulls -H "Authorization: Bearer $GH_LABS_TOKEN" -d '{"title": "Part 4 test: a pull request that starts the scan", "head": "part-4-test-pr", "base": "main"}' | jq -c '{number, state, head: .head.sha[0:7], url: .html_url}'
+{"number":1,"state":"open","head":"86869b2","url":"https://github.com/elevy99927-demos/fc-agents-sample/pull/1"}
+~ $ curl -s https://api.github.com/repos/elevy99927-demos/fc-agents-sample/hooks/714962687/deliveries -H "Authorization: Bearer $GH_LABS_TOKEN" | jq -r '.[] | [.delivered_at, .event, .action // "-", .status_code] | @tsv'
+2026-11-21T16:06:19.067Z	pull_request	opened	202
+2026-11-21T16:03:43.862Z	ping	-	200
+2026-11-21T15:52:47.643Z	ping	-	200

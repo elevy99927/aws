@@ -14,3 +14,8 @@ test-tf/
 .video-upgrade/
 **/ssh/terraform-key
 **/ssh/terraform-key.pub
+
+# Terraform plan files hold the state (account ID, IPs, generated keys); Python caches
+tfplan
+*.tfplan
+__pycache__/

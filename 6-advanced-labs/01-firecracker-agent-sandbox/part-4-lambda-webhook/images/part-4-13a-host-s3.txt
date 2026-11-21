@@ -1,0 +1,6 @@
+ubuntu@fc-agents-host:~/fc$ echo test > /tmp/t.txt; source pr-job.env; aws s3 cp /tmp/t.txt s3://$BUCKET/test.txt
+Completed 5 Bytes/5 Bytes (75 Bytes/s) with 1 file(s) remaining
+upload: ../../../tmp/t.txt to s3://fc-agents-results-4024a4e117cc04351f0fe0cf68/test.txt
+ubuntu@fc-agents-host:~/fc$ source pr-job.env; aws s3 ls s3://$BUCKET/
+
+aws: [ERROR]: An error occurred (AccessDenied) when calling the ListObjectsV2 operation: User: arn:aws:sts::111122223333:assumed-role/fc-agents-host/i-0a1b2c3d4e5f6a7b8 is not authorized to perform: s3:ListBucket on resource: "arn:aws:s3:::fc-agents-results-4024a4e117cc04351f0fe0cf68" because no identity-based policy allows the s3:ListBucket action

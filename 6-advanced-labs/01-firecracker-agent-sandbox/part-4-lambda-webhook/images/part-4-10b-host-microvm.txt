@@ -1,0 +1,6 @@
+ubuntu@fc-agents-host:~/fc$ pgrep -a firecracker | cut -c1-100
+7303 ./firecracker --api-sock jobs/20261121-152909/fc.sock --config-file jobs/20261121-152909/vm.jso
+ubuntu@fc-agents-host:~/fc$ ssh root@172.16.0.2 docker ps -a --format '{{.Names}}  {{.Status}}'
+agents-code-1  Up Less than a second
+agents-deps-1  Up Less than a second
+agents-secrets-1  Created

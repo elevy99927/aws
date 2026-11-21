@@ -1,0 +1,6 @@
+~ $ curl -s https://api.github.com/repos/elevy99927-demos/fc-agents-sample/commits/86869b2/status | jq -c '.statuses[] | {context, state, description}'
+{"context":"fc-agents/scan","state":"failure","description":"findings: deps findings, code findings, secrets findings"}
+~ $ curl -s https://api.github.com/repos/elevy99927-demos/fc-agents-sample/issues/1/comments | jq -r '.[].body'
+fc-agents scan of 86869b2: findings: deps findings, code findings, secrets findings
+
+Reports: https://s3.console.aws.amazon.com/s3/buckets/fc-agents-results-4024a4e117cc04351f0fe0cf68?prefix=elevy99927-demos/fc-agents-sample/pr-1/86869b218e512391719a43fca341b2d8d9a3f422/

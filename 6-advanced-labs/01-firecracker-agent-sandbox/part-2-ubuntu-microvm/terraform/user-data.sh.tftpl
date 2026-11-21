@@ -1,0 +1,28 @@
+#!/bin/bash
+# Runs once, as root, at the first boot: writes the lab scripts to /home/ubuntu/fc and runs them as ubuntu,
+# one log per script in ~/fc/logs. ~/fc/lab.done marks success, ~/fc/lab.failed an error.
+set -u
+D=/home/ubuntu/fc
+mkdir -p $D/logs
+cat > $D/common.sh <<'SCRIPT'
+${common}
+SCRIPT
+cat > $D/build-rootfs.sh <<'SCRIPT'
+${build_rootfs}
+SCRIPT
+cat > $D/boot-guest.sh <<'SCRIPT'
+${boot_guest}
+SCRIPT
+cat > $D/install-docker.sh <<'SCRIPT'
+${install_docker}
+SCRIPT
+cat > $D/save-base.sh <<'SCRIPT'
+${save_base}
+SCRIPT
+cat > $D/check.sh <<'SCRIPT'
+${check}
+SCRIPT
+chmod +x $D/*.sh
+chown -R ubuntu:ubuntu $D
+usermod -aG kvm ubuntu
+runuser -l ubuntu -c 'cd ~/fc && for s in build-rootfs boot-guest install-docker save-base check; do ./$s.sh > logs/$s.log 2>&1 || { echo $s > lab.failed; exit 1; }; done && touch lab.done'
