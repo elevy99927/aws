@@ -1,0 +1,19 @@
+~/fc $ ./check-parallel.sh
+…
+~/fc $ cat par-3.log
+no free slot: 2 microVMs are already running
+
+PASS  job 1 on tap0, guest 172.16.0.2
+PASS  job 2 on tap1, guest 172.16.0.6
+PASS  the scans overlapped
+PASS  job 1: verdict findings
+PASS  job 2: verdict clean
+PASS  job 3 turned away, no third microVM
+PASS  guest 1 can't reach guest 2
+PASS  guest 1 can't reach the metadata
+PASS  guest 1 reaches GitHub
+PASS  no Firecracker process
+PASS  no disk copies or mounts left
+PASS  both slots free
+
+check-parallel.sh: 12 passed, 0 failed

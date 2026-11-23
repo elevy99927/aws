@@ -1,0 +1,30 @@
+schemaVersion: "2.2"
+description: Scan one pull request on the Firecracker host (pr-job.sh as ubuntu). The values reach the script as environment variables, never as text the shell parses.
+parameters:
+  url:
+    type: String
+    description: The head repository's clone URL
+    allowedPattern: ^https://github\.com/[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+\.git$
+    interpolationType: ENV_VAR
+  sha:
+    type: String
+    description: The pull request's head commit
+    allowedPattern: ^[0-9a-f]{40}$
+    interpolationType: ENV_VAR
+  pr:
+    type: String
+    description: The pull request number
+    allowedPattern: ^[0-9]{1,7}$
+    interpolationType: ENV_VAR
+  repo:
+    type: String
+    description: The base repository, owner/name
+    allowedPattern: ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$
+    interpolationType: ENV_VAR
+mainSteps:
+  - action: aws:runShellScript
+    name: prJob
+    inputs:
+      timeoutSeconds: 1500
+      runCommand:
+        - runuser -u ubuntu -- /home/ubuntu/fc/pr-job.sh "$SSM_url" "$SSM_sha" "$SSM_pr" "$SSM_repo"

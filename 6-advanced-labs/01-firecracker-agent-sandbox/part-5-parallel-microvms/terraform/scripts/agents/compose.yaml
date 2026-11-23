@@ -1,0 +1,36 @@
+# The three agents, one Compose service each. The contract: the repository at /workspace (read-only) in,
+# /results/<agent>.json and an exit code out (0 clean, 1 findings, anything else failed).
+# Images pinned. No network at job time: the images, the Trivy database and the Semgrep rules were baked into
+# the base image by bake-agents.sh, so the only network call a job makes is the git clone.
+services:
+  deps:
+    image: aquasec/trivy:0.76.2
+    network_mode: none
+    pull_policy: never
+    environment: [GIT_URL, REF]
+    volumes:
+      - /workspace:/workspace:ro
+      - /results:/results
+      - /opt/agents/trivy-cache:/root/.cache/trivy
+    command: fs --scanners vuln,misconfig --skip-db-update --skip-check-update --offline-scan --exit-code 1 --format json --output /results/deps.json /workspace
+
+  code:
+    image: semgrep/semgrep:1.185.0
+    network_mode: none
+    pull_policy: never
+    environment: [GIT_URL, REF]
+    volumes:
+      - /workspace:/workspace:ro
+      - /results:/results
+      - /opt/agents/rules:/rules:ro
+    command: semgrep scan --config /rules --metrics=off --error --json --output /results/code.json /workspace
+
+  secrets:
+    image: zricethezav/gitleaks:v8.30.1
+    network_mode: none
+    pull_policy: never
+    environment: [GIT_URL, REF]
+    volumes:
+      - /workspace:/workspace:ro
+      - /results:/results
+    command: git /workspace --report-format json --report-path /results/secrets.json --exit-code 1

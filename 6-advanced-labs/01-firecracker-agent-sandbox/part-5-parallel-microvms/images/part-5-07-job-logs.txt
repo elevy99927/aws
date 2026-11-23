@@ -1,0 +1,9 @@
+… the two Run Command outputs: the slot and scan lines, sorted by time
+[job 20261123-195812] 19:58:12 slot 0: tap0, guest 172.16.0.2
+[job 20261123-195816] 19:58:16 slot 1: tap1, guest 172.16.0.6
+[job 20261123-195812] 20:00:16 scan started
+[job 20261123-195816] 20:00:21 scan started
+[job 20261123-195812] 20:00:37 scan done
+[job 20261123-195812] 20:00:39 vm destroyed
+[job 20261123-195816] 20:00:43 scan done
+[job 20261123-195816] 20:00:44 vm destroyed
