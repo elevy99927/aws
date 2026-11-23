@@ -1,0 +1,8 @@
+~ $ read -rs GH_TOKEN; export GH_TOKEN
+~ $ R=https://api.github.com/repos/<you>/fc-agents-sample/pulls
+~ $ curl -s -X POST $R -H "Authorization: Bearer $GH_TOKEN" \
+      -d '{"title":"Part 5: change A","head":"part-5-job-a","base":"main"}' | jq -r '"#\(.number) \(.head.sha[0:7])"'
+#4 97b6f74
+~ $ curl -s -X POST $R -H "Authorization: Bearer $GH_TOKEN" \
+      -d '{"title":"Part 5: change B","head":"part-5-job-b","base":"main"}' | jq -r '"#\(.number) \(.head.sha[0:7])"'
+#5 afb73fd

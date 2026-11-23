@@ -1,0 +1,8 @@
+~/fc $ pgrep -a firecracker
+9162 ./firecracker --api-sock jobs/20261123-195812/fc.sock --config-file jobs/20261123-195812/vm.json
+9262 ./firecracker --api-sock jobs/20261123-195816/fc.sock --config-file jobs/20261123-195816/vm.json
+~/fc $ ./jobctl list
+JOB              REPO                               PR    SHA      VERDICT
+… (5 finished jobs from earlier runs)
+20261123-195812  -                                  -     -        running on tap0
+20261123-195816  -                                  -     -        running on tap1

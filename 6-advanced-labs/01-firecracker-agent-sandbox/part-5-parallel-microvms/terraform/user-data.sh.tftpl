@@ -1,0 +1,62 @@
+#!/bin/bash
+# Runs once, as root, at the first boot: writes the lab scripts to /home/ubuntu/fc and runs them as ubuntu,
+# one log per script in ~/fc/logs. Part 2's scripts first (the Ubuntu guest, Docker, the base image), then
+# Part 3's (the agents baked in, two jobs), and Part 4's pr-job.sh and jobctl (started by SSM, not here). Part 5: check-parallel.sh, run by hand. ~/fc/lab.done marks success, ~/fc/lab.failed an error.
+set -u
+D=/home/ubuntu/fc
+mkdir -p $D/logs $D/agents/rules
+apt-get install -y -qq jq > /dev/null
+snap install aws-cli --classic   # Part 4: pr-job.sh uploads to S3 and reads the GitHub token
+cat > $D/common.sh <<'SCRIPT'
+${common}
+SCRIPT
+cat > $D/build-rootfs.sh <<'SCRIPT'
+${build_rootfs}
+SCRIPT
+cat > $D/boot-guest.sh <<'SCRIPT'
+${boot_guest}
+SCRIPT
+cat > $D/install-docker.sh <<'SCRIPT'
+${install_docker}
+SCRIPT
+cat > $D/save-base.sh <<'SCRIPT'
+${save_base}
+SCRIPT
+cat > $D/check.sh <<'SCRIPT'
+${check}
+SCRIPT
+cat > $D/host-net.sh <<'SCRIPT'
+${host_net}
+SCRIPT
+cat > $D/bake-agents.sh <<'SCRIPT'
+${bake_agents}
+SCRIPT
+cat > $D/run-job.sh <<'SCRIPT'
+${run_job}
+SCRIPT
+cat > $D/check-jobs.sh <<'SCRIPT'
+${check_jobs}
+SCRIPT
+cat > $D/check-parallel.sh <<'SCRIPT'
+${check_parallel}
+SCRIPT
+cat > $D/pr-job.sh <<'SCRIPT'
+${pr_job}
+SCRIPT
+cat > $D/jobctl <<'SCRIPT'
+${jobctl}
+SCRIPT
+cat > $D/pr-job.env <<'FILE'
+BUCKET=${bucket}
+export AWS_REGION=${region}
+FILE
+cat > $D/agents/compose.yaml <<'FILE'
+${compose}
+FILE
+cat > $D/agents/rules/course.yaml <<'FILE'
+${course_rules}
+FILE
+chmod +x $D/*.sh $D/jobctl
+chown -R ubuntu:ubuntu $D
+usermod -aG kvm ubuntu
+runuser -l ubuntu -c 'cd ~/fc && for s in build-rootfs boot-guest install-docker save-base check bake-agents check-jobs; do ./$s.sh > logs/$s.log 2>&1 || { echo $s > lab.failed; exit 1; }; done && touch lab.done'

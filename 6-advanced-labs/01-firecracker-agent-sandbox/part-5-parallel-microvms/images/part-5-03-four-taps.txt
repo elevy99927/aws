@@ -1,0 +1,11 @@
+~/fc $ ip -br addr show | grep tap
+tap0             DOWN           172.16.0.1/30
+tap1             DOWN           172.16.0.5/30
+tap2             DOWN           172.16.0.9/30
+tap3             DOWN           172.16.0.13/30
+
+~/fc $ sudo iptables -S FORWARD | grep 'tap+'
+-A FORWARD -i tap+ -o tap+ -j DROP
+-A FORWARD -d 169.254.169.254/32 -i tap+ -j DROP
+-A FORWARD -i tap+ -o enp39s0 -j ACCEPT
+-A FORWARD -i enp39s0 -o tap+ -m state --state RELATED,ESTABLISHED -j ACCEPT
