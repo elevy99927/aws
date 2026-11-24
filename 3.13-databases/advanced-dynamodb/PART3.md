@@ -181,6 +181,7 @@ S3 events are asynchronous: in this run each row appeared within seconds, but de
 | Symptom | Check |
 |---|---|
 | No log after an upload | The trigger's bucket and prefix (`incoming/`, with the slash), and the Region. Upload a new file after adding the trigger |
+| A log with `START`, `END` and `REPORT` but no `{"bucket": …}` line, and no row | The function still runs the Console's default "Hello from Lambda" code: paste the writer code and choose **Deploy** (step C4) |
 | `KeyError: 'TABLE_NAME'` | The environment variable is missing, or misspelled |
 | `AccessDeniedException` on `PutItem` ("no identity-based policy allows the dynamodb:PutItem action") | The policy's `Resource` isn't your table's ARN: check the account ID and the table name (**IAM → Roles → your writer role → the inline policy → JSON**). Or the function uses a different role (**Configuration → Permissions**). New roles can take a few seconds to work |
 | A row for `incoming/` | You used *Create folder*. Delete that row in **Explore items** |
