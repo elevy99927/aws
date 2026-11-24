@@ -1,6 +1,6 @@
 # Part 4: The Reader Lambda and Its Function URL
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 5. [⬅ Part 3](../part-3-s3-writer-lambda/README.md) | [Lab overview](../README.md) | [Part 5 ➡](../part-5-terraformer/README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 5. [⬅ Part 3](PART3.md) | [Lab overview](README.md) | [Part 5 ➡](PART5.md)
 
 <!-- video: add the embed when Part 4 is uploaded -->
 
@@ -12,7 +12,7 @@ In this part: a second function that reads the table and returns the report as a
 
 ## A. The reader's IAM role
 
-Repeat [Part 3, step B](../part-3-s3-writer-lambda/README.md#b-the-writers-iam-role) with two changes:
+Repeat [Part 3, step B](PART3.md#b-the-writers-iam-role) with two changes:
 
 | | Writer (Part 3) | Reader (this part) |
 |---|---|---|
@@ -52,7 +52,7 @@ Two roles, each with only what its function does: the writer can't read the tabl
    With **NONE**, the Console adds two statements to the function's resource policy, shown under *View policy statement*: `lambda:InvokeFunctionUrl` for everyone (`"Principal": "*"`), and `lambda:InvokeFunction` for calls that come through the URL. A public URL needs both.
 
 3. Choose **Create Event Function**.
-4. On the **Code** tab, replace `lambda_function.py` with the [reader code](../lambda-code/reader/lambda_function.py) and choose **Deploy**.
+4. On the **Code** tab, replace `lambda_function.py` with the [reader code](lambda-code/reader/lambda_function.py) and choose **Deploy**.
 
    ![The code editor with the reader code, and the Deploy button](images/p4-04-reader-code-deploy.jpg)
 
@@ -129,7 +129,7 @@ curl -s "https://<your-url-id>.lambda-url.us-east-1.on.aws/" | grep -o '<p>[^<]*
 <p>3 recorded objects</p>
 ```
 
-That's the [acceptance test](../part-1-intro/README.md#the-acceptance-test) passed.
+That's the [acceptance test](PART1.md#the-acceptance-test) passed.
 
 ## Who can open the URL?
 
@@ -145,4 +145,4 @@ Every request runs the function and a `Scan`, and you pay for both. A public URL
 - Why does the reader have its own role instead of reusing the writer's?
 - The report scans the whole table on every page load. How would you show only the files of one prefix, for a catalog of a million files? (Hint: a different key design and `Query`.)
 
-[⬅ Part 3](../part-3-s3-writer-lambda/README.md) | [Part 5: From the Console to Terraform with Terraformer ➡](../part-5-terraformer/README.md)
+[⬅ Part 3](PART3.md) | [Part 5: From the Console to Terraform with Terraformer ➡](PART5.md)

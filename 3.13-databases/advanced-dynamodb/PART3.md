@@ -1,6 +1,6 @@
 # Part 3: S3 → Writer Lambda → DynamoDB
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 5. [⬅ Part 2](../part-2-dynamodb-table/README.md) | [Lab overview](../README.md) | [Part 4 ➡](../part-4-reader-function-url/README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 5. [⬅ Part 2](PART2.md) | [Lab overview](README.md) | [Part 4 ➡](PART4.md)
 
 <!-- video: add the embed when Part 3 is uploaded -->
 
@@ -75,7 +75,7 @@ The role now has two policies: the AWS managed one for logs, and your inline one
 
    ![Additional settings: Custom execution role on, execution role file-catalog-demo-2611-writer](images/p3-10-writer-function-role.jpg)
 
-4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](../lambda-code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
+4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](lambda-code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
 
    ![The code editor with the writer code, and the Deploy button](images/p3-11-writer-code-deploy.jpg)
 
@@ -172,7 +172,7 @@ Open **CloudWatch → Log groups → `/aws/lambda/<lab-name>-writer` → Search 
 
 ![CloudWatch log events: three lines {"bucket": "file-catalog-demo-2611", "key": "incoming/…"} between START and END lines](images/p3-19-writer-logs.jpg)
 
-S3 events are asynchronous: a row can take a second or two to appear. If one is missing, check the logs first.
+S3 events are asynchronous: in this run each row appeared within seconds, but delivery can sometimes take a minute or longer. If one is missing, check the logs first.
 
 ## Troubleshooting
 
@@ -183,4 +183,4 @@ S3 events are asynchronous: a row can take a second or two to appear. If one is 
 | `AccessDeniedException` on `PutItem` | The function uses the wrong role, or the policy's table ARN is wrong. New roles can take a few seconds to work |
 | A row for `incoming/` | You used *Create folder*. Delete that row in **Explore items** |
 
-[⬅ Part 2](../part-2-dynamodb-table/README.md) | [Part 4: The reader Lambda and its Function URL ➡](../part-4-reader-function-url/README.md)
+[⬅ Part 2](PART2.md) | [Part 4: The reader Lambda and its Function URL ➡](PART4.md)
