@@ -1,13 +1,13 @@
-# The same handlers as the Console parts, zipped from ../code
+# The same handlers as the Console parts, zipped from ../lambda-code
 data "archive_file" "writer" {
   type        = "zip"
-  source_file = "${path.module}/../code/writer/lambda_function.py"
+  source_file = "${path.module}/../lambda-code/writer/lambda_function.py"
   output_path = "${path.module}/build/writer.zip"
 }
 
 data "archive_file" "reader" {
   type        = "zip"
-  source_file = "${path.module}/../code/reader/lambda_function.py"
+  source_file = "${path.module}/../lambda-code/reader/lambda_function.py"
   output_path = "${path.module}/build/reader.zip"
 }
 

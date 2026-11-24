@@ -24,8 +24,8 @@ Each chapter has its own page and video.
 
 | Path | What it is |
 |---|---|
-| [`code/writer/lambda_function.py`](code/writer/lambda_function.py) | The writer handler (Part 3) |
-| [`code/reader/lambda_function.py`](code/reader/lambda_function.py) | The reader handler (Part 4) |
+| [`lambda-code/writer/lambda_function.py`](lambda-code/writer/lambda_function.py) | The writer handler (Part 3) |
+| [`lambda-code/reader/lambda_function.py`](lambda-code/reader/lambda_function.py) | The reader handler (Part 4) |
 | [`terraform/`](terraform/) | The complete solution as Terraform: the same 16 resources as Parts 2–4, in one `terraform apply` |
 
 > 💰 **Cost:** a few cents at most. DynamoDB on-demand, Lambda, S3 and CloudWatch Logs for a handful of test files stay inside the AWS Free Tier. Delete everything at the end ([Part 5, clean up](part-5-terraformer/README.md#clean-up)).

@@ -127,8 +127,8 @@ export LAB_DIR=~/aws/3.13-databases/advanced-dynamodb   # your clone of the cour
 terraform state replace-provider -auto-approve registry.terraform.io/-/aws registry.terraform.io/hashicorp/aws
 terraform init
 terraform plan
-zip -j writer.zip "$LAB_DIR/code/writer/lambda_function.py"
-zip -j reader.zip "$LAB_DIR/code/reader/lambda_function.py"
+zip -j writer.zip "$LAB_DIR/lambda-code/writer/lambda_function.py"
+zip -j reader.zip "$LAB_DIR/lambda-code/reader/lambda_function.py"
 ```
 
 Terraformer **doesn't export the function code.** The resource has no `filename`, so the plan fails. Zip the handlers from the repo, then add one line at the top of each function's block in `lambda_function.tf`:
@@ -175,7 +175,7 @@ The repo's [`terraform/`](../terraform/) folder is the same lab written by hand:
 |---|---|
 | [`storage.tf`](../terraform/storage.tf) | The table and the bucket |
 | [`iam.tf`](../terraform/iam.tf) | The two roles, the log policy attachments and the two inline policies, each scoped to `aws_dynamodb_table.catalog.arn` |
-| [`lambda.tf`](../terraform/lambda.tf) | The code zipped from `../code` with `archive_file`, the log groups, both functions, the S3 invoke permission, the **bucket notification** (`depends_on` the permission, because S3 tests it when the notification is saved), the **Function URL** and its invoke permission |
+| [`lambda.tf`](../terraform/lambda.tf) | The code zipped from `../lambda-code` with `archive_file`, the log groups, both functions, the S3 invoke permission, the **bucket notification** (`depends_on` the permission, because S3 tests it when the notification is saved), the **Function URL** and its invoke permission |
 | [`variables.tf`](../terraform/variables.tf), [`outputs.tf`](../terraform/outputs.tf) | `lab_name` and `region` in; `bucket_name`, `table_name` and `report_url` out |
 
 Deploy it with a **new** name, so it can't collide with the Console stack:

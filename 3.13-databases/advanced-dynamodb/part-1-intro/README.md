@@ -43,7 +43,7 @@ On a fresh deployment:
 
 You'll use:
 
-- The handlers in [`code/`](../code/): the [writer](../code/writer/lambda_function.py) and the [reader](../code/reader/lambda_function.py). You don't need to write Python. Each one is about 25 lines, and the parts explain them in a sentence or two.
+- The handlers in [`lambda-code/`](../lambda-code/): the [writer](../lambda-code/writer/lambda_function.py) and the [reader](../lambda-code/reader/lambda_function.py). You don't need to write Python. Each one is about 25 lines, and the parts explain them in a sentence or two.
 - **Python 3.14** for both functions.
 - One unique lowercase name for the bucket and the table, for example `file-catalog-<your-name>-<random>`. The bucket name must be unique across all of S3; the table name only in your account and Region.
 

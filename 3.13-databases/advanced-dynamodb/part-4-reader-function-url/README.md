@@ -52,7 +52,7 @@ Two roles, each with only what its function does: the writer can't read the tabl
    With **NONE**, the Console adds two statements to the function's resource policy, shown under *View policy statement*: `lambda:InvokeFunctionUrl` for everyone (`"Principal": "*"`), and `lambda:InvokeFunction` for calls that come through the URL. A public URL needs both.
 
 3. Choose **Create Event Function**.
-4. On the **Code** tab, replace `lambda_function.py` with the [reader code](../code/reader/lambda_function.py) and choose **Deploy**.
+4. On the **Code** tab, replace `lambda_function.py` with the [reader code](../lambda-code/reader/lambda_function.py) and choose **Deploy**.
 
    ![The code editor with the reader code, and the Deploy button](images/p4-04-reader-code-deploy.jpg)
 
