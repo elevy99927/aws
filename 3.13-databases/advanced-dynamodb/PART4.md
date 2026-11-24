@@ -20,6 +20,8 @@ Repeat [Part 3, step B](PART3.md#b-the-writers-iam-role) with two changes:
 | Inline policy name | `catalog-write` | `catalog-read` |
 | Action | `dynamodb:PutItem` | `dynamodb:Scan` |
 
+Use **your table ARN** from Part 2 as the `Resource`, as in Part 3:
+
 ```json
 {
   "Version": "2012-10-17",
@@ -27,7 +29,7 @@ Repeat [Part 3, step B](PART3.md#b-the-writers-iam-role) with two changes:
     {
       "Effect": "Allow",
       "Action": "dynamodb:Scan",
-      "Resource": "arn:aws:dynamodb:us-east-1:123456789012:table/file-catalog-demo-2611"
+      "Resource": "arn:aws:dynamodb:us-east-1:<your-account-id>:table/<lab-name>"
     }
   ]
 }

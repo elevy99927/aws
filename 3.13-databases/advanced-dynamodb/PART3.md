@@ -39,7 +39,7 @@ The writer runs with its own role. It needs two things: writing logs to CloudWat
 
    ![The writer role's Permissions tab, Add permissions menu: Create inline policy](images/p3-05-create-inline-policy.jpg)
 
-5. Switch the editor to **JSON** and paste this policy, with your **table ARN** from Part 2 as the `Resource`:
+5. Switch the editor to **JSON** and paste this policy. Replace the whole `Resource` value with **your table ARN** from Part 2 (copy it from the table's *General information*):
 
    ```json
    {
@@ -48,11 +48,13 @@ The writer runs with its own role. It needs two things: writing logs to CloudWat
        {
          "Effect": "Allow",
          "Action": "dynamodb:PutItem",
-         "Resource": "arn:aws:dynamodb:us-east-1:123456789012:table/file-catalog-demo-2611"
+         "Resource": "arn:aws:dynamodb:us-east-1:<your-account-id>:table/<lab-name>"
        }
      ]
    }
    ```
+
+   > ⚠️ **Paste your own ARN.** It holds your 12-digit account ID and your table name. If the account ID or the table name in the policy doesn't match your table, every `PutItem` fails with `AccessDeniedException` ("no identity-based policy allows the dynamodb:PutItem action").
 
    ![The policy editor in JSON mode with the PutItem statement on the table ARN](images/p3-06-policy-json.jpg)
 
@@ -180,7 +182,7 @@ S3 events are asynchronous: in this run each row appeared within seconds, but de
 |---|---|
 | No log after an upload | The trigger's bucket and prefix (`incoming/`, with the slash), and the Region. Upload a new file after adding the trigger |
 | `KeyError: 'TABLE_NAME'` | The environment variable is missing, or misspelled |
-| `AccessDeniedException` on `PutItem` | The function uses the wrong role, or the policy's table ARN is wrong. New roles can take a few seconds to work |
+| `AccessDeniedException` on `PutItem` ("no identity-based policy allows the dynamodb:PutItem action") | The policy's `Resource` isn't your table's ARN: check the account ID and the table name (**IAM → Roles → your writer role → the inline policy → JSON**). Or the function uses a different role (**Configuration → Permissions**). New roles can take a few seconds to work |
 | A row for `incoming/` | You used *Create folder*. Delete that row in **Explore items** |
 
 [⬅ Part 2](PART2.md) | [Part 4: The reader Lambda and its Function URL ➡](PART4.md)
