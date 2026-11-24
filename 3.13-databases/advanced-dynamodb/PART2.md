@@ -1,6 +1,6 @@
 # Part 2: The DynamoDB Table
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 2 of 5. [⬅ Part 1](PART1.md) | [Lab overview](README.md) | [Part 3 ➡](PART3.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 2 of 6. [⬅ Part 1](PART1.md) | [Lab overview](README.md) | [Part 3 ➡](PART3.md)
 
 <!-- video: add the embed when Part 2 is uploaded -->
 

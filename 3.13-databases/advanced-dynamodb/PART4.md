@@ -1,6 +1,6 @@
 # Part 4: The Reader Lambda and Its Function URL
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 5. [⬅ Part 3](PART3.md) | [Lab overview](README.md) | [Part 5 ➡](PART5.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 6. [⬅ Part 3](PART3.md) | [Lab overview](README.md) | [Part 5 ➡](PART5.md)
 
 <!-- video: add the embed when Part 4 is uploaded -->
 
@@ -156,4 +156,4 @@ Every request runs the function and a `Scan`, and you pay for both. A public URL
 - Why does the reader have its own role instead of reusing the writer's?
 - The report scans the whole table on every page load. How would you show only the files of one prefix, for a catalog of a million files? (Hint: a different key design and `Query`.)
 
-[⬅ Part 3](PART3.md) | [Part 5: From the Console to Terraform with Terraformer ➡](PART5.md)
+[⬅ Part 3](PART3.md) | [Part 5: Clean up ➡](PART5.md)

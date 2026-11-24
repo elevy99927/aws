@@ -18,7 +18,8 @@ Each chapter has its own page and video.
 | 2 | [The DynamoDB table](PART2.md) | What DynamoDB is, and the catalog table with its partition key and sort key |
 | 3 | [S3 → writer Lambda → DynamoDB](PART3.md) | The bucket, the writer's role, the writer function and its S3 trigger. Upload from the browser and with `aws s3 cp` |
 | 4 | [The reader Lambda and its Function URL](PART4.md) | The reader's role, the reader function with a public Function URL, and the HTML report |
-| 5 | [From the Console to Terraform with Terraformer](PART5.md) | Import the running environment into Terraform code, fix what Terraformer gets wrong, compare it with the full solution, clean up |
+| 5 | [Clean up](PART5.md) | Delete everything you built in Parts 2–4, and check that nothing is left |
+| 6 | [From the Console to Terraform with Terraformer](PART6.md) | Import the running environment into Terraform code, fix what Terraformer gets wrong, compare it with the full solution, clean up |
 
 ## What's in this folder
 
@@ -39,3 +40,7 @@ For questions or feedback, feel free to reach out:
 
 - **Email**: eyal@levys.co.il
 - **GitHub**: [https://github.com/elevy99927](https://github.com/elevy99927)
+
+
+
+#

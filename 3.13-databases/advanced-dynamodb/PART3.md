@@ -1,6 +1,6 @@
 # Part 3: S3 → Writer Lambda → DynamoDB
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 5. [⬅ Part 2](PART2.md) | [Lab overview](README.md) | [Part 4 ➡](PART4.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 6. [⬅ Part 2](PART2.md) | [Lab overview](README.md) | [Part 4 ➡](PART4.md)
 
 <!-- video: add the embed when Part 3 is uploaded -->
 
@@ -130,7 +130,7 @@ The role now has two policies: the AWS managed one for logs, and your inline one
 
    ![Add trigger: bucket s3/file-catalog-demo-2611, all object create events, prefix incoming/, the recursive invocation acknowledgment ticked](images/p3-14-s3-trigger.jpg)
 
-   The Console configures **both sides** for you: the event notification on the bucket, and a statement in the function's resource policy that lets S3 invoke it. In Terraform (Part 5) you write both yourself.
+   The Console configures **both sides** for you: the event notification on the bucket, and a statement in the function's resource policy that lets S3 invoke it. In Terraform (Part 6) you write both yourself.
 
    ![The trigger was added: S3 file-catalog-demo-2611 is a trigger of the writer function](images/p3-15-trigger-added.jpg)
 
