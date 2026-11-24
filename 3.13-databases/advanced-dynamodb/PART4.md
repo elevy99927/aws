@@ -6,7 +6,7 @@
 
 In this part: a second function that reads the table and returns the report as an HTML page, at a public **Function URL**: an HTTPS address that belongs to the function, with no API Gateway in front.
 
-**Jump to:** [A. Reader role](#a-the-readers-iam-role) · [B. Reader function and URL](#b-the-reader-function-with-a-function-url) · [C. Open the report](#c-open-the-report) · [Security](#who-can-open-the-url)
+**Jump to:** [A. Reader role](#a-the-readers-iam-role) · [B. Reader function and URL](#b-the-reader-function-with-a-function-url) · [C. Open the report](#c-open-the-report) · [Security](#who-can-open-the-url) · [Troubleshooting](#troubleshooting)
 
 ---
 
@@ -141,6 +141,15 @@ That's the [acceptance test](PART1.md#the-acceptance-test) passed.
 - Put **CloudFront** or **API Gateway** in front, with authentication, throttling and a WAF.
 
 Every request runs the function and a `Scan`, and you pay for both. A public URL can be called by anyone, as often as they like.
+
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| The URL shows `{"Message":"Forbidden"}` (HTTP 403) | The Function URL's **Auth type** is `AWS_IAM`, the panel's default. A browser doesn't sign its requests, so the call is refused. Open **Configuration → Function URL → Edit**, set **Auth type** to **NONE** and **Save**. The Console adds the two permission statements, and the address stays the same |
+| `Internal Server Error` (HTTP 502) | The function failed. Open its log group `/aws/lambda/<lab-name>-reader`: `KeyError: 'TABLE_NAME'` means the environment variable is missing, and `AccessDeniedException` on `Scan` means the `catalog-read` policy's `Resource` isn't your table's ARN |
+| `Hello from Lambda!` instead of the table | The reader code wasn't deployed: paste it and choose **Deploy** (step B4) |
+| The table is there, with 0 recorded objects | The reader works. The writer hasn't recorded anything: see [Part 3, Troubleshooting](PART3.md#troubleshooting) |
 
 ## Check yourself
 
