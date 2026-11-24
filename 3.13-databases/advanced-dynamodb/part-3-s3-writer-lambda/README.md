@@ -75,7 +75,7 @@ The role now has two policies: the AWS managed one for logs, and your inline one
 
    ![Additional settings: Custom execution role on, execution role file-catalog-demo-2611-writer](images/p3-10-writer-function-role.jpg)
 
-4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](../code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
+4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](../lambda-code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
 
    ![The code editor with the writer code, and the Deploy button](images/p3-11-writer-code-deploy.jpg)
 
