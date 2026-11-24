@@ -86,9 +86,9 @@ resource "aws_lambda_function_url" "reader" {
 }
 
 # A public URL needs two statements in the function's resource policy:
-# lambda:InvokeFunctionUrl, which AWS adds when you create a URL with auth NONE,
-# and lambda:InvokeFunction for calls through the URL, which we add here.
-# (The Console adds both for you.)
+# lambda:InvokeFunctionUrl and lambda:InvokeFunction (invoked via the URL).
+# The Console adds both for you. With auth NONE the AWS provider adds the
+# InvokeFunctionUrl one when it creates the URL; this resource adds the other.
 resource "aws_lambda_permission" "url_invoke" {
   statement_id             = "FunctionURLAllowInvokeAction"
   action                   = "lambda:InvokeFunction"

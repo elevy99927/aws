@@ -1,6 +1,6 @@
 # Part 2: The DynamoDB Table
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 2 of 5. [⬅ Part 1](../part-1-intro/README.md) | [Lab overview](../README.md) | [Part 3 ➡](../part-3-s3-writer-lambda/README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 2 of 6. [⬅ Part 1](PART1.md) | [Lab overview](README.md) | [Part 3 ➡](PART3.md)
 
 <!-- video: add the embed when Part 2 is uploaded -->
 
@@ -67,4 +67,4 @@ aws dynamodb describe-table --table-name "$LAB_NAME" --query Table.TableArn --ou
 - What would change if the partition key were `object_key` alone, with no sort key?
 - Which read is cheaper for "all files in one bucket": `Scan` or `Query`?
 
-[⬅ Part 1](../part-1-intro/README.md) | [Part 3: S3 → writer Lambda → DynamoDB ➡](../part-3-s3-writer-lambda/README.md)
+[⬅ Part 1](PART1.md) | [Part 3: S3 → writer Lambda → DynamoDB ➡](PART3.md)

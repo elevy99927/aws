@@ -1,6 +1,6 @@
 # Part 3: S3 → Writer Lambda → DynamoDB
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 5. [⬅ Part 2](../part-2-dynamodb-table/README.md) | [Lab overview](../README.md) | [Part 4 ➡](../part-4-reader-function-url/README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 3 of 6. [⬅ Part 2](PART2.md) | [Lab overview](README.md) | [Part 4 ➡](PART4.md)
 
 <!-- video: add the embed when Part 3 is uploaded -->
 
@@ -39,7 +39,7 @@ The writer runs with its own role. It needs two things: writing logs to CloudWat
 
    ![The writer role's Permissions tab, Add permissions menu: Create inline policy](images/p3-05-create-inline-policy.jpg)
 
-5. Switch the editor to **JSON** and paste this policy, with your **table ARN** from Part 2 as the `Resource`:
+5. Switch the editor to **JSON** and paste this policy. Replace the whole `Resource` value with **your table ARN** from Part 2 (copy it from the table's *General information*):
 
    ```json
    {
@@ -48,11 +48,13 @@ The writer runs with its own role. It needs two things: writing logs to CloudWat
        {
          "Effect": "Allow",
          "Action": "dynamodb:PutItem",
-         "Resource": "arn:aws:dynamodb:us-east-1:123456789012:table/file-catalog-demo-2611"
+         "Resource": "arn:aws:dynamodb:us-east-1:<your-account-id>:table/<lab-name>"
        }
      ]
    }
    ```
+
+   > ⚠️ **Paste your own ARN.** It holds your 12-digit account ID and your table name. If the account ID or the table name in the policy doesn't match your table, every `PutItem` fails with `AccessDeniedException` ("no identity-based policy allows the dynamodb:PutItem action").
 
    ![The policy editor in JSON mode with the PutItem statement on the table ARN](images/p3-06-policy-json.jpg)
 
@@ -75,7 +77,7 @@ The role now has two policies: the AWS managed one for logs, and your inline one
 
    ![Additional settings: Custom execution role on, execution role file-catalog-demo-2611-writer](images/p3-10-writer-function-role.jpg)
 
-4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](../lambda-code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
+4. On the **Code** tab, replace all of `lambda_function.py` with the [writer code](lambda-code/writer/lambda_function.py) and choose **Deploy**. The handler stays `lambda_function.lambda_handler`, the default.
 
    ![The code editor with the writer code, and the Deploy button](images/p3-11-writer-code-deploy.jpg)
 
@@ -128,7 +130,7 @@ The role now has two policies: the AWS managed one for logs, and your inline one
 
    ![Add trigger: bucket s3/file-catalog-demo-2611, all object create events, prefix incoming/, the recursive invocation acknowledgment ticked](images/p3-14-s3-trigger.jpg)
 
-   The Console configures **both sides** for you: the event notification on the bucket, and a statement in the function's resource policy that lets S3 invoke it. In Terraform (Part 5) you write both yourself.
+   The Console configures **both sides** for you: the event notification on the bucket, and a statement in the function's resource policy that lets S3 invoke it. In Terraform (Part 6) you write both yourself.
 
    ![The trigger was added: S3 file-catalog-demo-2611 is a trigger of the writer function](images/p3-15-trigger-added.jpg)
 
@@ -172,15 +174,16 @@ Open **CloudWatch → Log groups → `/aws/lambda/<lab-name>-writer` → Search 
 
 ![CloudWatch log events: three lines {"bucket": "file-catalog-demo-2611", "key": "incoming/…"} between START and END lines](images/p3-19-writer-logs.jpg)
 
-S3 events are asynchronous: a row can take a second or two to appear. If one is missing, check the logs first.
+S3 events are asynchronous: in this run each row appeared within seconds, but delivery can sometimes take a minute or longer. If one is missing, check the logs first.
 
 ## Troubleshooting
 
 | Symptom | Check |
 |---|---|
 | No log after an upload | The trigger's bucket and prefix (`incoming/`, with the slash), and the Region. Upload a new file after adding the trigger |
+| A log with `START`, `END` and `REPORT` but no `{"bucket": …}` line, and no row | The function still runs the Console's default "Hello from Lambda" code: paste the writer code and choose **Deploy** (step C4) |
 | `KeyError: 'TABLE_NAME'` | The environment variable is missing, or misspelled |
-| `AccessDeniedException` on `PutItem` | The function uses the wrong role, or the policy's table ARN is wrong. New roles can take a few seconds to work |
+| `AccessDeniedException` on `PutItem` ("no identity-based policy allows the dynamodb:PutItem action") | The policy's `Resource` isn't your table's ARN: check the account ID and the table name (**IAM → Roles → your writer role → the inline policy → JSON**). Or the function uses a different role (**Configuration → Permissions**). New roles can take a few seconds to work |
 | A row for `incoming/` | You used *Create folder*. Delete that row in **Explore items** |
 
-[⬅ Part 2](../part-2-dynamodb-table/README.md) | [Part 4: The reader Lambda and its Function URL ➡](../part-4-reader-function-url/README.md)
+[⬅ Part 2](PART2.md) | [Part 4: The reader Lambda and its Function URL ➡](PART4.md)

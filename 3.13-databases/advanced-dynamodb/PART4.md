@@ -1,24 +1,26 @@
 # Part 4: The Reader Lambda and Its Function URL
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 5. [⬅ Part 3](../part-3-s3-writer-lambda/README.md) | [Lab overview](../README.md) | [Part 5 ➡](../part-5-terraformer/README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 4 of 6. [⬅ Part 3](PART3.md) | [Lab overview](README.md) | [Part 5 ➡](PART5.md)
 
 <!-- video: add the embed when Part 4 is uploaded -->
 
 In this part: a second function that reads the table and returns the report as an HTML page, at a public **Function URL**: an HTTPS address that belongs to the function, with no API Gateway in front.
 
-**Jump to:** [A. Reader role](#a-the-readers-iam-role) · [B. Reader function and URL](#b-the-reader-function-with-a-function-url) · [C. Open the report](#c-open-the-report) · [Security](#who-can-open-the-url)
+**Jump to:** [A. Reader role](#a-the-readers-iam-role) · [B. Reader function and URL](#b-the-reader-function-with-a-function-url) · [C. Open the report](#c-open-the-report) · [Security](#who-can-open-the-url) · [Troubleshooting](#troubleshooting)
 
 ---
 
 ## A. The reader's IAM role
 
-Repeat [Part 3, step B](../part-3-s3-writer-lambda/README.md#b-the-writers-iam-role) with two changes:
+Repeat [Part 3, step B](PART3.md#b-the-writers-iam-role) with two changes:
 
 | | Writer (Part 3) | Reader (this part) |
 |---|---|---|
 | Role name | `<lab-name>-writer` | `<lab-name>-reader` |
 | Inline policy name | `catalog-write` | `catalog-read` |
 | Action | `dynamodb:PutItem` | `dynamodb:Scan` |
+
+Use **your table ARN** from Part 2 as the `Resource`, as in Part 3:
 
 ```json
 {
@@ -27,7 +29,7 @@ Repeat [Part 3, step B](../part-3-s3-writer-lambda/README.md#b-the-writers-iam-r
     {
       "Effect": "Allow",
       "Action": "dynamodb:Scan",
-      "Resource": "arn:aws:dynamodb:us-east-1:123456789012:table/file-catalog-demo-2611"
+      "Resource": "arn:aws:dynamodb:us-east-1:<your-account-id>:table/<lab-name>"
     }
   ]
 }
@@ -52,7 +54,7 @@ Two roles, each with only what its function does: the writer can't read the tabl
    With **NONE**, the Console adds two statements to the function's resource policy, shown under *View policy statement*: `lambda:InvokeFunctionUrl` for everyone (`"Principal": "*"`), and `lambda:InvokeFunction` for calls that come through the URL. A public URL needs both.
 
 3. Choose **Create Event Function**.
-4. On the **Code** tab, replace `lambda_function.py` with the [reader code](../lambda-code/reader/lambda_function.py) and choose **Deploy**.
+4. On the **Code** tab, replace `lambda_function.py` with the [reader code](lambda-code/reader/lambda_function.py) and choose **Deploy**.
 
    ![The code editor with the reader code, and the Deploy button](images/p4-04-reader-code-deploy.jpg)
 
@@ -129,7 +131,7 @@ curl -s "https://<your-url-id>.lambda-url.us-east-1.on.aws/" | grep -o '<p>[^<]*
 <p>3 recorded objects</p>
 ```
 
-That's the [acceptance test](../part-1-intro/README.md#the-acceptance-test) passed.
+That's the [acceptance test](PART1.md#the-acceptance-test) passed.
 
 ## Who can open the URL?
 
@@ -140,9 +142,18 @@ That's the [acceptance test](../part-1-intro/README.md#the-acceptance-test) pass
 
 Every request runs the function and a `Scan`, and you pay for both. A public URL can be called by anyone, as often as they like.
 
+## Troubleshooting
+
+| Symptom | Check |
+|---|---|
+| The URL shows `{"Message":"Forbidden"}` (HTTP 403) | The Function URL's **Auth type** is `AWS_IAM`, the panel's default. A browser doesn't sign its requests, so the call is refused. Open **Configuration → Function URL → Edit**, set **Auth type** to **NONE** and **Save**. The Console adds the two permission statements, and the address stays the same |
+| `Internal Server Error` (HTTP 502) | The function failed. Open its log group `/aws/lambda/<lab-name>-reader`: `KeyError: 'TABLE_NAME'` means the environment variable is missing, and `AccessDeniedException` on `Scan` means the `catalog-read` policy's `Resource` isn't your table's ARN |
+| `Hello from Lambda!` instead of the table | The reader code wasn't deployed: paste it and choose **Deploy** (step B4) |
+| The table is there, with 0 recorded objects | The reader works. The writer hasn't recorded anything: see [Part 3, Troubleshooting](PART3.md#troubleshooting) |
+
 ## Check yourself
 
 - Why does the reader have its own role instead of reusing the writer's?
 - The report scans the whole table on every page load. How would you show only the files of one prefix, for a catalog of a million files? (Hint: a different key design and `Query`.)
 
-[⬅ Part 3](../part-3-s3-writer-lambda/README.md) | [Part 5: From the Console to Terraform with Terraformer ➡](../part-5-terraformer/README.md)
+[⬅ Part 3](PART3.md) | [Part 5: Clean up ➡](PART5.md)

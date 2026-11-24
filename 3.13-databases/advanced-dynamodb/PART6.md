@@ -1,12 +1,16 @@
-# Part 5: From the Console to Terraform with Terraformer
+# Part 6: From the Console to Terraform with Terraformer
 
-*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 5 of 5. [⬅ Part 4](../part-4-reader-function-url/README.md) | [Lab overview](../README.md)
+*Advanced DynamoDB Lab: A Serverless File Catalog*, Part 6 of 6. [⬅ Part 5](PART5.md) | [Lab overview](README.md)
 
-<!-- video: add the embed when Part 5 is uploaded -->
+<!-- video: add the embed when Part 6 is uploaded -->
 
-You built everything by hand. Now turn the running environment into Terraform code. **[Terraformer](https://github.com/GoogleCloudPlatform/terraformer)** is an open-source CLI tool from Google: it reads resources from your account and writes `.tf` files and a state file for them ("reverse Terraform").
+You built everything by hand. Now turn the running environment into Terraform code. **[Terraformer](https://github.com/GoogleCloudPlatform/terraformer)** is an open-source CLI tool, created by Waze SRE and published under Google's GitHub organization (it isn't an official Google product): it reads resources from your account and writes `.tf` files and a state file for them ("reverse Terraform").
 
-You'll see that the result is a **draft**: useful, but not something you can apply as is. At the end you compare it with the full hand-written solution in [`terraform/`](../terraform/), and clean up.
+> ⚠️ **Terraformer is no longer maintained.** The project is deprecated and its repository was archived on 16 March 2026, so 0.8.30 is its last release, with no further fixes. It still works for this lab. For your own projects, also look at Terraform's built-in `import` blocks with `terraform plan -generate-config-out`.
+
+You'll see that the result is a **draft**: useful, but not something you can apply as is. At the end you compare it with the full hand-written solution in [`terraform/`](terraform/), and clean up.
+
+> ℹ️ **This part needs the Console stack from Parts 2–4 running.** If you already deleted it in [Part 5](PART5.md), you can still do section E, the full Terraform solution, which builds its own stack.
 
 **Jump to:** [A. Install and set up](#a-install-terraformer-and-set-up) · [B. Import](#b-import-the-lab) · [C. Fix the draft](#c-make-the-draft-plan-cleanly) · [D. What's missing](#d-what-terraformer-didnt-import) · [E. The full solution](#e-the-full-solution-terraform) · [Clean up](#clean-up)
 
@@ -169,14 +173,14 @@ Compare the draft with what you built in Parts 2–4:
 
 ## E. The full solution: `terraform/`
 
-The repo's [`terraform/`](../terraform/) folder is the same lab written by hand: **16 resources**, one state, one variable for the name.
+The repo's [`terraform/`](terraform/) folder is the same lab written by hand: **16 resources**, one state, one variable for the name.
 
 | File | What's in it |
 |---|---|
-| [`storage.tf`](../terraform/storage.tf) | The table and the bucket |
-| [`iam.tf`](../terraform/iam.tf) | The two roles, the log policy attachments and the two inline policies, each scoped to `aws_dynamodb_table.catalog.arn` |
-| [`lambda.tf`](../terraform/lambda.tf) | The code zipped from `../lambda-code` with `archive_file`, the log groups, both functions, the S3 invoke permission, the **bucket notification** (`depends_on` the permission, because S3 tests it when the notification is saved), the **Function URL** and its invoke permission |
-| [`variables.tf`](../terraform/variables.tf), [`outputs.tf`](../terraform/outputs.tf) | `lab_name` and `region` in; `bucket_name`, `table_name` and `report_url` out |
+| [`storage.tf`](terraform/storage.tf) | The table and the bucket |
+| [`iam.tf`](terraform/iam.tf) | The two roles, the log policy attachments and the two inline policies, each scoped to `aws_dynamodb_table.catalog.arn` |
+| [`lambda.tf`](terraform/lambda.tf) | The code zipped from `../lambda-code` with `archive_file`, the log groups, both functions, the S3 invoke permission, the **bucket notification** (`depends_on` the permission, because S3 tests it when the notification is saved), the **Function URL** and its invoke permission |
+| [`variables.tf`](terraform/variables.tf), [`outputs.tf`](terraform/outputs.tf) | `lab_name` and `region` in; `bucket_name`, `table_name` and `report_url` out |
 
 Deploy it with a **new** name, so it can't collide with the Console stack:
 
@@ -200,32 +204,13 @@ report_url = "https://….lambda-url.us-east-1.on.aws/"
 table_name = "file-catalog-tf-2611"
 ```
 
-Run the [acceptance test](../part-1-intro/README.md#the-acceptance-test) against it with `BUCKET_NAME="$(terraform output -raw bucket_name)"`, and open `terraform output -raw report_url`. In our run it took about 45 seconds to apply, and the report showed 3 recorded objects.
+Run the [acceptance test](PART1.md#the-acceptance-test) against it with `BUCKET_NAME="$(terraform output -raw bucket_name)"`, and open `terraform output -raw report_url`. In our run it took about 45 seconds to apply, and the report showed 3 recorded objects.
 
 ## Clean up
 
 ### The Console stack (Parts 2–4)
 
-The Terraformer state files only cover part of the stack, so delete it by hand or with the CLI. Delete the **bucket** first: the trigger goes with it, so no more events reach the writer.
-
-```bash
-aws s3 rm "s3://$LAB_NAME" --recursive
-aws s3 rb "s3://$LAB_NAME"
-aws lambda delete-function --function-name "$LAB_NAME-writer"
-aws lambda delete-function --function-name "$LAB_NAME-reader"   # the Function URL goes with it
-aws logs delete-log-group --log-group-name "/aws/lambda/$LAB_NAME-writer"
-aws logs delete-log-group --log-group-name "/aws/lambda/$LAB_NAME-reader"
-aws dynamodb delete-table --table-name "$LAB_NAME" --query TableDescription.TableStatus --output text
-for f in writer reader; do
-  aws iam delete-role-policy --role-name "$LAB_NAME-$f" --policy-name "catalog-$([ $f = writer ] && echo write || echo read)"
-  aws iam detach-role-policy --role-name "$LAB_NAME-$f" --policy-arn arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
-  aws iam delete-role --role-name "$LAB_NAME-$f"
-done
-```
-
-![The terminal: the four test objects deleted, remove_bucket, both functions deleted (StatusCode 204), both log groups deleted, the table DELETING, and the two roles deleted](images/p5-05-cleanup-console-stack.jpg)
-
-In the Console it's the same order: **S3** (empty, then delete the bucket) → **Lambda** (both functions) → **CloudWatch** (both log groups) → **DynamoDB** (the table) → **IAM** (both roles).
+Delete it as [Part 5: Clean up](PART5.md) shows. The Terraformer state files only cover part of the stack, so `terraform destroy` in `catalog-import` isn't enough.
 
 ### The Terraform stack (section E)
 
@@ -243,4 +228,4 @@ Destroy complete! Resources: 16 destroyed.
 
 Delete the `catalog-import` folder. Its `generated/` state files hold your account ID and the details of the deleted resources.
 
-[⬅ Part 4](../part-4-reader-function-url/README.md) | [Lab overview](../README.md)
+[⬅ Part 5](PART5.md) | [Lab overview](README.md)
