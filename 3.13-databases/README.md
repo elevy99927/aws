@@ -11,6 +11,12 @@
 - Managed database vs. database on EC2 – the shared responsibility view
 - Terraform: the same resources as code
 
+## Labs
+
+| Lab | What you build |
+|---|---|
+| [Advanced DynamoDB: A Serverless File Catalog](advanced-dynamodb/README.md) | An S3 upload triggers a Lambda function that writes to a DynamoDB table; a second function serves the catalog as an HTML page at a public Function URL. Built in the Console in five chapters, then imported into Terraform with Terraformer |
+
 ---
 
 [⬅ Previous: 3.12 DevOps & Microservices](../3.12-microservices/README.md) | [🏠 Home](../README.md) | [Next: 4.01 Network & Application Protection, Compliance ➡](../4.01-network-application-protection-compliance/README.md)
