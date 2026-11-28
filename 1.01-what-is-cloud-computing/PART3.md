@@ -5,12 +5,12 @@
 A cloud service takes work away from you. How much depends on the **service model**:
 
 - **IaaS (Infrastructure as a Service):** the provider runs the data center, the hardware and the virtualization. You manage the operating system and everything above it. Example: Amazon EC2.
-- **PaaS (Platform as a Service):** the provider also runs the operating system and the runtime. You bring your code and your data. Example: AWS Elastic Beanstalk.
+- **PaaS (Platform as a Service):** the provider also runs the operating system and the runtime. You bring your code and your data. Example: AWS Elastic Beanstalk, which AWS describes as commonly categorized as PaaS. You can still reach the servers it creates.
 - **SaaS (Software as a Service):** the provider runs everything. You use the finished product. Example: web-based email.
 
 ![Who manages what in each service model](images/who-manages-what.jpg)
 
-Read the picture from left to right: every step to the right gives you less to manage, and less control.
+Read the picture from left to right: every step to the right gives you less to manage, and less control. The picture shows the typical split; each service has its own details.
 
 The next chapter, [1.02 Cloud Models](../1.02-cloud-models/README.md), covers the service models and the deployment models (public, private, hybrid) in detail.
 

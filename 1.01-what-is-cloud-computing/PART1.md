@@ -10,7 +10,7 @@ Instead of buying servers and running your own data center, you rent what you ne
 |---|---|---|
 | **Getting a server** | Order hardware, wait weeks, install it | A few clicks or one command, ready in minutes |
 | **Paying** | Up front, for the capacity you might need | As you go, for what you use |
-| **Too much capacity** | You already paid for it | Turn it off and stop paying |
+| **Too much capacity** | You already paid for it | Delete it, and most charges stop |
 | **Too little capacity** | Order more hardware and wait | Add more in minutes |
 | **Who runs the buildings, power and hardware** | You | The provider |
 
@@ -18,11 +18,21 @@ Three ideas come back in every chapter of this course:
 
 - **On demand:** you get a resource when you ask for it, with no purchase process.
 - **Over the internet:** you reach it from anywhere, through the Console, the CLI or code.
-- **Pay as you go:** you pay for what you use, and you stop paying when you delete it.
+- **Pay as you go:** you pay for what you use. For most resources, the charges stop when you delete them.
 
 ## AWS, Microsoft Azure and Google Cloud
 
-AWS is one of three large public cloud providers, next to **Microsoft Azure** and **Google Cloud**. All three sell the same building blocks under different names: virtual servers (Amazon EC2, Azure Virtual Machines, Google Compute Engine), object storage (Amazon S3, Azure Blob Storage, Google Cloud Storage), managed databases, networking and identity. They differ mostly in where they are strongest. AWS started first, in 2006, and has the widest catalog of services. Azure fits organizations that already run Microsoft products, such as Windows Server, Active Directory and Microsoft 365. Google Cloud is known for data analytics, machine learning and Kubernetes, which Google created. This course uses AWS, but everything in this chapter is true for all three, so what you learn here carries over.
+AWS is one of three large public cloud providers, next to **Microsoft Azure** and **Google Cloud**.
+
+- **The same building blocks, different names:**
+  - Virtual servers: Amazon EC2, Azure Virtual Machines, Google Compute Engine.
+  - Object storage: Amazon S3, Azure Blob Storage, Google Cloud Storage.
+  - All three also offer managed databases, networking and identity.
+- **Where each is strongest:**
+  - **AWS** started first, in 2006, and has one of the largest catalogs of services.
+  - **Azure** fits organizations that already run Microsoft products, such as Windows Server, Active Directory and Microsoft 365.
+  - **Google Cloud** is known for data analytics, machine learning and Kubernetes, which Google created.
+- **What carries over:** this course uses AWS, but everything in this chapter is true for all three.
 
 ## The five core characteristics
 

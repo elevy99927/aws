@@ -25,9 +25,9 @@ The two words are close, and people often mix them up.
 
 | | Scalability | Elasticity |
 |---|---|---|
-| **The question it answers** | Can the system handle more load if I give it more resources? | Does the system add and remove resources by itself as the load changes? |
+| **The question it answers** | Can the system handle more load if I give it more resources? | Can the system add and remove resources quickly as the load changes? |
 | **Direction** | Usually up or out, as the business grows | Up **and** down, following demand |
-| **Time frame** | Planned, long term | Automatic, short term |
+| **Time frame** | Usually planned, long term | Short term, often automatic |
 | **Example** | Moving a database to a larger instance | Auto Scaling adds servers at 09:00 and removes them at night |
 
 Scaling has two directions:
