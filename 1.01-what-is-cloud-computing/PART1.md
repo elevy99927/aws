@@ -44,7 +44,7 @@ The US National Institute of Standards and Technology (NIST) defines cloud compu
 |---|---|---|
 | **On-demand self-service** | You create resources yourself, without asking a person at the provider | Launching an EC2 instance from the Console |
 | **Broad network access** | Resources are reached over the network with standard tools | The Console in a browser, the AWS CLI, the SDKs |
-| **Resource pooling** | The provider serves many customers from shared hardware, and keeps them isolated from each other | Many customers' virtual servers on one physical host |
+| **Resource pooling** | The provider serves many customers from a shared pool of resources, and keeps them isolated from each other | Many customers' virtual servers on one physical host |
 | **Rapid elasticity** | Capacity grows and shrinks quickly, following demand | Auto Scaling adds servers during a traffic peak |
 | **Measured service** | Usage is metered, and you pay for what you used | The bill shows instance hours and stored gigabytes |
 

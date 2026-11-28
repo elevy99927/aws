@@ -11,7 +11,7 @@ AWS lists six advantages of cloud computing. Know them by name.
 | # | Advantage | In plain words |
 |---|---|---|
 | 1 | **Trade fixed expense for variable expense** | No large purchase up front (CapEx). You pay a monthly bill for what you used (OpEx). |
-| 2 | **Benefit from massive economies of scale** | The provider buys for hundreds of thousands of customers, so its price per unit is lower than yours would be. |
+| 2 | **Benefit from massive economies of scale** | The provider buys for hundreds of thousands of customers, and that can mean lower prices for you. |
 | 3 | **Stop guessing capacity** | You don't have to predict next year's traffic. Start small and change the size when you know more. |
 | 4 | **Increase speed and agility** | A new environment takes minutes, so trying an idea is cheap and fast. |
 | 5 | **Stop spending money running and maintaining data centers** | No buildings, racks, power or cooling to manage. Your team works on the product. |
